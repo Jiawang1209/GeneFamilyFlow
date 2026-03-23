@@ -1,0 +1,333 @@
+IQ-TREE multicore version 2.0.3 for Linux 64-bit built Dec 20 2020
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    node4 (AVX2, FMA3, 251 GB RAM)
+Command: iqtree -s Sb.NPF.ID.muscle -m MFP -bb 1000 -bnni -nt AUTO -cmax 15 -redo
+Seed:    994574 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Thu Jul 10 10:36:07 2025
+Kernel:  AVX+FMA - auto-detect threads (64 CPU cores detected)
+
+Reading alignment file Sb.NPF.ID.muscle ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 88 sequences with 879 columns, 842 distinct patterns
+664 parsimony-informative, 107 singleton sites, 108 constant sites
+                      Gap/Ambiguity  Composition  p-value
+   1  Sobic.003G399200.1.p   59.04%    failed      0.20%
+   2  Sobic.009G099000.1.p   34.13%    passed     77.71%
+   3  Sobic.005G110466.1.p   34.81%    passed     88.46%
+   4  Sobic.K022800.1.p      34.81%    passed     88.46%
+   5  Sobic.007G160900.1.p   40.39%    failed      2.03%
+   6  Sobic.003G304100.1.p   33.79%    passed     55.35%
+   7  Sobic.003G304000.1.p   34.47%    passed     64.03%
+   8  Sobic.006G130700.1.p   38.11%    failed      4.24%
+   9  Sobic.007G064500.1.p   35.15%    passed     79.46%
+  10  Sobic.006G155200.1.p   33.79%    passed     98.96%
+  11  Sobic.006G130501.1.p   37.43%    passed      8.79%
+  12  Sobic.006G130600.2.p   35.95%    passed     19.70%
+  13  Sobic.006G130400.1.p   32.99%    passed     75.36%
+  14  Sobic.008G081200.1.p   35.27%    passed     81.78%
+  15  Sobic.008G081500.1.p   34.93%    passed     96.60%
+  16  Sobic.008G081400.1.p   36.06%    passed     37.60%
+  17  Sobic.005G107400.1.p   41.64%    passed     40.66%
+  18  Sobic.005G107500.1.p   34.36%    passed     53.41%
+  19  Sobic.003G295500.1.p   30.26%    passed     69.12%
+  20  Sobic.010G175900.2.p   31.51%    passed     99.96%
+  21  Sobic.007G081300.1.p   31.51%    passed     25.79%
+  22  Sobic.005G090600.1.p   35.61%    passed     84.21%
+  23  Sobic.006G089300.1.p   32.99%    passed     41.04%
+  24  Sobic.001G099400.1.p   31.17%    passed     40.72%
+  25  Sobic.006G251200.1.p   27.30%    passed     54.96%
+  26  Sobic.010G099700.1.p   38.79%    passed     44.32%
+  27  Sobic.004G243200.1.p   40.16%    failed      0.99%
+  28  Sobic.006G279700.1.p   32.65%    failed      0.63%
+  29  Sobic.003G371750.1.p   55.63%    failed      0.80%
+  30  Sobic.003G371400.1.p   40.50%    passed     71.03%
+  31  Sobic.003G371250.1.p   41.75%    passed     12.70%
+  32  Sobic.003G371600.2.p   44.71%    passed     27.97%
+  33  Sobic.003G372100.2.p   41.75%    passed     29.58%
+  34  Sobic.003G372000.1.p   38.23%    passed      9.00%
+  35  Sobic.009G148800.1.p   28.44%    passed     33.73%
+  36  Sobic.003G371100.1.p   39.25%    passed     97.40%
+  37  Sobic.003G371000.1.p   38.45%    passed     69.22%
+  38  Sobic.007G213200.1.p   39.59%    passed     87.61%
+  39  Sobic.009G148900.1.p   35.04%    passed     82.41%
+  40  Sobic.001G032000.1.p   29.92%    passed     22.77%
+  41  Sobic.006G201100.1.p   33.11%    passed      9.07%
+  42  Sobic.001G282000.1.p   30.26%    passed     67.02%
+  43  Sobic.001G282100.1.p   35.49%    passed     81.49%
+  44  Sobic.006G201200.1.p   34.70%    passed     93.05%
+  45  Sobic.002G367700.1.p   34.93%    failed      1.00%
+  46  Sobic.002G064800.1.p   25.94%    passed     35.50%
+  47  Sobic.001G133900.1.p   32.54%    passed     97.33%
+  48  Sobic.008G190200.1.p   32.42%    passed     87.13%
+  49  Sobic.008G180300.1.p   32.08%    passed     89.60%
+  50  Sobic.003G107100.1.p   24.12%    passed     36.36%
+  51  Sobic.009G049900.4.p   71.56%    passed     77.06%
+  52  Sobic.010G109200.1.p   32.31%    passed     75.28%
+  53  Sobic.009G136900.1.p   31.85%    passed     48.41%
+  54  Sobic.009G136800.1.p   31.63%    passed     93.25%
+  55  Sobic.010G127800.1.p   31.85%    passed     99.12%
+  56  Sobic.009G136700.1.p   30.94%    passed     98.60%
+  57  Sobic.009G136500.1.p   28.21%    passed     84.78%
+  58  Sobic.009G136600.1.p   30.26%    passed     97.03%
+  59  Sobic.004G193000.1.p   32.08%    passed     18.18%
+  60  Sobic.003G185100.1.p   33.22%    passed     91.19%
+  61  Sobic.007G044300.1.p   31.63%    passed     92.12%
+  62  Sobic.001G302800.1.p   32.31%    passed     19.95%
+  63  Sobic.001G541900.2.p   31.17%    passed     29.05%
+  64  Sobic.010G166850.1.p   78.73%    failed      0.82%
+  65  Sobic.002G091800.1.p   27.76%    passed     74.17%
+  66  Sobic.004G276200.1.p   30.26%    passed     87.67%
+  67  Sobic.010G133100.1.p   43.57%    failed      1.89%
+  68  Sobic.004G260500.1.p   34.02%    passed     97.11%
+  69  Sobic.001G275500.2.p   35.49%    passed     88.92%
+  70  Sobic.001G275600.2.p   39.82%    passed     77.62%
+  71  Sobic.001G275800.1.p   30.49%    passed     98.15%
+  72  Sobic.001G276100.1.p   35.27%    passed     99.24%
+  73  Sobic.001G276400.1.p   34.58%    passed    100.00%
+  74  Sobic.001G276300.1.p   34.47%    passed     99.13%
+  75  Sobic.001G276800.1.p   27.30%    passed     75.15%
+  76  Sobic.001G276700.1.p   34.13%    passed     67.64%
+  77  Sobic.001G276600.1.p   34.58%    passed     77.21%
+  78  Sobic.001G444000.1.p   35.61%    passed     93.97%
+  79  Sobic.003G392700.1.p   36.41%    passed     66.76%
+  80  Sobic.003G076200.2.p   33.90%    passed     45.09%
+  81  Sobic.002G000800.2.p   33.79%    passed     73.71%
+  82  Sobic.001G443900.1.p   32.99%    passed     19.06%
+  83  Sobic.001G111150.1.p   33.11%    passed     14.21%
+  84  Sobic.001G444100.1.p   32.65%    failed      1.23%
+  85  Sobic.009G101800.2.p   31.51%    passed     43.33%
+  86  Sobic.001G223100.2.p   27.65%    passed     36.06%
+  87  Sobic.001G223200.1.p   32.99%    passed     22.33%
+  88  Sobic.001G511000.2.p   29.58%    passed     78.64%
+WARNING: 4 sequences contain more than 50% gaps/ambiguity
+****  TOTAL                  35.43%  10 sequences failed composition chi2 test (p-value<5%; df=19)
+NOTE: Sobic.K022800.1.p is identical to Sobic.005G110466.1.p but kept for subsequent analysis
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.082 seconds
+Measuring multi-threading efficiency up to 64 CPU cores
+Increase to 10 rounds for branch lengths
+17 trees examined
+Threads: 1 / Time: 67.499 sec / Speedup: 1.000 / Efficiency: 100% / LogL: -96176
+Threads: 2 / Time: 34.530 sec / Speedup: 1.955 / Efficiency: 98% / LogL: -96176
+Threads: 3 / Time: 23.513 sec / Speedup: 2.871 / Efficiency: 96% / LogL: -96176
+Threads: 4 / Time: 22.843 sec / Speedup: 2.955 / Efficiency: 74% / LogL: -96176
+Threads: 5 / Time: 19.750 sec / Speedup: 3.418 / Efficiency: 68% / LogL: -96176
+Threads: 6 / Time: 17.107 sec / Speedup: 3.946 / Efficiency: 66% / LogL: -96176
+Threads: 7 / Time: 14.686 sec / Speedup: 4.596 / Efficiency: 66% / LogL: -96176
+Threads: 8 / Time: 14.320 sec / Speedup: 4.714 / Efficiency: 59% / LogL: -96176
+Threads: 9 / Time: 14.356 sec / Speedup: 4.702 / Efficiency: 52% / LogL: -96176
+Threads: 10 / Time: 13.513 sec / Speedup: 4.995 / Efficiency: 50% / LogL: -96176
+BEST NUMBER OF THREADS: 7
+
+Perform fast likelihood tree search using LG+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+1. Initial log-likelihood: -74074.602
+Optimal log-likelihood: -74074.277
+Proportion of invariable sites: 0.001
+Gamma shape alpha: 1.329
+Parameters optimization took 1 rounds (0.368 sec)
+Time for fast ML tree search: 3.490 seconds
+
+NOTE: ModelFinder requires 179 MB RAM!
+ModelFinder will test up to 756 protein models (sample size: 879) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+  1  LG            76859.532    173 154065.065   154150.461   154891.795
+  2  LG+I          76836.415    174 154020.830   154107.336   154852.339
+  3  LG+G4         74077.923    174 148503.845   148590.351   149335.354
+  4  LG+I+G4       74074.159    175 148498.319   148585.943   149334.606
+  5  LG+R2         74729.286    175 149808.572   149896.197   150644.860
+  6  LG+R3         74187.371    177 148728.742   148818.631   149574.587
+  7  LG+R4         74035.205    179 148428.409   148520.598   149283.812
+  8  LG+R5         73961.930    181 148285.859   148380.384   149150.819
+  9  LG+R6         73948.012    183 148262.024   148358.922   149136.541
+ 10  LG+R7         73944.954    185 148259.908   148359.216   149143.984
+ 27  LG+F+R6       73390.694    202 147185.389   147306.708   148150.703
+ 28  LG+F+R7       73391.416    204 147190.832   147314.927   148165.705
+ 45  WAG+R6        74060.991    183 148487.981   148584.879   149362.499
+ 46  WAG+R7        74044.492    185 148458.985   148558.292   149343.060
+ 63  WAG+F+R6      73568.304    202 147540.608   147661.927   148505.922
+ 64  WAG+F+R7      73560.632    204 147529.264   147653.359   148504.136
+ 81  JTT+R6        74003.798    183 148373.596   148470.494   149248.114
+ 82  JTT+R7        73994.217    185 148358.435   148457.742   149242.510
+ 99  JTT+F+R6      73639.718    202 147683.437   147804.756   148648.751
+100  JTT+F+R7      73632.669    204 147673.338   147797.433   148648.210
+117  JTTDCMut+R6   74023.813    183 148413.626   148510.524   149288.144
+118  JTTDCMut+R7   74014.193    185 148398.385   148497.693   149282.461
+135  JTTDCMut+F+R6 73653.524    202 147711.048   147832.368   148676.363
+136  JTTDCMut+F+R7 73646.266    204 147700.532   147824.627   148675.404
+153  DCMut+R6      74689.568    183 149745.136   149842.034   150619.654
+154  DCMut+R7      74672.225    185 149714.450   149813.757   150598.525
+171  DCMut+F+R6    74101.197    202 148606.393   148727.713   149571.708
+172  DCMut+F+R7    74094.398    204 148596.796   148720.891   149571.669
+189  VT+R6         74266.796    183 148899.591   148996.489   149774.109
+190  VT+R7         74254.721    185 148879.442   148978.750   149763.518
+207  VT+F+R6       73720.687    202 147845.373   147966.693   148810.688
+208  VT+F+R7       73716.971    204 147841.941   147966.036   148816.814
+225  PMB+R6        74636.669    183 149639.337   149736.235   150513.855
+226  PMB+R7        74624.934    185 149619.868   149719.175   150503.943
+243  PMB+F+R6      74342.208    202 149088.416   149209.736   150053.731
+244  PMB+F+R7      74336.151    204 149080.303   149204.397   150055.175
+261  Blosum62+R6   74788.375    183 149942.749   150039.647   150817.267
+262  Blosum62+R7   74778.140    185 149926.280   150025.588   150810.356
+279  Blosum62+F+R6 74307.315    202 149018.629   149139.949   149983.944
+280  Blosum62+F+R7 74303.985    204 149015.969   149140.064   149990.842
+297  Dayhoff+R6    74687.211    183 149740.421   149837.319   150614.939
+298  Dayhoff+R7    74669.874    185 149709.747   149809.055   150593.823
+315  Dayhoff+F+R6  74098.901    202 148601.801   148723.121   149567.116
+316  Dayhoff+F+R7  74092.132    204 148592.263   148716.358   149567.135
+333  mtREV+R6      77596.002    183 155558.004   155654.902   156432.522
+334  mtREV+R7      77585.001    185 155540.002   155639.310   156424.078
+351  mtREV+F+R6    74598.824    202 149601.648   149722.968   150566.963
+352  mtREV+F+R7    74588.411    204 149584.822   149708.917   150559.694
+369  mtART+R6      78209.015    183 156784.031   156880.928   157658.548
+370  mtART+R7      78203.472    185 156776.945   156876.252   157661.020
+387  mtART+F+R6    75656.568    202 151717.136   151838.456   152682.451
+388  mtART+F+R7    75632.312    204 151672.624   151796.719   152647.496
+405  mtZOA+R6      75983.870    183 152333.741   152430.638   153208.258
+406  mtZOA+R7      75971.320    185 152312.640   152411.947   153196.715
+423  mtZOA+F+R6    74503.229    202 149410.457   149531.777   150375.772
+424  mtZOA+F+R7    74492.755    204 149393.509   149517.604   150368.381
+441  mtMet+R6      77387.930    183 155141.859   155238.757   156016.377
+442  mtMet+R7      77385.545    185 155141.091   155240.398   156025.166
+459  mtMet+F+R6    74404.071    202 149212.142   149333.462   150177.457
+460  mtMet+F+R7    74399.040    204 149206.081   149330.176   150180.953
+477  mtVer+R6      77951.635    183 156269.270   156366.168   157143.788
+478  mtVer+R7      77938.617    185 156247.233   156346.541   157131.308
+495  mtVer+F+R6    75118.505    202 150641.009   150762.329   151606.324
+496  mtVer+F+R7    75095.712    204 150599.423   150723.518   151574.295
+513  mtInv+R6      77777.267    183 155920.535   156017.433   156795.052
+514  mtInv+R7      77774.766    185 155919.532   156018.839   156803.607
+531  mtInv+F+R6    73991.677    202 148387.355   148508.674   149352.669
+532  mtInv+F+R7    73989.646    204 148387.293   148511.388   149362.165
+549  mtMAM+R6      79192.138    183 158750.276   158847.174   159624.794
+550  mtMAM+R7      79143.559    185 158657.117   158756.425   159541.193
+567  mtMAM+F+R6    76039.976    202 152483.952   152605.272   153449.267
+568  mtMAM+F+R7    76008.812    204 152425.624   152549.719   153400.496
+585  HIVb+R6       75907.403    183 152180.805   152277.703   153055.323
+586  HIVb+R7       75901.818    185 152173.637   152272.944   153057.712
+603  HIVb+F+R6     74822.027    202 150048.054   150169.374   151013.369
+604  HIVb+F+R7     74810.314    204 150028.629   150152.724   151003.501
+621  HIVw+R6       79575.541    183 159517.082   159613.980   160391.600
+622  HIVw+R7       79561.780    185 159493.560   159592.867   160377.635
+639  HIVw+F+R6     76978.671    202 154361.341   154482.661   155326.656
+640  HIVw+F+R7     76972.010    204 154352.020   154476.114   155326.892
+657  FLU+R6        76266.513    183 152899.027   152995.925   153773.544
+658  FLU+R7        76244.118    185 152858.237   152957.544   153742.312
+675  FLU+F+R6      74765.964    202 149935.928   150057.247   150901.242
+676  FLU+F+R7      74761.338    204 149930.675   150054.770   150905.547
+693  rtREV+R6      75404.352    183 151174.704   151271.601   152049.221
+694  rtREV+R7      75386.765    185 151143.531   151242.838   152027.606
+711  rtREV+F+R6    74040.717    202 148485.434   148606.753   149450.748
+712  rtREV+F+R7    74040.752    204 148489.504   148613.599   149464.376
+729  cpREV+R6      74722.436    183 149810.872   149907.770   150685.390
+730  cpREV+R7      74706.439    185 149782.877   149882.185   150666.953
+747  cpREV+F+R6    73856.157    202 148116.314   148237.634   149081.629
+748  cpREV+F+R7    73835.069    204 148078.139   148202.234   149053.011
+Akaike Information Criterion:           LG+F+R6
+Corrected Akaike Information Criterion: LG+F+R6
+Bayesian Information Criterion:         LG+F+R6
+Best-fit model: LG+F+R6 chosen according to BIC
+
+All model information printed to Sb.NPF.ID.muscle.model.gz
+CPU time for ModelFinder: 14513.071 seconds (4h:1m:53s)
+Wall-clock time for ModelFinder: 2392.242 seconds (0h:39m:52s)
+Generating 1000 samples for ultrafast bootstrap (seed: 994574)...
+
+NOTE: 73 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -73390.694
+Optimal log-likelihood: -73390.684
+Site proportion and rates:  (0.094,0.126) (0.184,0.284) (0.193,0.492) (0.219,0.797) (0.153,1.405) (0.157,2.882)
+Parameters optimization took 1 rounds (1.416 sec)
+Computing ML distances based on estimated model parameters... 1.709 sec
+WARNING: Some pairwise ML distances are too long (saturated)
+Computing BIONJ tree...
+0.006 seconds
+Log-likelihood of BIONJ tree: -73449.424
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 6.001 second
+Computing log-likelihood of 98 initial trees ... 12.336 seconds
+Current best score: -73390.684
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -73384.809
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 2: -73370.914
+Iteration 10 / LogL: -73382.738 / Time: 0h:0m:47s
+Iteration 20 / LogL: -73377.395 / Time: 0h:1m:13s
+Finish initializing candidate tree set (3)
+Current best tree score: -73370.914 / CPU time: 70.586
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -73380.683 / Time: 0h:1m:36s (0h:3m:59s left)
+Iteration 40 / LogL: -73380.079 / Time: 0h:1m:58s (0h:3m:8s left)
+Iteration 50 / LogL: -73371.197 / Time: 0h:2m:22s (0h:2m:31s left)
+Iteration 60 / LogL: -73371.283 / Time: 0h:2m:45s (0h:1m:57s left)
+Iteration 70 / LogL: -73374.958 / Time: 0h:3m:9s (0h:1m:27s left)
+Iteration 80 / LogL: -73375.097 / Time: 0h:3m:31s (0h:0m:58s left)
+Iteration 90 / LogL: -73371.218 / Time: 0h:3m:55s (0h:0m:31s left)
+Iteration 100 / LogL: -73371.186 / Time: 0h:4m:22s (0h:0m:5s left)
+Refining ufboot trees with NNI 1 branch...
+100 samples done
+200 samples done
+300 samples done
+400 samples done
+500 samples done
+600 samples done
+700 samples done
+800 samples done
+900 samples done
+1000 samples done
+Total 995 ufboot trees refined
+TREE SEARCH COMPLETED AFTER 103 ITERATIONS / Time: 0h:12m:25s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -73370.914
+Optimal log-likelihood: -73370.906
+Site proportion and rates:  (0.097,0.128) (0.190,0.290) (0.198,0.507) (0.211,0.816) (0.148,1.407) (0.157,2.885)
+Parameters optimization took 1 rounds (1.767 sec)
+BEST SCORE FOUND : -73370.906
+Creating bootstrap support values...
+Split supports printed to NEXUS file Sb.NPF.ID.muscle.splits.nex
+Total tree length: 66.355
+
+Total number of iterations: 103
+CPU time used for tree search: 4974.015 sec (1h:22m:54s)
+Wall-clock time used for tree search: 742.299 sec (0h:12m:22s)
+Total CPU time used: 5006.428 sec (1h:23m:26s)
+Total wall-clock time used: 747.596 sec (0h:12m:27s)
+UFBoot trees printed to Sb.NPF.ID.muscle.ufboot
+
+Computing bootstrap consensus tree...
+Reading input file Sb.NPF.ID.muscle.splits.nex...
+88 taxa and 322 splits.
+Consensus tree written to Sb.NPF.ID.muscle.contree
+Reading input trees file Sb.NPF.ID.muscle.contree
+Log-likelihood of consensus tree: -73370.907
+
+Analysis results written to: 
+  IQ-TREE report:                Sb.NPF.ID.muscle.iqtree
+  Maximum-likelihood tree:       Sb.NPF.ID.muscle.treefile
+  Likelihood distances:          Sb.NPF.ID.muscle.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          Sb.NPF.ID.muscle.splits.nex
+  Consensus tree:                Sb.NPF.ID.muscle.contree
+  UFBoot trees:                  Sb.NPF.ID.muscle.ufboot
+  Screen log file:               Sb.NPF.ID.muscle.log
+
+Date and Time: Thu Jul 10 11:28:30 2025

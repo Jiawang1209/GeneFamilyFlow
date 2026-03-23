@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.Rhistory
+.RData
+.ipynb_checkpoints/
+.idea/
+.vscode/
+dist/
+build/
+*.egg-info/
+
+# Pipeline outputs
+output/
+work/
+logs/
+reports/

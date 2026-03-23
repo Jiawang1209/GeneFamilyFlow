@@ -1,0 +1,27 @@
+
+
+Building a new DB, current time: 07/13/2025 09:57:20
+
+
+Building a new DB, current time: 07/13/2025 09:57:20
+New DB name:   /home/yhc-z4/workspace/Evolution/Evolution_NPF_Sb/9.mcscanx/Osativa.pep
+New DB name:   /home/yhc-z4/workspace/Evolution/Evolution_NPF_Sb/9.mcscanx/Sbicolor.pep
+New DB title:  -parse_seqids
+New DB title:  -parse_seqids
+Sequence type: Protein
+Sequence type: Protein
+Keep MBits: T
+Keep MBits: T
+Maximum file size: 1000000000B
+Maximum file size: 1000000000B
+
+
+Building a new DB, current time: 07/13/2025 09:57:20
+New DB name:   /home/yhc-z4/workspace/Evolution/Evolution_NPF_Sb/9.mcscanx/Athaliana.pep
+New DB title:  -parse_seqids
+Sequence type: Protein
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 23504 sequences in 0.852764 seconds.
+Adding sequences from FASTA; added 29811 sequences in 1.0736 seconds.
+Adding sequences from FASTA; added 39369 sequences in 1.35001 seconds.

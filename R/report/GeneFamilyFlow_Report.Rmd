@@ -1,0 +1,45 @@
+---
+title: "GeneFamilyFlow Analysis Report"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+params:
+  project_name: "GeneFamilyFlow"
+  run_date: !r Sys.Date()
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Overview
+
+- Project: `r params$project_name`
+- Run date: `r params$run_date`
+
+# Step 1-4: Family Identification
+
+Summarize the cleaned database, HMM search, BLAST hits, and final identified family members.
+
+# Step 5-7: Core Family Characterization
+
+Include gene family basic statistics, phylogenetic tree, and motif/domain/gene structure plots.
+
+# Step 8-9: Evolutionary Analysis
+
+Include JCVI synteny and MCScanX duplicate/KaKs outputs.
+
+# Step 10-11: Functional Expansion
+
+Include promoter cis-element and PPI network outputs.
+
+# Optional Omics and Validation
+
+Add RNA-seq, GO/KEGG, and qRT-PCR results if available.
+
+# Session Info
+
+```{r}
+sessionInfo()
+```

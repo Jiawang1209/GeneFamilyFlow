@@ -1,0 +1,558 @@
+IQ-TREE multicore version 2.0.3 for Linux 64-bit built Dec 20 2020
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    node4 (AVX2, FMA3, 251 GB RAM)
+Command: iqtree -s identify.ID.muscle -m MFP -bb 1000 -bnni -nt AUTO -cmax 15 -redo
+Seed:    998318 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Thu Jul 10 10:31:21 2025
+Kernel:  AVX+FMA - auto-detect threads (64 CPU cores detected)
+
+Reading alignment file identify.ID.muscle ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 228 sequences with 1255 columns, 1072 distinct patterns
+735 parsimony-informative, 215 singleton sites, 305 constant sites
+                      Gap/Ambiguity  Composition  p-value
+   1  AT2G38100.1            58.49%    passed     21.09%
+   2  LOC_Os12g15600.1       77.77%    failed      0.00%
+   3  LOC_Os05g27304.1       53.55%    failed      0.00%
+   4  Sobic.009G099000.1.p   53.86%    passed     46.43%
+   5  AT3G45650.1            55.54%    passed     19.04%
+   6  AT3G45660.1            55.62%    passed      7.15%
+   7  AT3G45720.1            55.78%    failed      3.08%
+   8  AT3G45710.1            55.38%    passed      9.48%
+   9  AT3G45700.1            56.33%    passed      5.23%
+  10  AT3G45690.1            58.88%    failed      2.27%
+  11  AT3G45680.1            55.54%    passed      8.23%
+  12  Sobic.007G160900.1.p   58.25%    passed     14.59%
+  13  LOC_Os11g23890.1       48.05%    passed     16.90%
+  14  Sobic.005G110466.1.p   54.34%    passed     84.78%
+  15  Sobic.K022800.1.p      54.34%    passed     84.78%
+  16  LOC_Os01g55600.1       54.26%    passed     17.53%
+  17  Sobic.003G304000.1.p   54.10%    passed     60.24%
+  18  AT5G11570.1            61.67%    passed      8.84%
+  19  AT1G52190.1            51.63%    failed      1.68%
+  20  AT3G16180.1            52.91%    passed     10.09%
+  21  LOC_Os01g55610.1       52.99%    passed     46.71%
+  22  Sobic.003G304100.1.p   53.63%    passed     59.22%
+  23  AT5G28470.1            55.46%    failed      0.01%
+  24  LOC_Os04g56560.1       49.72%    failed      1.04%
+  25  Sobic.001G099400.1.p   51.79%    passed     14.07%
+  26  Sobic.006G251200.1.p   49.08%    passed     29.27%
+  27  AT1G69860.1            55.78%    failed      0.01%
+  28  LOC_Os01g68510.1       52.19%    failed      0.02%
+  29  Sobic.003G399200.1.p   71.31%    failed      1.22%
+  30  AT1G69870.1            50.60%    failed      0.98%
+  31  AT1G27080.1            54.10%    passed     13.15%
+  32  AT1G18880.1            53.23%    failed      0.60%
+  33  AT3G47960.1            49.32%    failed      0.18%
+  34  AT5G62680.1            50.92%    passed      6.79%
+  35  Sobic.002G064800.1.p   48.13%    passed      9.31%
+  36  LOC_Os07g21960.1       75.54%    failed      0.00%
+  37  LOC_Os03g48180.1       53.23%    passed     99.21%
+  38  Sobic.001G133900.1.p   52.75%    passed     99.82%
+  39  Sobic.008G190200.1.p   52.67%    passed     70.83%
+  40  Sobic.008G180300.1.p   52.43%    passed     63.99%
+  41  LOC_Os12g44110.2       53.23%    passed     51.91%
+  42  LOC_Os12g44100.1       53.15%    passed      6.69%
+  43  LOC_Os04g41410.1       61.43%    passed     15.85%
+  44  Sobic.006G130700.1.p   56.65%    passed     14.85%
+  45  Sobic.007G064500.1.p   54.58%    passed     74.54%
+  46  Sobic.006G155200.1.p   53.63%    passed     98.60%
+  47  LOC_Os04g41400.1       54.42%    passed     73.92%
+  48  LOC_Os04g41450.1       55.62%    passed     12.64%
+  49  Sobic.006G130501.1.p   56.18%    passed     21.04%
+  50  Sobic.006G130600.2.p   55.14%    passed     38.62%
+  51  Sobic.006G130400.1.p   53.07%    passed     91.87%
+  52  LOC_Os12g12934.1       53.55%    passed     28.50%
+  53  Sobic.008G081200.1.p   54.66%    passed     61.89%
+  54  Sobic.008G081500.1.p   54.42%    passed     88.80%
+  55  Sobic.008G081400.1.p   55.22%    passed     34.03%
+  56  Sobic.005G107500.1.p   54.02%    passed     74.33%
+  57  LOC_Os11g18110.1       54.66%    passed     75.56%
+  58  LOC_Os11g18044.1       53.55%    passed     96.16%
+  59  Sobic.005G107400.1.p   59.12%    passed     54.61%
+  60  LOC_Os11g17970.1       51.95%    passed     55.21%
+  61  AT3G01350.1            55.14%    failed      0.00%
+  62  AT5G14940.1            56.02%    failed      0.05%
+  63  Sobic.004G243200.1.p   58.09%    passed      5.03%
+  64  Sobic.010G099700.1.p   57.13%    passed     56.92%
+  65  LOC_Os06g13200.1       58.49%    passed     23.91%
+  66  LOC_Os06g13210.1       57.37%    passed     47.54%
+  67  AT3G54450.1            55.78%    failed      0.37%
+  68  LOC_Os01g65120.1       60.80%    failed      0.00%
+  69  Sobic.003G371750.1.p   68.92%    failed      0.28%
+  70  Sobic.003G371400.1.p   58.33%    passed     43.76%
+  71  Sobic.003G371250.1.p   59.20%    failed      3.05%
+  72  Sobic.003G371600.2.p   61.27%    passed      9.97%
+  73  LOC_Os02g52060.1       76.81%    failed      0.00%
+  74  LOC_Os02g31980.1       92.11%    passed     45.38%
+  75  LOC_Os10g05780.1       55.94%    failed      0.00%
+  76  LOC_Os01g65190.1       47.25%    failed      1.20%
+  77  LOC_Os01g65140.1       72.83%    passed     36.60%
+  78  LOC_Os01g65150.1       57.21%    passed     15.61%
+  79  LOC_Os01g65169.1       56.89%    passed     16.79%
+  80  Sobic.006G279700.1.p   52.83%    failed      0.14%
+  81  LOC_Os08g41590.1       69.08%    failed      0.35%
+  82  LOC_Os04g59480.1       59.36%    passed      6.48%
+  83  AT1G72120.1            55.62%    failed      4.45%
+  84  AT1G72125.1            55.30%    passed     33.60%
+  85  AT1G22550.1            55.06%    passed     81.57%
+  86  AT1G22570.1            54.98%    passed     23.57%
+  87  AT1G22540.1            55.62%    passed     37.49%
+  88  AT1G72130.1            57.13%    failed      0.58%
+  89  AT1G72140.1            55.78%    failed      1.11%
+  90  LOC_Os01g65210.1       43.27%    failed      0.03%
+  91  Sobic.003G372100.2.p   59.20%    passed     44.54%
+  92  LOC_Os01g65200.3       56.33%    passed      9.40%
+  93  Sobic.003G372000.1.p   56.73%    passed     25.45%
+  94  LOC_Os05g35594.1       57.77%    failed      0.40%
+  95  Sobic.009G148800.1.p   49.88%    passed     18.59%
+  96  LOC_Os01g65100.1       56.57%    passed     14.60%
+  97  Sobic.003G371000.1.p   56.89%    passed     53.76%
+  98  LOC_Os01g65110.1       56.33%    passed      9.87%
+  99  Sobic.003G371100.1.p   57.45%    passed     93.26%
+ 100  Sobic.007G213200.1.p   57.69%    passed     66.41%
+ 101  LOC_Os05g35650.1       53.71%    passed     44.59%
+ 102  Sobic.009G148900.1.p   54.50%    passed     66.46%
+ 103  LOC_Os01g54515.1       57.93%    passed     58.65%
+ 104  Sobic.003G295500.1.p   51.16%    passed     77.34%
+ 105  AT1G59740.1            52.91%    failed      0.03%
+ 106  AT1G33440.1            52.11%    failed      0.46%
+ 107  Sobic.007G081300.1.p   52.03%    passed      8.87%
+ 108  LOC_Os04g36040.1       51.31%    passed      6.66%
+ 109  Sobic.006G089300.1.p   53.07%    passed     20.44%
+ 110  LOC_Os11g12740.1       50.12%    failed      2.14%
+ 111  Sobic.005G090600.1.p   54.90%    passed     67.86%
+ 112  AT3G25260.1            58.96%    failed      0.02%
+ 113  AT3G25280.1            58.49%    failed      0.00%
+ 114  AT5G62730.1            53.07%    passed      5.75%
+ 115  LOC_Os06g38294.1       52.99%    passed     95.89%
+ 116  Sobic.010G175900.2.p   52.03%    passed     99.62%
+ 117  AT1G27040.1            54.82%    failed      2.05%
+ 118  AT1G69850.1            53.39%    failed      4.60%
+ 119  AT2G37900.1            54.18%    passed     11.01%
+ 120  AT3G53960.1            52.03%    failed      3.57%
+ 121  LOC_Os03g60850.1       53.39%    passed     40.61%
+ 122  Sobic.001G032000.1.p   50.92%    passed     13.05%
+ 123  Sobic.010G166850.1.p   85.10%    failed      0.81%
+ 124  Sobic.002G091800.1.p   49.40%    passed     66.63%
+ 125  AT5G19640.1            51.47%    passed     11.11%
+ 126  LOC_Os02g46460.1       51.39%    passed     94.06%
+ 127  Sobic.004G276200.1.p   51.16%    passed     86.43%
+ 128  AT4G21680.1            53.07%    passed     19.88%
+ 129  AT1G32450.1            51.08%    failed      0.22%
+ 130  LOC_Os06g21900.1       48.84%    passed     45.68%
+ 131  Sobic.010G133100.1.p   60.48%    failed      3.88%
+ 132  LOC_Os02g48570.1       53.47%    passed     97.97%
+ 133  Sobic.004G260500.1.p   53.78%    passed     99.45%
+ 134  AT1G68570.1            52.51%    passed      9.50%
+ 135  LOC_Os06g15370.1       52.43%    passed     42.99%
+ 136  Sobic.010G109200.1.p   52.59%    passed     45.18%
+ 137  LOC_Os05g34000.1       50.20%    failed      0.00%
+ 138  LOC_Os05g34030.1       50.76%    failed      4.15%
+ 139  LOC_Os05g34010.1       52.35%    passed     93.24%
+ 140  Sobic.009G136900.1.p   52.27%    passed     65.32%
+ 141  Sobic.009G136800.1.p   52.11%    passed     68.11%
+ 142  Sobic.010G127800.1.p   52.27%    passed     94.82%
+ 143  Sobic.009G136500.1.p   49.72%    passed     70.27%
+ 144  Sobic.009G136600.1.p   51.16%    passed     89.71%
+ 145  LOC_Os05g33960.1       51.87%    passed     58.96%
+ 146  Sobic.009G136700.1.p   51.63%    passed     92.00%
+ 147  AT3G21670.1            52.99%    failed      2.47%
+ 148  LOC_Os04g39030.1       52.83%    failed      0.01%
+ 149  Sobic.004G193000.1.p   52.43%    failed      4.88%
+ 150  AT2G26690.1            54.02%    failed      0.43%
+ 151  LOC_Os01g37590.1       53.39%    passed     43.35%
+ 152  Sobic.003G185100.1.p   53.23%    passed     70.62%
+ 153  AT1G12110.1            52.99%    passed     53.63%
+ 154  LOC_Os08g05910.1       51.95%    passed     20.47%
+ 155  Sobic.007G044300.1.p   52.11%    passed     82.17%
+ 156  LOC_Os10g40600.1       52.51%    failed      2.41%
+ 157  Sobic.001G302800.1.p   52.59%    passed      7.52%
+ 158  LOC_Os03g01290.1       53.07%    passed     19.97%
+ 159  Sobic.001G541900.2.p   51.79%    passed     11.75%
+ 160  AT5G13400.1            50.28%    passed     42.37%
+ 161  LOC_Os01g01360.1       51.71%    passed     12.57%
+ 162  Sobic.003G107100.1.p   46.85%    passed     13.96%
+ 163  Sobic.009G049900.4.p   80.08%    passed     68.66%
+ 164  AT2G40460.1            53.55%    failed      1.38%
+ 165  LOC_Os05g27010.1       59.92%    passed     49.21%
+ 166  Sobic.009G101800.2.p   52.03%    passed     30.40%
+ 167  LOC_Os10g33170.1       51.63%    passed     30.89%
+ 168  Sobic.001G223200.1.p   53.07%    passed      7.56%
+ 169  LOC_Os03g04570.1       52.19%    passed     78.01%
+ 170  Sobic.001G511000.2.p   50.68%    passed     90.21%
+ 171  LOC_Os10g33210.1       51.39%    passed     61.62%
+ 172  Sobic.001G223100.2.p   49.32%    passed     49.67%
+ 173  AT5G46050.1            53.63%    failed      0.02%
+ 174  AT5G46040.1            53.31%    failed      0.19%
+ 175  Sobic.006G201100.1.p   53.15%    failed      3.79%
+ 176  LOC_Os04g50930.1       50.84%    passed     52.96%
+ 177  LOC_Os12g13790.1       62.87%    failed      2.91%
+ 178  LOC_Os10g42870.1       54.66%    passed     22.24%
+ 179  Sobic.001G282100.1.p   54.82%    passed     88.44%
+ 180  LOC_Os10g42900.1       54.50%    passed     56.69%
+ 181  Sobic.001G282000.1.p   51.16%    passed     33.44%
+ 182  LOC_Os07g41250.1       45.98%    failed      4.49%
+ 183  Sobic.002G367700.1.p   54.42%    passed      5.98%
+ 184  LOC_Os02g47090.1       54.26%    passed     29.37%
+ 185  Sobic.006G201200.1.p   54.26%    passed     88.24%
+ 186  LOC_Os04g50950.1       52.75%    passed     70.07%
+ 187  LOC_Os04g50940.1       54.18%    passed     63.15%
+ 188  LOC_Os03g17770.1       73.15%    failed      0.00%
+ 189  LOC_Os10g02340.1       55.70%    failed      1.53%
+ 190  LOC_Os10g02210.1       53.86%    passed     79.56%
+ 191  LOC_Os10g22560.1       54.58%    passed     99.95%
+ 192  LOC_Os10g02220.4       54.90%    passed     99.05%
+ 193  Sobic.001G275800.1.p   51.31%    passed     97.71%
+ 194  Sobic.001G276100.1.p   54.66%    passed     97.91%
+ 195  Sobic.001G276400.1.p   54.18%    passed    100.00%
+ 196  Sobic.001G276300.1.p   54.10%    passed     98.88%
+ 197  LOC_Os10g02240.1       53.78%    passed     98.11%
+ 198  LOC_Os10g02260.1       54.10%    passed     21.22%
+ 199  Sobic.001G275500.2.p   54.82%    passed     90.32%
+ 200  Sobic.001G275600.2.p   57.85%    passed     82.47%
+ 201  LOC_Os06g49240.1       64.70%    passed      5.86%
+ 202  LOC_Os06g49250.1       56.41%    passed     15.65%
+ 203  LOC_Os06g49220.1       54.66%    passed     32.19%
+ 204  LOC_Os10g02100.1       54.26%    passed     96.98%
+ 205  Sobic.001G276800.1.p   49.08%    passed     86.50%
+ 206  Sobic.001G276700.1.p   53.86%    passed     84.90%
+ 207  Sobic.001G276600.1.p   54.18%    passed     89.05%
+ 208  LOC_Os03g13274.2       53.47%    passed     25.78%
+ 209  Sobic.003G392700.1.p   55.46%    passed     34.94%
+ 210  LOC_Os01g67640.1       52.27%    passed     52.09%
+ 211  LOC_Os01g67630.1       55.62%    passed     18.00%
+ 212  AT3G54140.1            54.58%    failed      0.35%
+ 213  AT5G01180.1            54.58%    failed      1.04%
+ 214  LOC_Os01g04950.1       53.78%    passed     98.97%
+ 215  Sobic.003G076200.2.p   53.71%    passed     68.35%
+ 216  LOC_Os07g01070.1       54.42%    passed     54.70%
+ 217  Sobic.002G000800.2.p   53.63%    passed     61.81%
+ 218  AT2G02020.1            56.57%    passed     12.55%
+ 219  AT1G62200.1            52.99%    passed      8.04%
+ 220  AT2G02040.1            53.39%    passed     19.69%
+ 221  LOC_Os03g51050.1       52.75%    passed     27.15%
+ 222  Sobic.001G111150.1.p   53.15%    passed     38.78%
+ 223  LOC_Os03g13250.1       50.52%    failed      3.94%
+ 224  Sobic.001G443900.1.p   53.07%    passed     48.38%
+ 225  LOC_Os03g13240.1       52.91%    passed     49.81%
+ 226  Sobic.001G444100.1.p   52.83%    passed     11.76%
+ 227  Sobic.001G444000.1.p   54.90%    passed     96.80%
+ 228  LOC_Os10g02080.1       58.88%    passed      8.78%
+WARNING: 213 sequences contain more than 50% gaps/ambiguity
+****  TOTAL                  55.06%  59 sequences failed composition chi2 test (p-value<5%; df=19)
+NOTE: Sobic.K022800.1.p is identical to Sobic.005G110466.1.p but kept for subsequent analysis
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.255 seconds
+Measuring multi-threading efficiency up to 64 CPU cores
+Increase to 10 rounds for branch lengths
+5 trees examined
+Threads: 1 / Time: 65.399 sec / Speedup: 1.000 / Efficiency: 100% / LogL: -247419
+Threads: 2 / Time: 35.311 sec / Speedup: 1.852 / Efficiency: 93% / LogL: -247419
+Threads: 3 / Time: 24.210 sec / Speedup: 2.701 / Efficiency: 90% / LogL: -247419
+Threads: 4 / Time: 19.265 sec / Speedup: 3.395 / Efficiency: 85% / LogL: -247419
+Threads: 5 / Time: 15.883 sec / Speedup: 4.118 / Efficiency: 82% / LogL: -247419
+Threads: 6 / Time: 13.554 sec / Speedup: 4.825 / Efficiency: 80% / LogL: -247419
+Threads: 7 / Time: 11.976 sec / Speedup: 5.461 / Efficiency: 78% / LogL: -247419
+Threads: 8 / Time: 11.367 sec / Speedup: 5.754 / Efficiency: 72% / LogL: -247419
+Threads: 9 / Time: 11.068 sec / Speedup: 5.909 / Efficiency: 66% / LogL: -247419
+Threads: 10 / Time: 9.999 sec / Speedup: 6.540 / Efficiency: 65% / LogL: -247419
+Threads: 11 / Time: 9.427 sec / Speedup: 6.937 / Efficiency: 63% / LogL: -247419
+Threads: 12 / Time: 9.442 sec / Speedup: 6.926 / Efficiency: 58% / LogL: -247419
+Threads: 13 / Time: 8.744 sec / Speedup: 7.479 / Efficiency: 58% / LogL: -247419
+Threads: 14 / Time: 8.658 sec / Speedup: 7.553 / Efficiency: 54% / LogL: -247419
+Threads: 15 / Time: 8.425 sec / Speedup: 7.762 / Efficiency: 52% / LogL: -247419
+Threads: 16 / Time: 8.405 sec / Speedup: 7.781 / Efficiency: 49% / LogL: -247419
+BEST NUMBER OF THREADS: 13
+
+Perform fast likelihood tree search using LG+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+1. Initial log-likelihood: -168272.766
+Optimal log-likelihood: -168272.184
+Proportion of invariable sites: 0.000
+Gamma shape alpha: 1.271
+Parameters optimization took 1 rounds (0.610 sec)
+Time for fast ML tree search: 6.992 seconds
+
+NOTE: ModelFinder requires 581 MB RAM!
+ModelFinder will test up to 756 protein models (sample size: 1255) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+  1  LG            176308.800   453 353523.599   354037.112   355849.705
+  2  LG+I          176308.778   454 353525.557   354041.982   355856.797
+  3  LG+G4         168272.004   454 337452.008   337968.433   339783.248
+  4  LG+I+G4       168272.016   455 337454.032   337973.381   339790.408
+  5  LG+R2         170239.371   455 341388.742   341908.091   343725.117
+  6  LG+R3         168703.390   457 338320.780   338846.014   340667.425
+  7  LG+R4         168158.725   459 337235.450   337766.620   339592.365
+  8  LG+R5         167836.062   461 336594.124   337131.279   338961.309
+  9  LG+R6         167685.829   463 336297.658   336840.849   338675.113
+ 10  LG+R7         167648.287   465 336226.574   336775.851   338614.298
+ 11  LG+R8         167622.261   467 336178.522   336733.938   338576.516
+ 12  LG+R9         167608.825   469 336155.649   336717.254   338563.913
+ 13  LG+R10        167596.615   471 336135.230   336703.077   338553.764
+ 14  LG+R11        167587.613   473 336121.227   336695.368   338550.030
+ 15  LG+R12        167580.878   475 336111.756   336692.244   338550.829
+ 31  LG+F+R10      166975.523   490 334931.045   335560.862   337447.142
+ 32  LG+F+R11      166970.136   492 334924.273   335560.903   337450.639
+ 49  WAG+R10       167666.757   471 336275.515   336843.361   338694.048
+ 50  WAG+R11       167659.383   473 336264.767   336838.908   338693.570
+ 51  WAG+R12       167654.389   475 336258.777   336839.265   338697.850
+ 67  WAG+F+R10     167068.410   490 335116.821   335746.637   337632.917
+ 68  WAG+F+R11     167053.078   492 335090.155   335726.785   337616.522
+ 69  WAG+F+R12     167051.358   494 335090.717   335734.217   337627.353
+ 85  JTT+R10       167266.388   471 335474.777   336042.624   337893.310
+ 86  JTT+R11       167256.230   473 335458.460   336032.601   337887.263
+ 87  JTT+R12       167254.605   475 335459.210   336039.698   337898.283
+103  JTT+F+R10     166934.940   490 334849.881   335479.698   337365.977
+104  JTT+F+R11     166927.484   492 334838.967   335475.597   337365.334
+105  JTT+F+R12     166927.572   494 334843.143   335486.643   337379.779
+121  JTTDCMut+R10  167318.773   471 335579.545   336147.392   337998.079
+122  JTTDCMut+R11  167306.779   473 335559.558   336133.698   337988.361
+123  JTTDCMut+R12  167304.688   475 335559.375   336139.863   337998.448
+139  JTTDCMut+F+R10 166972.866   490 334925.732   335555.549   337441.828
+140  JTTDCMut+F+R11 166964.865   492 334913.731   335550.360   337440.097
+141  JTTDCMut+F+R12 166965.744   494 334919.488   335562.988   337456.124
+157  DCMut+R10     169232.586   471 339407.171   339975.018   341825.705
+158  DCMut+R11     169219.476   473 339384.952   339959.093   341813.756
+159  DCMut+R12     169213.998   475 339377.997   339958.484   341817.070
+175  DCMut+F+R10   168373.193   490 337726.386   338356.202   340242.482
+176  DCMut+F+R11   168363.021   492 337710.042   338346.672   340236.409
+177  DCMut+F+R12   168361.501   494 337711.003   338354.503   340247.639
+193  VT+R10        167974.271   471 336890.542   337458.389   339309.076
+194  VT+R11        167966.265   473 336878.530   337452.671   339307.334
+195  VT+R12        167962.859   475 336875.718   337456.206   339314.791
+211  VT+F+R10      167301.460   490 335582.920   336212.737   338099.016
+212  VT+F+R11      167290.668   492 335565.335   336201.965   338091.701
+213  VT+F+R12      167289.182   494 335566.364   336209.864   338103.000
+229  PMB+R10       169022.232   471 338986.464   339554.311   341404.997
+230  PMB+R11       169014.324   473 338974.648   339548.789   341403.452
+231  PMB+R12       169008.754   475 338967.509   339547.997   341406.582
+247  PMB+F+R10     168820.826   490 338621.652   339251.469   341137.749
+248  PMB+F+R11     168809.459   492 338602.918   339239.548   341129.284
+249  PMB+F+R12     168805.913   494 338599.827   339243.327   341136.463
+265  Blosum62+R10  169344.581   471 339631.163   340199.009   342049.696
+266  Blosum62+R11  169326.448   473 339598.895   340173.036   342027.699
+267  Blosum62+R12  169322.401   475 339594.801   340175.289   342033.874
+283  Blosum62+F+R10 168823.575   490 338627.150   339256.966   341143.246
+284  Blosum62+F+R11 168811.341   492 338606.682   339243.312   341133.048
+285  Blosum62+F+R12 168810.284   494 338608.567   339252.067   341145.203
+301  Dayhoff+R10   169229.372   471 339400.744   339968.590   341819.277
+302  Dayhoff+R11   169216.224   473 339378.448   339952.589   341807.252
+303  Dayhoff+R12   169210.681   475 339371.362   339951.850   341810.435
+319  Dayhoff+F+R10 168370.737   490 337721.475   338351.291   340237.571
+320  Dayhoff+F+R11 168360.641   492 337705.282   338341.912   340231.648
+321  Dayhoff+F+R12 168359.131   494 337706.261   338349.761   340242.897
+337  mtREV+R10     176357.431   471 353656.861   354224.708   356075.395
+338  mtREV+R11     176345.991   473 353637.981   354212.122   356066.785
+WARNING: Log-likelihood -176356 of mtREV+R12 worse than mtREV+R11 -176346
+339  mtREV+R12     176355.690   475 353661.380   354241.868   356100.454
+355  mtREV+F+R10   169813.696   490 340607.393   341237.210   343123.489
+356  mtREV+F+R11   169799.826   492 340583.651   341220.281   343110.018
+WARNING: Log-likelihood -169807 of mtREV+F+R12 worse than mtREV+F+R11 -169800
+357  mtREV+F+R12   169806.542   494 340601.084   341244.584   343137.720
+373  mtART+R10     178425.755   471 357793.509   358361.356   360212.043
+374  mtART+R11     178408.135   473 357762.269   358336.410   360191.073
+WARNING: Log-likelihood -178440 of mtART+R12 worse than mtART+R11 -178408
+375  mtART+R12     178439.894   475 357829.789   358410.277   360268.862
+391  mtART+F+R10   172988.072   490 346956.143   347585.960   349472.240
+392  mtART+F+R11   172957.461   492 346898.922   347535.552   349425.289
+WARNING: Log-likelihood -173005 of mtART+F+R12 worse than mtART+F+R11 -172957
+393  mtART+F+R12   173005.161   494 346998.322   347641.822   349534.958
+409  mtZOA+R10     173139.288   471 347220.576   347788.422   349639.109
+410  mtZOA+R11     173127.488   473 347200.976   347775.117   349629.780
+WARNING: Log-likelihood -173137 of mtZOA+R12 worse than mtZOA+R11 -173127
+411  mtZOA+R12     173137.320   475 347224.640   347805.128   349663.713
+427  mtZOA+F+R10   169960.495   490 340900.990   341530.807   343417.087
+428  mtZOA+F+R11   169940.521   492 340865.042   341501.672   343391.408
+WARNING: Log-likelihood -169975 of mtZOA+F+R12 worse than mtZOA+F+R11 -169941
+429  mtZOA+F+R12   169974.503   494 340937.005   341580.505   343473.641
+445  mtMet+R10     175501.688   471 351945.377   352513.223   354363.910
+446  mtMet+R11     175495.023   473 351936.046   352510.187   354364.849
+463  mtMet+F+R10   169195.386   490 339370.771   340000.588   341886.868
+464  mtMet+F+R11   169177.476   492 339338.952   339975.582   341865.318
+WARNING: Log-likelihood -169219 of mtMet+F+R12 worse than mtMet+F+R11 -169177
+465  mtMet+F+R12   169218.588   494 339425.177   340068.677   341961.813
+481  mtVer+R10     176965.655   471 354873.309   355441.156   357291.843
+482  mtVer+R11     176950.065   473 354846.130   355420.271   357274.933
+WARNING: Log-likelihood -176957 of mtVer+R12 worse than mtVer+R11 -176950
+483  mtVer+R12     176956.556   475 354863.111   355443.599   357302.184
+499  mtVer+F+R10   170764.473   490 342508.945   343138.762   345025.042
+500  mtVer+F+R11   170743.743   492 342471.487   343108.117   344997.853
+WARNING: Log-likelihood -170792 of mtVer+F+R12 worse than mtVer+F+R11 -170744
+501  mtVer+F+R12   170791.542   494 342571.084   343214.584   345107.720
+517  mtInv+R10     176207.628   471 353357.256   353925.102   355775.789
+518  mtInv+R11     176207.677   473 353361.353   353935.494   355790.157
+535  mtInv+F+R10   168205.133   490 337390.266   338020.083   339906.363
+536  mtInv+F+R11   168191.820   492 337367.640   338004.270   339894.007
+WARNING: Log-likelihood -168222 of mtInv+F+R12 worse than mtInv+F+R11 -168192
+537  mtInv+F+R12   168222.165   494 337432.330   338075.830   339968.966
+553  mtMAM+R10     180196.399   471 361334.797   361902.644   363753.331
+554  mtMAM+R11     180161.421   473 361268.843   361842.984   363697.646
+WARNING: Log-likelihood -180200 of mtMAM+R12 worse than mtMAM+R11 -180161
+555  mtMAM+R12     180200.266   475 361350.532   361931.019   363789.605
+571  mtMAM+F+R10   173363.504   490 347707.007   348336.824   350223.104
+572  mtMAM+F+R11   173336.792   492 347657.584   348294.214   350183.950
+WARNING: Log-likelihood -173370 of mtMAM+F+R12 worse than mtMAM+F+R11 -173337
+573  mtMAM+F+R12   173369.651   494 347727.303   348370.803   350263.939
+589  HIVb+R10      171446.519   471 343835.038   344402.885   346253.571
+590  HIVb+R11      171430.884   473 343807.768   344381.909   346236.572
+WARNING: Log-likelihood -171440 of HIVb+R12 worse than HIVb+R11 -171431
+591  HIVb+R12      171439.904   475 343829.808   344410.296   346268.881
+607  HIVb+F+R10    169767.798   490 340515.595   341145.412   343031.692
+608  HIVb+F+R11    169758.478   492 340500.956   341137.585   343027.322
+WARNING: Log-likelihood -169764 of HIVb+F+R12 worse than HIVb+F+R11 -169758
+609  HIVb+F+R12    169763.906   494 340515.811   341159.311   343052.447
+625  HIVw+R10      178640.967   471 358223.935   358791.782   360642.468
+626  HIVw+R11      178626.523   473 358199.045   358773.186   360627.849
+627  HIVw+R12      178625.544   475 358201.087   358781.575   360640.160
+643  HIVw+F+R10    173915.776   490 348811.552   349441.369   351327.649
+644  HIVw+F+R11    173905.084   492 348794.169   349430.799   351320.535
+645  HIVw+F+R12    173904.567   494 348797.135   349440.635   351333.771
+661  FLU+R10       171885.158   471 344712.315   345280.162   347130.849
+662  FLU+R11       171873.121   473 344692.242   345266.383   347121.045
+WARNING: Log-likelihood -171875 of FLU+R12 worse than FLU+R11 -171873
+663  FLU+R12       171875.047   475 344700.094   345280.582   347139.167
+679  FLU+F+R10     169459.435   490 339898.871   340528.688   342414.967
+680  FLU+F+R11     169447.919   492 339879.839   340516.469   342406.205
+WARNING: Log-likelihood -169452 of FLU+F+R12 worse than FLU+F+R11 -169448
+681  FLU+F+R12     169451.640   494 339891.279   340534.779   342427.915
+697  rtREV+R10     170763.279   471 342468.558   343036.405   344887.091
+698  rtREV+R11     170747.620   473 342441.240   343015.381   344870.044
+699  rtREV+R12     170745.925   475 342441.850   343022.337   344880.923
+715  rtREV+F+R10   168505.097   490 337990.193   338620.010   340506.290
+716  rtREV+F+R11   168494.662   492 337973.325   338609.955   340499.691
+WARNING: Log-likelihood -168496 of rtREV+F+R12 worse than rtREV+F+R11 -168495
+717  rtREV+F+R12   168496.306   494 337980.612   338624.112   340517.248
+733  cpREV+R10     169018.492   471 338978.983   339546.830   341397.517
+734  cpREV+R11     168992.245   473 338930.491   339504.631   341359.294
+735  cpREV+R12     168986.031   475 338922.063   339502.551   341361.136
+751  cpREV+F+R10   167696.220   490 336372.441   337002.257   338888.537
+752  cpREV+F+R11   167680.355   492 336344.709   336981.339   338871.075
+753  cpREV+F+R12   167677.713   494 336343.426   336986.926   338880.062
+Akaike Information Criterion:           JTT+F+R11
+Corrected Akaike Information Criterion: JTT+F+R11
+Bayesian Information Criterion:         JTT+F+R11
+Best-fit model: JTT+F+R11 chosen according to BIC
+
+All model information printed to identify.ID.muscle.model.gz
+CPU time for ModelFinder: 149069.980 seconds (41h:24m:29s)
+Wall-clock time for ModelFinder: 14054.416 seconds (3h:54m:14s)
+Generating 1000 samples for ultrafast bootstrap (seed: 998318)...
+
+NOTE: 427 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -166927.484
+Optimal log-likelihood: -166927.427
+Site proportion and rates:  (0.031,0.067) (0.094,0.141) (0.124,0.227) (0.109,0.325) (0.127,0.425) (0.129,0.614) (0.097,0.858) (0.094,1.182) (0.048,1.594) (0.064,2.423) (0.082,4.422)
+Parameters optimization took 1 rounds (11.674 sec)
+Computing ML distances based on estimated model parameters... 24.064 sec
+WARNING: Some pairwise ML distances are too long (saturated)
+Computing BIONJ tree...
+0.048 seconds
+Log-likelihood of BIONJ tree: -167455.167
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 27.293 second
+Computing log-likelihood of 98 initial trees ... 45.985 seconds
+Current best score: -166927.427
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -166899.997
+Iteration 10 / LogL: -167109.872 / Time: 0h:3m:55s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 11: -166898.863
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 17: -166893.355
+Iteration 20 / LogL: -166985.695 / Time: 0h:6m:44s
+Finish initializing candidate tree set (16)
+Current best tree score: -166893.355 / CPU time: 371.321
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Estimate model parameters (epsilon = 0.100)
+UPDATE BEST LOG-LIKELIHOOD: -166892.101
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 25: -166890.498
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 29: -166887.390
+Iteration 30 / LogL: -166892.703 / Time: 0h:8m:52s (0h:30m:19s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 39: -166886.508
+Iteration 40 / LogL: -166888.181 / Time: 0h:10m:33s (0h:26m:47s left)
+Iteration 50 / LogL: -166894.171 / Time: 0h:12m:9s (0h:22m:4s left)
+Iteration 60 / LogL: -166888.088 / Time: 0h:13m:45s (0h:18m:24s left)
+Iteration 70 / LogL: -166902.272 / Time: 0h:15m:21s (0h:15m:21s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 72: -166886.066
+Iteration 80 / LogL: -166887.112 / Time: 0h:17m:9s (0h:19m:58s left)
+Iteration 90 / LogL: -166888.865 / Time: 0h:18m:47s (0h:17m:18s left)
+Iteration 100 / LogL: -166896.105 / Time: 0h:20m:22s (0h:14m:48s left)
+Iteration 110 / LogL: -166887.309 / Time: 0h:21m:54s (0h:12m:27s left)
+Iteration 120 / LogL: -166887.709 / Time: 0h:23m:33s (0h:10m:17s left)
+Iteration 130 / LogL: -166900.962 / Time: 0h:25m:11s (0h:8m:11s left)
+Iteration 140 / LogL: -166886.911 / Time: 0h:26m:46s (0h:6m:9s left)
+Iteration 150 / LogL: -166887.946 / Time: 0h:28m:22s (0h:4m:11s left)
+Iteration 160 / LogL: -166889.195 / Time: 0h:29m:58s (0h:2m:15s left)
+Iteration 170 / LogL: -166887.158 / Time: 0h:31m:36s (0h:0m:22s left)
+Refining ufboot trees with NNI 1 branch...
+100 samples done
+200 samples done
+300 samples done
+400 samples done
+500 samples done
+600 samples done
+700 samples done
+800 samples done
+900 samples done
+1000 samples done
+Total 1000 ufboot trees refined
+TREE SEARCH COMPLETED AFTER 173 ITERATIONS / Time: 1h:5m:42s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -166886.066
+Optimal log-likelihood: -166886.058
+Site proportion and rates:  (0.029,0.066) (0.089,0.137) (0.121,0.220) (0.099,0.309) (0.143,0.414) (0.129,0.610) (0.100,0.849) (0.097,1.180) (0.047,1.606) (0.065,2.457) (0.080,4.423)
+Parameters optimization took 1 rounds (2.834 sec)
+BEST SCORE FOUND : -166886.058
+Creating bootstrap support values...
+Split supports printed to NEXUS file identify.ID.muscle.splits.nex
+Total tree length: 191.343
+
+Total number of iterations: 173
+CPU time used for tree search: 47804.494 sec (13h:16m:44s)
+Wall-clock time used for tree search: 3908.547 sec (1h:5m:8s)
+Total CPU time used: 48238.443 sec (13h:23m:58s)
+Total wall-clock time used: 3946.302 sec (1h:5m:46s)
+UFBoot trees printed to identify.ID.muscle.ufboot
+
+Computing bootstrap consensus tree...
+Reading input file identify.ID.muscle.splits.nex...
+228 taxa and 826 splits.
+Consensus tree written to identify.ID.muscle.contree
+Reading input trees file identify.ID.muscle.contree
+Log-likelihood of consensus tree: -166887.038
+
+Analysis results written to: 
+  IQ-TREE report:                identify.ID.muscle.iqtree
+  Maximum-likelihood tree:       identify.ID.muscle.treefile
+  Likelihood distances:          identify.ID.muscle.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          identify.ID.muscle.splits.nex
+  Consensus tree:                identify.ID.muscle.contree
+  UFBoot trees:                  identify.ID.muscle.ufboot
+  Screen log file:               identify.ID.muscle.log
+
+Date and Time: Thu Jul 10 15:31:38 2025

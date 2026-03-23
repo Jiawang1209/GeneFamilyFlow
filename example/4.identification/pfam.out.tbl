@@ -1,0 +1,313 @@
+#                                                               --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name        accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+PTR2                 PF00854.16 AT2G38100.1          -            3.4e-25   88.6   4.3   3.4e-25   88.6   4.3   1.4   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 AT2G02020.1          -           5.8e-103  344.5  11.2   3.6e-62  210.2   3.7   2.2   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 AT2G26690.1          -            1.9e-83  280.3  17.3   3.7e-83  279.3  13.9   2.2   2   0   0   2   2   2   2 POT family
+MFS_1                PF07690.11 AT2G26690.1          -              3e-09   36.0  28.4   8.4e-09   34.6  24.0   2.4   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT2G40460.1          -           4.9e-114  380.9  11.1  6.2e-114  380.6  11.1   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT2G37900.1          -            4.8e-68  229.6   9.0   6.2e-68  229.2   9.0   1.1   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT2G37900.1          -              1e-09   37.5  19.9   2.7e-09   36.2  18.9   2.0   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT2G02040.1          -           7.9e-124  413.2   9.9  1.5e-123  412.2   6.5   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 AT4G21680.1          -            1.6e-72  244.3   2.0   1.6e-72  244.3   2.0   2.4   2   1   1   3   3   3   2 POT family
+MFS_1                PF07690.11 AT4G21680.1          -            2.7e-10   39.4  17.3   6.5e-10   38.2  16.0   2.0   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT1G69860.1          -              2e-53  181.5  16.9   2.3e-53  181.3  11.2   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 AT1G72120.1          -              2e-79  267.1  10.6   4.9e-79  265.8   7.4   2.0   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 AT1G72120.1          -            5.4e-13   48.3  27.8   3.8e-12   45.5  12.1   2.1   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT1G27040.1          -           3.5e-103  345.2   6.8  3.5e-103  345.2   6.8   1.6   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 AT1G72140.1          -            2.9e-75  253.3   8.7   2.9e-75  253.3   8.7   2.8   2   1   0   2   2   2   1 POT family
+MFS_1                PF07690.11 AT1G72140.1          -            2.1e-08   33.2  24.3   2.1e-08   33.2  24.3   2.5   2   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT1G72130.1          -            3.8e-67  226.6  10.8   7.5e-67  225.7  10.8   1.5   1   1   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT1G18880.1          -            5.7e-65  219.5   7.3   5.8e-62  209.6   6.0   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 AT1G68570.1          -            3.1e-96  322.4   6.3   1.1e-93  314.0   6.4   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 AT1G69870.1          -            1.5e-70  237.8   8.9   1.5e-70  237.8   8.9   1.9   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 AT1G22550.1          -            5.6e-76  255.7   5.0   5.6e-76  255.7   5.0   2.0   2   1   0   2   2   2   1 POT family
+PTR2                 PF00854.16 AT1G33440.1          -            1.5e-66  224.6  18.8   2.1e-66  224.2  17.9   1.6   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 AT1G69850.1          -            6.5e-93  311.4   5.6   9.4e-93  310.9   5.6   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT1G52190.1          -            3.2e-67  226.9   6.0   3.2e-67  226.9   6.0   1.8   1   1   1   2   2   2   1 POT family
+MFS_1                PF07690.11 AT1G52190.1          -            1.2e-09   37.3  30.7   1.3e-05   24.1  14.6   3.1   1   1   2   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT1G27080.1          -            1.4e-62  211.6   9.6   3.8e-61  206.9   8.6   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 AT1G59740.1          -            4.7e-69  232.9  15.9   2.2e-67  227.4  12.6   2.2   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 AT1G12110.1          -           9.2e-104  347.1   6.0  1.6e-102  343.1   1.5   2.1   2   0   0   2   2   2   2 POT family
+BT1                  PF03092.11 AT1G12110.1          -            7.5e-06   24.9   3.8    0.0016   17.2   0.0   2.5   3   0   0   3   3   3   2 BT1 family
+PTR2                 PF00854.16 AT1G32450.1          -            3.3e-74  249.9   3.2   5.8e-73  245.8   0.6   2.5   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 AT1G72125.1          -            6.4e-81  272.0   7.5   2.2e-80  270.2   4.2   2.0   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 AT1G72125.1          -            2.7e-13   49.3  25.7   9.3e-12   44.3  10.9   2.2   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT1G22570.1          -            1.6e-74  250.9   3.2   1.6e-74  250.9   3.2   1.9   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 AT1G22540.1          -            6.2e-79  265.4   8.9   6.2e-79  265.4   8.9   1.6   1   1   1   2   2   2   1 POT family
+MFS_1                PF07690.11 AT1G22540.1          -            3.1e-09   36.0  27.2   3.1e-09   36.0  27.2   2.1   2   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT1G62200.1          -           4.2e-118  394.3  12.9  5.3e-118  394.0  12.9   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT3G45720.1          -            1.3e-56  191.9   3.9   2.5e-56  191.0   3.9   1.4   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT3G45720.1          -            2.6e-14   52.7  17.3   2.6e-14   52.7  17.3   2.3   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G54140.1          -           2.6e-108  362.1  13.7  2.7e-108  362.0  10.8   1.9   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 AT3G54140.1          -            1.3e-11   43.7  12.4   2.3e-11   43.0   9.0   2.1   2   0   0   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G53960.1          -            4.9e-72  242.7   6.5   6.5e-72  242.3   6.5   1.1   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT3G53960.1          -              1e-06   27.7  26.4   0.00018   20.3  14.0   2.6   2   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G54450.1          -            7.5e-87  291.5  10.2     1e-85  287.7   9.1   2.0   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 AT3G54450.1          -            7.2e-12   44.6  17.1   7.2e-12   44.6  17.1   2.2   2   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G45690.1          -            2.6e-52  177.8   8.0   2.6e-52  177.8   8.0   1.6   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 AT3G45690.1          -            2.9e-08   32.8  20.9   2.9e-08   32.8  20.9   2.5   1   1   1   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G47960.1          -            1.4e-56  191.9  13.4   1.5e-54  185.2  10.8   2.2   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 AT3G47960.1          -            6.1e-06   25.1  37.3    0.0013   17.5  12.0   2.6   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G01350.1          -            2.7e-56  190.9  15.4   8.4e-56  189.3  15.4   1.9   1   1   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT3G01350.1          -            2.1e-11   43.1  27.3   7.1e-07   28.2  12.9   2.9   2   1   1   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G45680.1          -            7.9e-57  192.7   7.6   1.4e-56  191.9   7.6   1.4   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT3G45680.1          -              2e-13   49.7  29.1   1.4e-12   47.0  26.9   2.8   2   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G45710.1          -            4.1e-52  177.1  10.6   4.1e-52  177.1  10.6   1.6   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 AT3G45710.1          -            4.2e-14   52.0  23.1   1.2e-13   50.5  11.7   2.8   1   1   2   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G45700.1          -            3.1e-51  174.3   6.5   5.8e-51  173.4   6.5   1.3   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT3G45700.1          -            3.4e-13   49.0   5.8   3.4e-13   49.0   5.8   2.4   2   1   0   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G25260.1          -            1.7e-54  185.0  12.3   1.7e-54  185.0  12.3   1.4   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 AT3G45650.1          -            4.2e-56  190.3   8.9   4.2e-56  190.3   8.9   1.7   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 AT3G45650.1          -            2.6e-06   26.4  29.6   3.1e-05   22.8  27.3   3.1   2   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G25280.1          -            2.6e-58  197.5   7.2   3.7e-58  197.1   7.2   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT3G16180.1          -            1.2e-65  221.6   4.8   1.2e-65  221.6   4.8   1.8   1   1   1   2   2   2   1 POT family
+MFS_1                PF07690.11 AT3G16180.1          -            2.3e-11   42.9  29.9   1.7e-07   30.2  10.4   3.1   1   1   2   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT3G45660.1          -            2.4e-56  191.1   9.1   4.4e-56  190.2   9.1   1.4   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT3G21670.1          -            9.6e-83  278.0   5.3   1.4e-82  277.4   5.3   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT3G21670.1          -            4.9e-09   35.3  32.4   5.7e-09   35.1  25.8   3.6   1   1   1   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT5G46050.1          -              1e-84  284.4  11.3   1.5e-84  283.9  11.3   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT5G62680.1          -            3.5e-58  197.1  12.9   3.1e-56  190.7   8.9   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 AT5G01180.1          -             4e-108  361.5  12.1  5.5e-108  361.0   8.9   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 AT5G62730.1          -            7.9e-82  274.9   5.5     1e-81  274.5   5.5   1.1   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 AT5G62730.1          -              9e-09   34.4  11.2     9e-09   34.4  11.2   2.4   1   1   1   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT5G28470.1          -              2e-54  184.7  12.0   2.8e-54  184.3  12.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT5G46040.1          -            5.2e-84  282.1  13.2   7.8e-84  281.5  13.2   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 AT5G19640.1          -            1.4e-64  218.2   3.2   1.4e-64  218.2   3.2   2.3   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 AT5G11570.1          -            2.4e-37  128.6  17.2   1.9e-20   72.9   7.7   2.6   1   1   2   3   3   3   2 POT family
+MFS_1                PF07690.11 AT5G11570.1          -            9.9e-09   34.3  38.1   0.00013   20.8  13.3   2.3   2   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT5G14940.1          -            1.3e-62  211.7   6.5     2e-62  211.1   6.0   1.5   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 AT5G14940.1          -            2.8e-12   46.0  24.2   2.3e-09   36.4   5.2   2.6   2   1   1   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 AT5G13400.1          -            8.3e-71  238.7   8.9     2e-70  237.4   7.3   1.9   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os10g33210.1     -            4.1e-90  302.2   4.0   5.3e-90  301.8   4.0   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os10g40600.1     -            2.1e-83  280.1   0.3   2.1e-83  280.1   0.3   1.5   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os10g02340.1     -              2e-77  260.4   2.1   3.6e-77  259.6   2.1   1.4   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os10g42900.1     -              1e-66  225.2   0.0   1.6e-66  224.6   0.0   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os10g02100.1     -            3.5e-78  262.9   7.5   3.9e-77  259.5   4.4   2.1   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os10g05780.1     -            1.8e-52  178.4   4.1   3.4e-26   91.8   0.9   2.8   3   0   0   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os10g42870.1     -            1.8e-78  263.9   9.5   2.3e-78  263.5   9.5   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os10g02260.1     -            2.3e-76  257.0  16.8   2.4e-76  256.9  12.7   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os10g22560.1     -            3.3e-79  266.3   4.3   3.3e-79  266.3   4.3   1.8   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os10g02210.1     -            2.2e-83  280.1   0.0   2.8e-83  279.7   0.0   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os10g02220.4     -            4.1e-83  279.2  10.4   6.5e-82  275.2   9.1   2.1   2   0   0   2   2   2   2 POT family
+MFS_1                PF07690.11 LOC_Os10g02220.4     -            2.1e-09   36.5  36.4   3.9e-06   25.8  11.3   2.8   1   1   2   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os10g33170.1     -            1.5e-88  297.1   1.9   1.9e-88  296.7   1.9   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os10g02240.1     -            1.6e-82  277.2   4.2   9.9e-81  271.3   3.7   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os10g02080.1     -            2.7e-83  279.8   3.3   1.4e-80  270.8   2.8   2.2   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os08g41590.1     -            1.1e-41  142.8   1.9   4.4e-23   81.6   1.1   2.9   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os08g05910.1     -              1e-92  310.7   4.4   5.2e-92  308.4   3.8   1.9   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os04g39030.1     -            2.1e-76  257.1   0.5   2.9e-76  256.6   0.5   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os04g50950.1     -            3.3e-77  259.7  11.6   3.3e-77  259.7  11.6   1.4   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os04g50940.1     -            7.6e-75  252.0  13.9     1e-74  251.5  13.9   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os04g36040.1     -            3.7e-59  200.3   2.6   3.7e-59  200.3   2.6   2.4   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os04g59480.1     -            1.5e-52  178.6   6.4   5.9e-27   94.4   4.6   2.2   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 LOC_Os04g59480.1     -            6.5e-12   44.8  28.1   3.5e-07   29.2   4.8   2.3   2   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os04g41450.1     -            2.5e-62  210.8   0.8   2.5e-62  210.8   0.8   1.5   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 LOC_Os04g41450.1     -            9.3e-06   24.5  28.4   0.00055   18.7  10.6   3.2   1   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os04g56560.1     -            3.8e-55  187.1   1.5   3.8e-55  187.1   1.5   2.5   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os04g41410.1     -            1.5e-45  155.6   5.8   3.7e-44  151.0   5.8   2.1   1   1   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os04g50930.1     -            1.3e-60  205.2   0.5   1.7e-60  204.8   0.5   1.1   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os04g50930.1     -            2.4e-07   29.8  14.7   0.00035   19.3   0.2   3.2   2   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os04g41400.1     -            9.9e-66  222.0   0.0   1.3e-65  221.6   0.0   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os04g41400.1     -            1.5e-10   40.3  26.2   7.2e-08   31.5  11.2   2.9   2   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os07g01070.1     -             2e-100  336.2   5.1   1.2e-98  330.3   2.7   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os07g41250.1     -            4.1e-68  229.8  14.0   5.6e-68  229.4  14.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os07g21960.1     -            2.6e-09   36.3   0.1    0.0002   20.2   0.0   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os01g65210.1     -            1.5e-65  221.4  13.8   5.3e-38  130.7   0.7   3.1   1   1   2   3   3   3   3 POT family
+PBD                  PF00786.23 LOC_Os01g65210.1     -              1e-10   41.8   0.6     1e-10   41.8   0.6   2.5   2   0   0   2   2   2   1 P21-Rho-binding domain
+PTR2                 PF00854.16 LOC_Os01g55610.1     -            6.9e-55  186.3   0.0   9.9e-55  185.8   0.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os01g01360.1     -              4e-73  246.3   3.7   1.2e-72  244.7   0.4   2.0   2   0   0   2   2   2   2 POT family
+MFS_1                PF07690.11 LOC_Os01g01360.1     -              2e-07   30.0  26.4     2e-07   30.0  26.4   2.7   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os01g65190.1     -            6.9e-50  169.8   5.0   2.4e-26   92.3   0.2   2.6   3   0   0   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os01g68510.1     -            2.3e-59  201.0   6.7   2.3e-59  201.0   6.7   1.8   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os01g37590.1     -            2.9e-78  263.2   1.9   2.9e-78  263.2   1.9   2.1   1   1   1   2   2   2   1 POT family
+MFS_1                PF07690.11 LOC_Os01g37590.1     -              1e-08   34.3  25.6     1e-08   34.3  25.6   2.0   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os01g67630.1     -            1.7e-84  283.8   0.1   1.7e-84  283.8   0.1   1.6   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os01g65150.1     -            8.8e-48  162.9   2.1   1.1e-28  100.0   0.1   2.9   3   0   0   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os01g65169.1     -            5.6e-48  163.5   4.0   5.2e-26   91.3   0.1   2.5   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os01g65200.3     -            4.2e-76  256.1  10.5   7.2e-72  242.2   9.3   3.1   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 LOC_Os01g65200.3     -            1.2e-10   40.6  26.7   1.4e-10   40.4  23.1   2.2   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os01g65100.1     -            4.9e-69  232.8  18.0   6.7e-36  123.8   6.1   3.0   2   1   1   3   3   3   3 POT family
+MFS_1                PF07690.11 LOC_Os01g65100.1     -            3.6e-08   32.5  30.4   3.6e-08   32.5  30.4   2.2   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os01g67640.1     -            7.1e-78  261.9   2.4   1.7e-75  254.1   2.4   2.3   1   1   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os01g65140.1     -            2.7e-40  138.3   1.0   3.2e-30  105.1   0.1   2.9   3   0   0   3   3   3   3 POT family
+PTR2                 PF00854.16 LOC_Os01g55600.1     -            8.9e-55  185.9   0.3     2e-54  184.7   0.1   1.6   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os01g54515.1     -            4.6e-74  249.4   5.4   1.1e-71  241.5   1.2   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os01g04950.1     -           1.2e-108  363.2   2.2  1.2e-108  363.2   2.2   1.9   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 LOC_Os01g04950.1     -            5.3e-10   38.5  17.5   5.3e-10   38.5  17.5   2.1   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os01g65110.1     -            2.5e-74  250.3  12.3   2.1e-37  128.7   4.8   3.0   3   0   0   3   3   3   3 POT family
+MFS_1                PF07690.11 LOC_Os01g65110.1     -            1.2e-13   50.5  26.1   1.2e-13   50.5  26.1   2.1   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os01g65120.1     -            3.7e-21   75.3   0.1   5.7e-21   74.7   0.1   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os03g04570.1     -              2e-91  306.5   2.4     2e-91  306.5   2.4   1.6   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os03g13274.2     -            1.3e-89  300.6   9.5   1.3e-89  300.6   9.5   2.3   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os03g01290.1     -            3.8e-77  259.6   5.2   5.8e-77  258.9   5.2   1.3   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os03g01290.1     -            2.4e-06   26.5   2.1   2.4e-06   26.5   2.1   3.3   2   1   1   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os03g13240.1     -           3.5e-107  358.4   7.9  6.3e-107  357.5   5.6   1.9   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os03g17770.1     -            6.8e-18   64.5   0.1   9.7e-18   64.0   0.1   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os03g48180.1     -            1.7e-67  227.8  13.1   3.9e-67  226.6   4.0   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os03g60850.1     -            3.7e-67  226.7   0.1     5e-67  226.2   0.1   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os03g60850.1     -            8.9e-13   47.6  16.7   8.9e-13   47.6  16.7   2.1   2   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os03g13250.1     -            8.1e-98  327.6   8.0   2.9e-97  325.7   5.9   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os03g51050.1     -           1.4e-111  372.8  11.0  1.9e-111  372.4   6.1   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os02g47090.1     -            8.8e-76  255.0  12.1   1.2e-75  254.6  12.1   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os02g48570.1     -            1.7e-80  270.6   7.2   2.2e-80  270.2   1.6   2.3   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 LOC_Os02g46460.1     -            5.8e-71  239.2   0.9   5.8e-71  239.2   0.9   1.9   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os02g31980.1     -            9.7e-08   31.1   0.0   1.1e-07   31.0   0.0   1.0   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os02g52060.1     -              3e-12   46.0   0.0   3.8e-12   45.6   0.0   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os06g49250.1     -            7.1e-77  258.6   4.2   9.7e-77  258.2   4.2   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os06g13200.1     -            2.6e-54  184.4   4.7   6.1e-54  183.2   4.7   1.6   1   1   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os06g13200.1     -            1.8e-11   43.3  27.3   6.7e-07   28.3  10.4   2.6   2   1   1   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os06g13210.1     -              8e-57  192.7   5.4     8e-57  192.7   5.4   1.8   2   1   0   2   2   2   1 POT family
+MFS_1                PF07690.11 LOC_Os06g13210.1     -            2.4e-11   42.9  28.3   4.2e-06   25.7   3.9   2.5   2   1   0   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os06g21900.1     -            1.6e-64  218.0   0.6     3e-64  217.1   0.0   1.7   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 LOC_Os06g21900.1     -            2.7e-06   26.3  30.4   0.00025   19.8   9.7   3.1   1   1   2   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os06g15370.1     -            2.7e-86  289.6   0.1   5.1e-85  285.5   0.0   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os06g49220.1     -            5.7e-71  239.2   3.8   5.7e-71  239.2   3.8   1.8   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os06g49240.1     -            6.8e-70  235.7   1.4   1.1e-69  234.9   1.4   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os06g38294.1     -            3.2e-82  276.2   3.8   5.4e-82  275.5   3.8   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os12g12934.1     -            6.8e-59  199.5   0.6   1.2e-58  198.7   0.6   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os12g44110.2     -            2.1e-64  217.6  10.6   3.7e-64  216.8   7.7   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os12g13790.1     -            3.1e-31  108.5   0.7   2.5e-26   92.3   0.1   2.2   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os12g44100.1     -            2.4e-64  217.4   5.5   5.2e-64  216.3   2.6   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os05g27304.1     -            1.8e-43  148.7   0.1   1.8e-43  148.7   0.1   1.6   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 LOC_Os05g35594.1     -            1.4e-64  218.2   7.2   9.9e-40  136.4   1.8   2.2   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os05g27010.1     -            2.7e-87  292.9   0.5   3.4e-87  292.6   0.5   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os05g33960.1     -            7.9e-91  304.6   0.5   1.4e-90  303.7   0.5   1.4   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os05g33960.1     -            2.4e-08   33.1  25.8   8.6e-08   31.2  25.7   1.9   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os05g35650.1     -            1.1e-74  251.5  12.3     2e-74  250.6   8.3   2.5   2   1   0   2   2   2   1 POT family
+MFS_1                PF07690.11 LOC_Os05g35650.1     -            2.4e-10   39.6  34.5   4.6e-10   38.7  27.6   3.0   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os05g34030.1     -            5.9e-83  278.6   0.0   8.3e-83  278.2   0.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os05g34010.1     -            6.1e-90  301.6   1.6   7.6e-90  301.3   1.6   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os05g34000.1     -            7.8e-49  166.4   0.2     1e-48  166.0   0.2   1.1   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 LOC_Os05g34000.1     -            1.9e-06   26.8  11.4     3e-06   26.2  11.4   1.2   1   0   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 LOC_Os11g23890.1     -            6.1e-48  163.4  12.8   3.3e-47  161.0  11.0   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os11g12740.1     -            5.2e-62  209.7   3.4   9.6e-62  208.9   0.8   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 LOC_Os11g18044.1     -              2e-63  214.4   2.0   3.2e-63  213.7   2.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os11g17970.1     -            5.7e-66  222.8   2.2   8.5e-66  222.2   2.2   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 LOC_Os11g18110.1     -              5e-61  206.5   0.6   7.7e-61  205.9   0.6   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.010G133100.1.p -            2.6e-56  190.9   6.8   2.6e-56  190.9   6.8   2.4   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.010G175900.2.p -            1.9e-81  273.7   6.7     1e-80  271.3   6.7   1.9   1   1   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.010G127800.1.p -              9e-87  291.2   0.1     8e-86  288.1   0.0   1.9   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.010G127800.1.p -            1.4e-10   40.4  25.6   6.3e-10   38.3  25.6   2.1   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.010G099700.1.p -            1.8e-49  168.5  10.8   1.1e-48  165.9  10.8   2.1   1   1   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.010G099700.1.p -            1.7e-08   33.6  34.7   2.7e-07   29.6  13.5   3.1   2   1   1   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.010G109200.1.p -              2e-82  276.9   0.2   4.8e-82  275.7   0.0   1.7   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.003G371400.1.p -            9.3e-57  192.4  11.9   1.3e-28   99.8   0.8   2.8   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 Sobic.003G304000.1.p -            1.2e-57  195.3   0.4   1.7e-57  194.9   0.4   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.003G304000.1.p -            2.6e-07   29.6  27.4   2.6e-07   29.6  27.4   2.6   1   1   1   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G371600.2.p -            9.4e-57  192.4  10.5   1.1e-29  103.3   0.3   2.4   3   0   0   3   3   3   2 POT family
+PTR2                 PF00854.16 Sobic.003G399200.1.p -            2.5e-15   56.1   2.2   2.3e-11   43.1   0.5   2.1   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.003G295500.1.p -            9.8e-71  238.4   6.8   6.3e-69  232.5   2.9   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.003G304100.1.p -              5e-61  206.5   0.3   6.8e-61  206.0   0.3   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.003G107100.1.p -              5e-72  242.7   2.5     5e-72  242.7   2.5   1.9   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.003G107100.1.p -            1.6e-06   27.0  36.4   0.00011   21.0  26.0   3.4   2   1   1   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G371750.1.p -            2.4e-33  115.4   2.0   4.5e-25   88.2   0.4   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.003G185100.1.p -            1.1e-79  267.9   2.7   1.1e-79  267.9   2.7   1.6   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.003G185100.1.p -            5.3e-10   38.5  27.8   1.2e-08   34.0  23.4   2.3   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G371250.1.p -            6.2e-55  186.4   4.5   8.1e-28   97.2   0.1   2.2   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.003G371250.1.p -            4.4e-07   28.9  27.0   4.4e-07   28.9  27.0   2.6   1   1   0   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G371100.1.p -            1.2e-75  254.6  13.9   4.9e-39  134.1   2.8   3.1   2   1   1   3   3   3   3 POT family
+MFS_1                PF07690.11 Sobic.003G371100.1.p -            7.3e-14   51.2  22.9   7.3e-14   51.2  22.9   1.6   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G076200.2.p -           6.1e-109  364.2   7.8  5.5e-107  357.7   5.6   2.0   2   0   0   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.003G076200.2.p -            6.4e-14   51.4  10.3   6.4e-14   51.4  10.3   2.1   1   1   0   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G371000.1.p -            2.8e-76  256.7  13.6   6.3e-39  133.8   3.5   2.9   2   1   1   3   3   3   2 POT family
+MFS_1                PF07690.11 Sobic.003G371000.1.p -            1.6e-09   37.0  30.4   1.6e-09   37.0  30.4   1.9   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G392700.1.p -            2.3e-86  289.9   0.5   2.3e-86  289.9   0.5   1.4   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.003G372000.1.p -            3.5e-75  253.1  13.3   1.6e-69  234.5  12.8   3.1   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.003G372000.1.p -            8.5e-07   28.0  35.1   1.1e-06   27.6  31.3   2.5   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.003G372100.2.p -            3.4e-69  233.4  21.7   1.1e-38  133.0   6.1   3.0   2   1   1   3   3   3   3 POT family
+MFS_1                PF07690.11 Sobic.003G372100.2.p -            1.7e-07   30.3  32.1   1.7e-07   30.3  32.1   2.1   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G148900.1.p -            2.6e-73  246.9  12.5   5.9e-72  242.4   9.7   2.6   1   1   1   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.009G148900.1.p -            1.3e-13   50.3  30.0   4.6e-13   48.6  26.4   2.4   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G136700.1.p -            2.6e-91  306.1   0.8   3.6e-91  305.7   0.8   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.009G136700.1.p -            7.1e-10   38.1  31.9     2e-09   36.6  28.6   2.5   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G136500.1.p -            7.2e-90  301.4   1.5   7.2e-90  301.4   1.5   1.7   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.009G136500.1.p -            4.2e-09   35.5  22.3   2.7e-08   32.9  22.3   2.1   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G148800.1.p -            3.6e-67  226.7   7.7   6.2e-38  130.5   1.9   2.9   2   1   1   3   3   3   3 POT family
+PTR2                 PF00854.16 Sobic.009G136800.1.p -            1.1e-88  297.6   0.2   1.5e-88  297.0   0.2   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.009G136800.1.p -            3.1e-08   32.7  31.3   6.2e-08   31.7  27.7   2.6   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G099000.1.p -            5.4e-43  147.1   1.0   7.5e-43  146.7   1.0   1.2   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.009G099000.1.p -            4.8e-07   28.8  29.1   4.8e-07   28.8  29.1   2.5   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G049900.4.p -            6.4e-16   58.0   1.6   9.1e-16   57.6   1.6   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.009G136600.1.p -            2.2e-85  286.6   1.7   2.2e-85  286.6   1.7   1.5   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.009G136600.1.p -            7.4e-09   34.7  24.7   1.2e-07   30.7  24.7   2.3   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.009G101800.2.p -            6.1e-93  311.5   0.2   7.7e-93  311.2   0.2   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.009G136900.1.p -            4.8e-88  295.4   0.6   4.8e-88  295.4   0.6   1.3   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.005G090600.1.p -            1.7e-53  181.7  19.2   8.8e-35  120.1   3.4   3.0   1   1   2   3   3   3   2 POT family
+PTR2                 PF00854.16 Sobic.005G107400.1.p -            6.6e-66  222.6   5.9   8.6e-66  222.2   5.9   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.005G110466.1.p -            6.2e-41  140.4   6.2   6.5e-40  137.0   6.8   1.9   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.005G107500.1.p -              4e-68  229.9   6.4   6.6e-68  229.1   6.4   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.K022800.1.p    -            6.2e-41  140.4   6.2   6.5e-40  137.0   6.8   1.9   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.008G081400.1.p -            6.3e-62  209.5   6.1   1.1e-61  208.7   6.1   1.4   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.008G081200.1.p -            4.4e-62  210.0   2.3   6.8e-62  209.3   0.9   1.8   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.008G081500.1.p -            7.7e-57  192.7   0.4   7.7e-57  192.7   0.4   1.9   3   0   0   3   3   3   1 POT family
+PTR2                 PF00854.16 Sobic.008G190200.1.p -              2e-67  227.5   7.4   1.7e-64  217.9   3.5   2.1   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.008G180300.1.p -            2.3e-67  227.4   5.3   2.5e-65  220.6   1.7   2.1   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.004G276200.1.p -            5.6e-71  239.2   1.7   5.6e-71  239.2   1.7   1.6   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.004G243200.1.p -            4.1e-62  210.1   6.5   7.3e-62  209.2   6.5   1.4   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.004G243200.1.p -              4e-12   45.5  22.9   1.6e-08   33.6   2.9   2.9   2   1   1   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.004G260500.1.p -            7.4e-80  268.5   5.8   1.2e-79  267.8   0.6   2.3   2   1   1   3   3   3   2 POT family
+PTR2                 PF00854.16 Sobic.004G193000.1.p -            1.3e-77  261.1   0.2   1.3e-77  261.1   0.2   1.7   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.004G193000.1.p -            3.6e-06   25.9  35.5   1.8e-05   23.6  29.6   3.9   1   1   1   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.007G044300.1.p -            2.7e-92  309.4   1.7   1.7e-90  303.4   1.5   2.2   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.007G081300.1.p -              4e-56  190.4   9.7   2.3e-54  184.6   4.6   2.3   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.007G213200.1.p -            1.5e-66  224.7   5.8   9.4e-66  222.0   5.8   2.0   1   1   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.007G213200.1.p -            3.1e-10   39.3  24.4   3.1e-10   39.3  24.4   2.2   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.007G064500.1.p -            2.5e-60  204.2   0.3   3.4e-60  203.7   0.3   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.007G160900.1.p -            6.8e-42  143.5  13.6   6.8e-42  143.5  13.6   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.001G032000.1.p -            2.2e-66  224.1   0.1   3.2e-66  223.6   0.1   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G302800.1.p -            1.6e-84  283.9   0.3   1.6e-84  283.9   0.3   1.8   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.001G276100.1.p -            1.3e-87  294.0   5.0   1.6e-87  293.7   3.3   1.8   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.001G443900.1.p -           1.6e-104  349.6   2.9  1.6e-104  349.6   2.9   1.8   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.001G444100.1.p -           3.3e-112  374.9   7.3  1.7e-110  369.3   5.2   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.001G276600.1.p -            1.2e-79  267.8  12.1   4.8e-79  265.8   9.7   2.0   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.001G282000.1.p -            4.4e-72  242.9   1.0     6e-72  242.4   1.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G276700.1.p -            1.5e-84  283.9   4.2   1.5e-84  283.9   4.2   2.0   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.001G133900.1.p -            4.8e-66  223.0   5.0   4.8e-66  223.0   5.0   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.001G223100.2.p -            6.5e-90  301.6   3.1   8.4e-90  301.2   3.1   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G275500.2.p -            3.3e-75  253.1  11.8   5.7e-75  252.4  11.8   1.3   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G111150.1.p -           6.6e-114  380.5  14.1  2.5e-113  378.6   9.0   2.0   2   0   0   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.001G111150.1.p -            2.9e-07   29.5  19.3   2.9e-07   29.5  19.3   1.9   1   1   1   2   2   2   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.001G223200.1.p -            2.1e-81  273.5   0.8   2.8e-81  273.1   0.8   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G282100.1.p -            1.7e-76  257.4  12.0   2.3e-76  257.0  12.0   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G276400.1.p -            1.8e-92  310.0   8.7     5e-92  308.5   4.0   2.5   3   0   0   3   3   3   2 POT family
+PTR2                 PF00854.16 Sobic.001G099400.1.p -            4.1e-56  190.3   5.2   7.5e-55  186.2   0.9   2.3   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.001G541900.2.p -            5.8e-81  272.1   1.3   6.1e-81  272.0   0.2   1.5   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.001G276800.1.p -            1.9e-80  270.4   8.8   1.9e-80  270.4   8.8   1.9   2   0   0   2   2   2   1 POT family
+MFS_1                PF07690.11 Sobic.001G276800.1.p -            1.5e-10   40.3  22.0   4.2e-10   38.8  21.9   1.9   1   1   0   1   1   1   1 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.001G276300.1.p -            7.7e-94  314.5   4.4     1e-92  310.8   3.5   2.1   2   0   0   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.001G276300.1.p -            2.2e-08   33.2  24.1   2.2e-08   33.2  24.1   2.4   1   1   2   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.001G275600.2.p -            1.5e-73  247.7   7.0     2e-73  247.3   7.0   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.001G444000.1.p -            1.3e-88  297.2   6.5   4.9e-86  288.8   5.1   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.001G511000.2.p -            8.4e-89  297.9   2.7   8.4e-89  297.9   2.7   1.7   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.001G275800.1.p -            2.5e-84  283.2   5.8   2.5e-84  283.2   5.8   1.5   2   0   0   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.006G201200.1.p -            9.6e-75  251.6   6.1   1.3e-74  251.2   6.1   1.1   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.006G089300.1.p -            3.6e-63  213.6  11.0     2e-62  211.1   5.3   2.3   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.006G201100.1.p -            1.9e-62  211.2   0.2   2.5e-62  210.8   0.2   1.1   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.006G201100.1.p -            1.1e-07   30.9  21.1     2e-05   23.4   3.0   2.8   1   1   2   3   3   3   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.006G130700.1.p -            3.7e-46  157.6   9.4   8.9e-28   97.1   0.7   2.1   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.006G130700.1.p -            9.6e-08   31.1  23.5   0.00028   19.6   9.0   2.5   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.006G130600.2.p -            5.1e-62  209.8   4.1   5.2e-62  209.7   2.4   1.8   1   1   1   2   2   2   1 POT family
+PTR2                 PF00854.16 Sobic.006G130400.1.p -            5.1e-64  216.3   0.8   6.9e-63  212.6   0.3   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.006G130501.1.p -            6.7e-67  225.8   3.6     3e-66  223.7   0.3   2.1   1   1   1   2   2   2   2 POT family
+MFS_1                PF07690.11 Sobic.006G130501.1.p -            7.2e-12   44.6  25.5   1.5e-11   43.5  20.3   2.8   2   1   0   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.006G251200.1.p -            9.4e-57  192.4   1.7   9.4e-57  192.4   1.7   2.1   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.006G155200.1.p -            2.3e-62  210.9   0.5   3.7e-62  210.2   0.5   1.3   1   0   0   1   1   1   1 POT family
+MFS_1                PF07690.11 Sobic.006G155200.1.p -            3.3e-08   32.6  24.3   7.6e-06   24.8   7.1   2.8   1   1   1   2   2   2   2 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.006G279700.1.p -            6.2e-65  219.3   0.6   4.6e-33  114.5   0.2   2.9   1   1   2   3   3   3   2 POT family
+MFS_1                PF07690.11 Sobic.006G279700.1.p -            7.3e-10   38.0  35.1   3.2e-09   35.9  29.0   3.3   1   1   2   3   3   3   3 Major Facilitator Superfamily
+PTR2                 PF00854.16 Sobic.002G000800.2.p -           4.4e-102  341.6   5.5  5.1e-102  341.4   1.2   2.0   1   1   1   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.002G367700.1.p -            1.8e-69  234.3  17.1   2.7e-69  233.7  17.1   1.2   1   0   0   1   1   1   1 POT family
+PTR2                 PF00854.16 Sobic.002G064800.1.p -            1.8e-68  231.0   4.0   9.9e-67  225.3   0.7   2.1   2   0   0   2   2   2   2 POT family
+PTR2                 PF00854.16 Sobic.002G091800.1.p -            6.1e-58  196.3   6.5   9.1e-58  195.8   0.8   2.7   2   1   1   3   3   3   2 POT family
+MFS_1                PF07690.11 Sobic.002G091800.1.p -            3.4e-09   35.9   2.9   3.4e-09   35.9   2.9   3.2   1   1   1   3   3   3   2 Major Facilitator Superfamily
+#
+# Program:         hmmscan
+# Version:         3.2.1 (June 2018)
+# Pipeline mode:   SCAN
+# Query file:      ./inter.ID.fa
+# Target file:     /home/yhc-z4/software/hmmer-3.1b1/Pfam-A.hmm
+# Option settings: hmmscan -o pfam.out.txt --tblout pfam.out.tbl --noali -E 1e-5 --cpu 30 /home/yhc-z4/software/hmmer-3.1b1/Pfam-A.hmm ./inter.ID.fa 
+# Current dir:     /home/yhc-z4/workspace/Evolution/Evolution_NPF_Sb/4.identification
+# Date:            Thu Jul 10 10:12:46 2025
+# [ok]
