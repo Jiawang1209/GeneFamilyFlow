@@ -1,0 +1,12 @@
+##gff-version 3
+# test fixture for filter_gff3.py
+Chr1	source	gene	100	300	.	+	.	ID=GeneA;Name=GeneA
+Chr1	source	mRNA	100	300	.	+	.	ID=GeneA.1;Parent=GeneA
+Chr1	source	exon	100	180	.	+	.	ID=GeneA.1.exon1;Parent=GeneA.1
+Chr1	source	CDS	150	250	.	+	0	ID=GeneA.1.cds;Parent=GeneA.1
+Chr1	source	gene	400	900	.	-	.	ID=GeneB;Name=GeneB
+Chr1	source	mRNA	400	900	.	-	.	ID=GeneB.1;Parent=GeneB
+Chr1	source	exon	400	500	.	-	.	ID=GeneB.1.exon1;Parent=GeneB.1
+Chr2	source	gene	200	500	.	+	.	ID=GeneC;Name=GeneC
+Chr2	source	mRNA	200	500	.	+	.	ID=GeneC.1;Parent=GeneC
+Chr2	source	exon	200	260	.	+	.	ID=GeneC.1.exon1;Parent=GeneC.1

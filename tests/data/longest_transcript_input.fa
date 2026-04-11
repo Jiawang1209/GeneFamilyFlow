@@ -1,0 +1,10 @@
+>GeneA|Tx1 description
+ATGC
+>GeneA|Tx2
+ATGCAA
+>GeneB|Tx1
+AT
+>GeneB|Tx2
+AT
+>MalformedId
+ATGCGA

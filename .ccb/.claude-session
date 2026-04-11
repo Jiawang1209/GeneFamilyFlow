@@ -1,0 +1,13 @@
+{
+  "session_id": "ai-1775195689-4940",
+  "ccb_project_id": "9eca9b3fbca9b780beda3d7dce0ccb554b6c83a30a53302f5113f0428ec6f35b",
+  "work_dir": "/Users/liuyue/Desktop/Github_repos/GeneFamilyFlow",
+  "work_dir_norm": "/Users/liuyue/Desktop/Github_repos/GeneFamilyFlow",
+  "start_dir": "/Users/liuyue/Desktop/Github_repos/GeneFamilyFlow",
+  "terminal": "tmux",
+  "active": true,
+  "started_at": "2026-04-03 13:54:50",
+  "updated_at": "2026-04-03 13:54:50",
+  "pane_id": "%5",
+  "pane_title_marker": "CCB-Claude-9eca9b3f"
+}

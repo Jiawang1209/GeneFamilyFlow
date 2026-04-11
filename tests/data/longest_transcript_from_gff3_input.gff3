@@ -1,0 +1,24 @@
+##gff-version 3
+# test fixture for extract_longest_transcript_from_gff3.py
+Chr1	source	gene	100	900	.	+	.	ID=GeneA;Name=GeneA
+Chr1	source	mRNA	100	900	.	+	.	ID=GeneA.1;Parent=GeneA
+Chr1	source	CDS	100	200	.	+	0	ID=GeneA.1.cds1;Parent=GeneA.1
+Chr1	source	CDS	300	450	.	+	0	ID=GeneA.1.cds2;Parent=GeneA.1
+Chr1	source	mRNA	100	850	.	+	.	ID=GeneA.2;Parent=GeneA
+Chr1	source	CDS	100	250	.	+	0	ID=GeneA.2.cds1;Parent=GeneA.2
+Chr1	source	CDS	400	700	.	+	0	ID=GeneA.2.cds2;Parent=GeneA.2
+Chr2	source	gene	1000	1600	.	-	.	ID=GeneB;Name=GeneB
+Chr2	source	transcript	1000	1600	.	-	.	ID=GeneB.t1;Parent=GeneB
+Chr2	source	CDS	1000	1200	.	-	0	ID=GeneB.t1.cds1;Parent=GeneB.t1
+Chr2	source	CDS	1300	1400	.	-	0	ID=GeneB.t1.cds2;Parent=GeneB.t1
+Chr2	source	transcript	1050	1580	.	-	.	ID=GeneB.t2;Parent=GeneB
+Chr2	source	CDS	1050	1180	.	-	0	ID=GeneB.t2.cds1;Parent=GeneB.t2
+Chr2	source	CDS	1250	1450	.	-	0	ID=GeneB.t2.cds2;Parent=GeneB.t2
+Chr3	source	gene	200	700	.	+	.	ID=GeneC;Name=GeneC
+Chr3	source	mRNA	200	700	.	+	.	ID=GeneC.1;Parent=GeneC
+Chr3	source	CDS	200	299	.	+	0	ID=GeneC.1.cds1;Parent=GeneC.1
+Chr3	source	mRNA	200	680	.	+	.	ID=GeneC.2;Parent=GeneC
+Chr3	source	CDS	200	249	.	+	0	ID=GeneC.2.cds1;Parent=GeneC.2
+Chr3	source	CDS	300	349	.	+	0	ID=GeneC.2.cds2;Parent=GeneC.2
+Chr4	source	gene	500	900	.	+	.	ID=GeneD;Name=GeneD
+Chr4	source	mRNA	500	900	.	+	.	ID=GeneD.1;Parent=GeneD
