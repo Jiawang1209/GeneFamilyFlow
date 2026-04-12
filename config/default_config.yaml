@@ -1,0 +1,323 @@
+# GeneFamilyFlow Configuration
+# This file defines all parameters for the automated gene family analysis pipeline
+
+# ============================================================================
+# GENERAL SETTINGS
+# ============================================================================
+
+# List of species to analyze (used by multiple steps)
+species:
+  - Sbicolor
+  - Athaliana
+  - Osativa
+
+# Target species for single-species detailed analyses (Steps 6-10)
+target_species: "Sbicolor"
+
+# Data and output directories
+database_dir: "example/1.database"        # Input: raw genome data
+output_dir: "output"                      # Output: all analysis results
+work_dir: "work"                          # Temporary: intermediate files
+log_dir: "logs"                           # Logs: execution logs
+
+# ============================================================================
+# STEP 1: DATA PREPARATION AND QUALITY CONTROL
+# ============================================================================
+
+step1:
+  # GFF3 filtering (optional, if subsetting needed)
+  filter_gff3: false
+  gff3_gene_ids: []  # Leave empty to keep all genes
+  gff3_chromosomes: []  # Leave empty to keep all chromosomes
+
+# ============================================================================
+# STEP 2: HMM SEARCH (HMMER)
+# ============================================================================
+
+step2:
+  # ---- Multi-domain support ----
+  # Each entry defines one Pfam domain to search.
+  # All domains are searched independently; hits are merged in Step 4.
+  domains:
+    - pfam_id: "PF00854"
+      pfam_hmm_file: "example/2.hmmsearch/PF00854.hmm"
+      seed_sequence_file: "example/3.blast/PF00854.TAIR.ID.fa"
+    # Add more domains as needed:
+    # - pfam_id: "PF00005"
+    #   pfam_hmm_file: "path/to/PF00005.hmm"
+    #   seed_sequence_file: "path/to/PF00005.seed.fa"
+
+  # E-value threshold for hmmsearch (shared across domains)
+  hmmsearch_evalue: 1e-10
+
+  # Clustering parameters for building custom HMM
+  clustering_tool: "clustalw"  # or "muscle"
+  clustering_params:
+    type: "PROTEIN"
+    output: "clustal"
+    slow_accurate: true
+
+  # Custom HMM building
+  hmmbuild_calibrate: true
+
+# ============================================================================
+# STEP 3: BLAST SEARCH
+# ============================================================================
+
+step3:
+  # BLAST parameters (shared across domains; seed files are per-domain in step2.domains)
+  blast_evalue: 1e-10
+  blast_num_threads: 10
+  blast_num_alignments: 10
+  blast_outfmt: "6 std qlen slen"
+
+# ============================================================================
+# STEP 4: GENE FAMILY IDENTIFICATION
+# ============================================================================
+
+step4:
+  # Method to merge HMM and BLAST results
+  merge_method: "intersection"  # or "union"
+
+  # Pfam domain verification
+  use_hmmscan: true              # hmmscan (general scan)
+  use_pfam_scan: true            # pfam_scan.pl (specific scan)
+
+  # Pfam parameters
+  pfam_scan_evalue: 1e-5
+  pfam_scan_cpu: 30
+
+  # Pfam database directory (required for pfam_scan.pl)
+  pfam_database_dir: "/data/Liu/LiuYue/Evolution/Pfam"
+
+# ============================================================================
+# STEP 5: GENE FAMILY INFORMATION STATISTICS
+# ============================================================================
+
+step5:
+  # Input
+  gene_fasta_file: "example/4.identification/identify.ID.clean.fa"
+  gene_bed_file: "example/10.promoter/species_10.bed"
+
+  # Output format
+  output_formats:
+    - xlsx
+    - csv
+
+  # R script
+  r_script: "R/05_genefamily_info.R"
+
+# ============================================================================
+# STEP 6: PHYLOGENETIC TREE CONSTRUCTION
+# ============================================================================
+
+step6:
+  # Multiple sequence alignment
+  alignment_tool: "muscle"  # or "clustalw"
+  alignment_threads: 8
+
+  # Tree building tool: "iqtree" (accurate, slow) or "fasttree" (fast, approximate)
+  tree_tool: "iqtree"
+
+  # IQ-TREE parameters (used when tree_tool == "iqtree")
+  iqtree_model: "MFP"        # Model selection (MFP = automatic)
+  iqtree_bootstrap: 1000     # Bootstrap replicates
+  iqtree_seed: 12345         # Random seed for reproducibility
+  iqtree_threads: 8
+
+  # FastTree parameters (used when tree_tool == "fasttree")
+  fasttree_options: "-gamma"  # Additional FastTree flags (e.g. "-gamma -wag")
+
+  # Visualization
+  tree_figure_width: 15      # inches
+  tree_figure_height: 15     # inches
+
+  # R script
+  r_script: "R/06_tree.R"
+
+  # Note: Manual curation required for tree_group_2.xlsx after this step
+  # This file defines subfamilies and is used by downstream analyses
+
+# ============================================================================
+# STEP 7: MOTIF AND GENE STRUCTURE ANALYSIS
+# ============================================================================
+
+step7:
+  # MEME motif discovery
+  meme_tool: "meme"
+  meme_mod: "anr"              # Mode: anr (any number of repetitions)
+  meme_protein: true           # Protein sequences (not DNA)
+  meme_nmotifs: 10             # Number of motifs to discover
+  meme_minw: 10                # Minimum motif width
+  meme_maxw: 50                # Maximum motif width
+
+  # MEME output parser
+  python_parser: "scripts/parse_meme_output.py"
+  species_prefix: "Sobic."     # Gene ID prefix for target species
+
+  # Visualization
+  r_script: "R/07_domain_motif_structure.R"
+  figure_width: 22.5           # inches
+  figure_height: 20            # inches
+
+# ============================================================================
+# STEP 8: JCVI SYNTENY ANALYSIS AND Ka/Ks
+# ============================================================================
+
+step8:
+  # Set to false to run JCVI synteny + Ka/Ks from scratch
+  # Requires: {database_dir}/{species}.gff3 and {species}.cds.fasta
+  precomputed: true
+
+  # JCVI ortholog calling
+  jcvi_database_type: "prot"
+  jcvi_evalue: 1e-10
+  jcvi_no_strip_names: true
+
+  # JCVI synteny visualization
+  synteny_minspan: 30          # Minimum anchor distance
+  synteny_simple: true
+
+  # Ka/Ks calculation
+  kaks_calculator: "KaKs_Calculator"  # or other tools
+  kaks_file: "example/8.collinearity/kaks.tab.xls"  # used when precomputed: true
+
+  # Visualization
+  r_script: "R/08_jcvi_kaks.R"
+  figure_width: 7.5            # inches
+  figure_height: 16            # inches
+
+# ============================================================================
+# STEP 9: MCSCANX SYNTENY AND CIRCOS
+# ============================================================================
+
+step9:
+  # Set to false to run MCScanX from scratch
+  # Requires: {database_dir}/{species}.gff3
+  precomputed: true
+
+  # MCScanX parameters
+  mcscanx_path: "~/software/MCScanX/MCScanX"
+  duplicate_classifier_path: "~/software/MCScanX/duplicate_gene_classifier"
+
+  # Ka/Ks calculation (similar to Step 8)
+  kaks_calculator: "KaKs_Calculator"
+
+  # Circos visualization
+  r_script: "R/09_circos.R"
+  figure_width: 8              # inches
+  figure_height: 8             # inches
+  circos_chr_style: "roundrect"  # Chromosome style
+
+  # Species-specific parameters
+  species_config:
+    Sbicolor:
+      n_chromosomes: 10
+      genome_length_file: "example/9.mcscanx/Sbicolor_454_v3.0.1.fa.fai"
+      npf_id_file: "example/9.mcscanx/Sbicolor.NPF.id"
+    Athaliana:
+      n_chromosomes: 5
+      genome_length_file: "example/9.mcscanx/Athaliana_167_TAIR10.fa.fai"
+      npf_id_file: "example/9.mcscanx/AT.NPF.id"
+    Osativa:
+      n_chromosomes: 12
+      genome_length_file: "example/9.mcscanx/Osativa_323_v7.0.fa.fai"
+      npf_id_file: "example/9.mcscanx/Os.NPF.id"
+
+# ============================================================================
+# STEP 10: PROMOTER ANALYSIS
+# ============================================================================
+
+step10:
+  # Set to true to extract promoter sequences from genome (requires bedtools)
+  # Requires: {database_dir}/{target_species}.genome.fasta
+  compute_promoter: false
+
+  # Promoter extraction
+  upstream_distance: 2000      # bp upstream of TSS
+
+  # Cis-element prediction (PlantCARE — online submission, download results)
+  plantcare_dir: "example/10.promoter/PlantCARE_410_SB_plantCARE"
+
+  # Cis-element annotation database
+  element_annotation_file: "example/10.promoter/cir_element.desc.20240509.xlsx"
+
+  # Visualization
+  r_script: "R/10_promoter.R"
+  figure_width: 25             # inches
+  figure_height: 22            # inches
+
+# ============================================================================
+# STEP 11: PROTEIN-PROTEIN INTERACTION (PPI)
+# ============================================================================
+
+step11:
+  # Reference PPI database (AraNet for Arabidopsis)
+  ppi_database_file: "example/11.ppi/AraNet.txt"
+
+  # Cross-species ortholog mapping (BLAST)
+  blast_evalue: 1e-10
+  blast_num_threads: 10
+
+  # Pfam annotation for PPI nodes
+  pfam_scan_evalue: 1e-5
+
+  # PPI edge file (pre-computed or from ortholog mapping)
+  ppi_edge_file: "example/11.ppi/edge_annotation.xlsx"
+
+  # Network visualization
+  r_script: "R/11_ppi.R"
+  figure_width: 10             # inches
+  figure_height: 10.5          # inches
+  igraph_layout: "gephi"       # or "fr", "circle", "kk"
+
+# ============================================================================
+# OPTIONAL STEPS: RNA-seq, GO/KEGG, qRT-PCR
+# ============================================================================
+
+step12_rnaseq:
+  enabled: false
+  expression_matrix: "example/12.rnaseq/expression_matrix.csv"
+  r_script: "R/12_rnaseq.R"
+
+step13_go_kegg:
+  enabled: false
+  annotation_file: "example/13.GO_KEGG/annotations.tsv"
+  r_script: "R/13_go_kegg.R"
+
+step14_qrtpcr:
+  enabled: false
+  expression_data: "example/14.qRT_PCR/qrt_pcr_data.xlsx"
+  r_script: "R/14_qrt_pcr.R"
+
+# ============================================================================
+# PARALLEL EXECUTION
+# ============================================================================
+
+# Maximum number of threads for parallel jobs
+max_threads: 8
+
+# Number of Snakemake jobs to run in parallel
+snakemake_jobs: 8
+
+# ============================================================================
+# CONDA ENVIRONMENT
+# ============================================================================
+
+# Use Conda for environment isolation
+use_conda: true
+conda_env: "envs/genefamily.yaml"
+
+# ============================================================================
+# TEMPORARY AND OUTPUT FILE CLEANUP
+# ============================================================================
+
+# Keep intermediate files (set to false to save disk space)
+keep_intermediate: true
+
+# Compress large intermediate files
+compress_intermediate: false
+
+# Archive old results
+archive_old_results: false
+archive_days: 30  # Archive results older than 30 days

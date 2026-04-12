@@ -1,0 +1,128 @@
+"""Tests for scripts/parse_pfam_scan.py."""
+
+from __future__ import annotations
+
+import textwrap
+import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+from scripts.parse_pfam_scan import (
+    PfamScanHit,
+    extract_ids_by_pfam,
+    main,
+    parse_pfam_scan,
+)
+
+SAMPLE_PFAM_SCAN = textwrap.dedent("""\
+    # pfam_scan.pl,  run at Thu Jul 10 10:20:19 2025
+    #
+    # Copyright (c) 2009 Genome Research Ltd
+    # Freely distributed under the GNU
+    # General Public License
+    AT2G38100.1              62    410     62    457 PF00854.25  PTR2              Family     1   332   392    104.0   8.8e-30   1 CL0015
+    AT2G02020.1             114    499    114    507 PF00854.25  PTR2              Family     1   383   392    402.8  1.6e-120   1 CL0015
+    AT2G26690.1              96    521     96    521 PF00854.25  PTR2              Family     1   392   392    346.5    2e-103   1 CL0015
+    AT5G01180.1              50    300     50    305 PF01234.10  OTHER             Family     1   200   250     80.0   5.0e-20   1 CL0020
+    AT3G99999.1             100    400    100    400 PF00854.25  PTR2              Family     1   300   392     50.0   1.0e-03   1 CL0015
+""")
+
+
+class TestParsePfamScan(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.tmpdir = TemporaryDirectory()
+        self.tmp = Path(self.tmpdir.name)
+        self.pfam_file = self.tmp / "Pfam_scan.out"
+        self.pfam_file.write_text(SAMPLE_PFAM_SCAN)
+
+    def tearDown(self) -> None:
+        self.tmpdir.cleanup()
+
+    def test_parse_yields_all_hits(self) -> None:
+        hits = list(parse_pfam_scan(self.pfam_file))
+        self.assertEqual(len(hits), 5)
+
+    def test_parse_skips_comments(self) -> None:
+        hits = list(parse_pfam_scan(self.pfam_file))
+        self.assertFalse(any(h.seq_id.startswith("#") for h in hits))
+
+    def test_parse_fields(self) -> None:
+        hits = list(parse_pfam_scan(self.pfam_file))
+        first = hits[0]
+        self.assertEqual(first.seq_id, "AT2G38100.1")
+        self.assertEqual(first.ali_start, 62)
+        self.assertEqual(first.ali_end, 410)
+        self.assertEqual(first.pfam_acc, "PF00854.25")
+        self.assertEqual(first.pfam_name, "PTR2")
+        self.assertAlmostEqual(first.evalue, 8.8e-30)
+        self.assertEqual(first.clan, "CL0015")
+
+    def test_extract_by_pfam_id(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854")
+        self.assertEqual(len(ids), 4)
+        self.assertNotIn("AT5G01180.1", ids)
+
+    def test_extract_by_pfam_id_with_version(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854")
+        self.assertIn("AT2G38100.1", ids)
+
+    def test_extract_with_evalue_filter(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854", evalue=1e-10)
+        self.assertEqual(len(ids), 3)
+        self.assertNotIn("AT3G99999.1", ids)
+
+    def test_extract_different_pfam(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF01234")
+        self.assertEqual(ids, ["AT5G01180.1"])
+
+    def test_extract_nonexistent_pfam(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF99999")
+        self.assertEqual(ids, [])
+
+    def test_extract_sorted(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854")
+        self.assertEqual(ids, sorted(ids))
+
+    def test_empty_file(self) -> None:
+        empty = self.tmp / "empty.out"
+        empty.write_text("# just comments\n")
+        ids = extract_ids_by_pfam(empty, "PF00854")
+        self.assertEqual(ids, [])
+
+    def test_file_not_found(self) -> None:
+        with self.assertRaises(FileNotFoundError):
+            list(parse_pfam_scan("/nonexistent/file.out"))
+
+    def test_cli_main(self) -> None:
+        outfile = self.tmp / "ids.txt"
+        rc = main([str(self.pfam_file), "--pfam-id", "PF00854", "-o", str(outfile)])
+        self.assertEqual(rc, 0)
+        lines = outfile.read_text().strip().split("\n")
+        self.assertEqual(len(lines), 4)
+
+    def test_cli_with_evalue(self) -> None:
+        outfile = self.tmp / "ids.txt"
+        rc = main([str(self.pfam_file), "--pfam-id", "PF00854", "-e", "1e-10", "-o", str(outfile)])
+        self.assertEqual(rc, 0)
+        lines = outfile.read_text().strip().split("\n")
+        self.assertEqual(len(lines), 3)
+
+    def test_extract_multiple_pfam_ids(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854,PF01234")
+        self.assertEqual(len(ids), 5)
+        self.assertIn("AT5G01180.1", ids)
+        self.assertIn("AT2G38100.1", ids)
+
+    def test_extract_multiple_pfam_ids_with_evalue(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854,PF01234", evalue=1e-10)
+        self.assertEqual(len(ids), 4)
+        self.assertNotIn("AT3G99999.1", ids)
+
+    def test_cli_missing_file(self) -> None:
+        rc = main(["/nonexistent.out", "--pfam-id", "PF00854"])
+        self.assertEqual(rc, 1)
+
+
+if __name__ == "__main__":
+    unittest.main()

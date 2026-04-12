@@ -1,0 +1,23 @@
+name: GeneFamilyFlow
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+# Minimal environment for development and testing
+# External bioinformatics tools (hmmer, blast, meme, etc.) can be added later
+# via: conda install -n GeneFamilyFlow -c bioconda <tool>
+
+dependencies:
+  # Core: Python + Snakemake (for pipeline orchestration)
+  - python=3.11
+  - snakemake-minimal>=7.0
+  - pyyaml
+  - pip
+
+  # Python testing
+  - pytest>=7.0
+
+  # Pip-installable extras
+  - pip:
+    - pytest-cov>=4.0
