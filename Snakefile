@@ -81,6 +81,7 @@ TREE_TOOL = config["step6"].get("tree_tool", "iqtree")
 USE_PFAM_SCAN = config["step4"].get("use_pfam_scan", True)
 
 # Optional steps
+STEP13_ENABLED = config.get("step13_go_kegg", {}).get("enabled", False)
 STEP14_ENABLED = config.get("step14_qrtpcr", {}).get("enabled", False)
 
 # ---------------------------------------------------------------------------
@@ -106,6 +107,9 @@ ALL_TARGETS = [
     # Step 11
     f"{OUT_DIR}/11_ppi/PPI_network.pdf",
 ]
+
+if STEP13_ENABLED:
+    ALL_TARGETS.append(f"{OUT_DIR}/13_go_kegg/enrichment.pdf")
 
 if STEP14_ENABLED:
     ALL_TARGETS.append(f"{OUT_DIR}/14_qrt_pcr/qRT_PCR.pdf")
