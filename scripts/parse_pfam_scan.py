@@ -16,7 +16,9 @@ import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
+from typing import Iterator, Literal
+
+DomainCombineMode = Literal["any", "all"]
 
 
 @dataclass(frozen=True)
@@ -69,25 +71,42 @@ def extract_ids_by_pfam(
     path: str | Path,
     pfam_id: str,
     evalue: float | None = None,
+    mode: DomainCombineMode = "any",
 ) -> list[str]:
-    """Extract unique seq IDs matching one or more Pfam accessions.
+    """Extract unique seq IDs matching Pfam accessions under a combine mode.
 
     Args:
         path: Path to pfam_scan.pl output.
         pfam_id: Comma-separated Pfam accessions (e.g. "PF00854,PF00005").
             Each matches against pfam_acc with or without version suffix.
-        evalue: Optional E-value threshold.
+        evalue: Optional E-value threshold (applied per-hit, before aggregation).
+        mode: Multi-domain combination strategy.
+            - "any" (default): keep a gene if it has at least one matching domain
+              (union semantics — suitable for families with variable architecture).
+            - "all": keep a gene only if it has every listed domain
+              (intersection semantics — suitable for strict multi-domain families).
+            When only one domain is listed, both modes produce the same result.
     """
+    if mode not in ("any", "all"):
+        raise ValueError(f"mode must be 'any' or 'all', got: {mode!r}")
+
     pfam_ids = [p.strip() for p in pfam_id.split(",") if p.strip()]
     patterns = [re.compile(rf"^{re.escape(pid)}(\.\d+)?$") for pid in pfam_ids]
-    ids: set[str] = set()
+    n_patterns = len(patterns)
 
+    gene_matched: dict[str, set[int]] = {}
     for hit in parse_pfam_scan(path):
-        if not any(p.match(hit.pfam_acc) for p in patterns):
-            continue
         if evalue is not None and hit.evalue > evalue:
             continue
-        ids.add(hit.seq_id)
+        for idx, pattern in enumerate(patterns):
+            if pattern.match(hit.pfam_acc):
+                gene_matched.setdefault(hit.seq_id, set()).add(idx)
+                break
+
+    if mode == "all":
+        ids = {gene for gene, matched in gene_matched.items() if len(matched) == n_patterns}
+    else:
+        ids = set(gene_matched.keys())
 
     return sorted(ids)
 
@@ -112,6 +131,16 @@ def build_argument_parser() -> argparse.ArgumentParser:
         help="E-value threshold (default: no filter).",
     )
     parser.add_argument(
+        "--mode",
+        choices=("any", "all"),
+        default="any",
+        help=(
+            "Multi-domain combine mode. 'any' keeps genes with at least one "
+            "matching domain (union); 'all' requires every listed domain "
+            "(intersection). Default: any."
+        ),
+    )
+    parser.add_argument(
         "-o", "--output",
         default=None,
         help="Output file (default: stdout).",
@@ -129,7 +158,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        ids = extract_ids_by_pfam(pfam_path, args.pfam_id, args.evalue)
+        ids = extract_ids_by_pfam(
+            pfam_path, args.pfam_id, args.evalue, mode=args.mode
+        )
     except Exception as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1

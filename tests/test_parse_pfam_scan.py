@@ -124,5 +124,86 @@ class TestParsePfamScan(unittest.TestCase):
         self.assertEqual(rc, 1)
 
 
+MULTI_DOMAIN_SAMPLE = textwrap.dedent("""\
+    # pfam_scan.pl multi-domain test fixture
+    G1_single_A         10    100    10   110 PF00854.25  DomA Family 1 100 100  80.0 1e-20 1 CL0015
+    G2_single_B         10    100    10   110 PF01234.10  DomB Family 1 100 100  80.0 1e-20 1 CL0020
+    G3_both             10    100    10   110 PF00854.25  DomA Family 1 100 100  80.0 1e-20 1 CL0015
+    G3_both            150    250   150   260 PF01234.10  DomB Family 1 100 100  80.0 1e-20 1 CL0020
+    G4_both             10    100    10   110 PF00854.25  DomA Family 1 100 100  80.0 1e-20 1 CL0015
+    G4_both            150    250   150   260 PF01234.10  DomB Family 1 100 100  80.0 1e-20 1 CL0020
+    G5_unrelated        10    100    10   110 PF99999.1   DomX Family 1 100 100  80.0 1e-20 1 CL0099
+""")
+
+
+class TestMultiDomainMode(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.tmpdir = TemporaryDirectory()
+        self.tmp = Path(self.tmpdir.name)
+        self.pfam_file = self.tmp / "multi_domain.out"
+        self.pfam_file.write_text(MULTI_DOMAIN_SAMPLE)
+
+    def tearDown(self) -> None:
+        self.tmpdir.cleanup()
+
+    def test_any_mode_returns_union(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854,PF01234", mode="any")
+        self.assertEqual(set(ids), {"G1_single_A", "G2_single_B", "G3_both", "G4_both"})
+
+    def test_all_mode_returns_intersection(self) -> None:
+        ids = extract_ids_by_pfam(self.pfam_file, "PF00854,PF01234", mode="all")
+        self.assertEqual(set(ids), {"G3_both", "G4_both"})
+
+    def test_all_mode_single_domain_matches_any(self) -> None:
+        """When only one domain listed, all and any should produce same result."""
+        any_ids = extract_ids_by_pfam(self.pfam_file, "PF00854", mode="any")
+        all_ids = extract_ids_by_pfam(self.pfam_file, "PF00854", mode="all")
+        self.assertEqual(any_ids, all_ids)
+
+    def test_default_mode_is_any(self) -> None:
+        """Backward compatibility: default mode must be 'any'."""
+        default_ids = extract_ids_by_pfam(self.pfam_file, "PF00854,PF01234")
+        any_ids = extract_ids_by_pfam(self.pfam_file, "PF00854,PF01234", mode="any")
+        self.assertEqual(default_ids, any_ids)
+
+    def test_invalid_mode_raises(self) -> None:
+        with self.assertRaises(ValueError):
+            extract_ids_by_pfam(self.pfam_file, "PF00854", mode="invalid")
+
+    def test_all_mode_with_evalue_filter(self) -> None:
+        """E-value filter must apply before the ALL aggregation."""
+        ids = extract_ids_by_pfam(
+            self.pfam_file, "PF00854,PF01234", mode="all", evalue=1e-25
+        )
+        self.assertEqual(ids, [])
+
+    def test_cli_mode_all(self) -> None:
+        outfile = self.tmp / "all.txt"
+        rc = main([
+            str(self.pfam_file),
+            "--pfam-id", "PF00854,PF01234",
+            "--mode", "all",
+            "-o", str(outfile),
+        ])
+        self.assertEqual(rc, 0)
+        lines = outfile.read_text().strip().split("\n")
+        self.assertEqual(set(lines), {"G3_both", "G4_both"})
+
+    def test_cli_mode_any_explicit(self) -> None:
+        outfile = self.tmp / "any.txt"
+        rc = main([
+            str(self.pfam_file),
+            "--pfam-id", "PF00854,PF01234",
+            "--mode", "any",
+            "-o", str(outfile),
+        ])
+        self.assertEqual(rc, 0)
+        lines = outfile.read_text().strip().split("\n")
+        self.assertEqual(
+            set(lines), {"G1_single_A", "G2_single_B", "G3_both", "G4_both"}
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
