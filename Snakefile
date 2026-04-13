@@ -62,6 +62,11 @@ def get_seed_references(pfam_id):
 # Tree tool
 TREE_TOOL = config["step6"].get("tree_tool", "iqtree")
 
+# Whether to run pfam_scan.pl for final Pfam verification in step 4.
+# When false, step 4 trusts the per-domain hmmsearch results from step 2 and
+# merges them according to `step4.domain_combine` directly, skipping pfam_scan.pl.
+USE_PFAM_SCAN = config["step4"].get("use_pfam_scan", True)
+
 # ---------------------------------------------------------------------------
 # rule all — define final targets
 # ---------------------------------------------------------------------------
@@ -350,63 +355,112 @@ rule step04_combine_domains:
         """
 
 
-rule step04_pfam_scan:
-    """Run pfam_scan.pl on combined candidates."""
-    input:
-        fasta = f"{WORK_DIR}/04_identification/all_domains.ID.fa",
-    output:
-        out = f"{WORK_DIR}/04_identification/Pfam_scan.out",
-    params:
-        pfam_dir = config["step4"]["pfam_database_dir"],
-        evalue   = config["step4"]["pfam_scan_evalue"],
-        cpu      = config["step4"]["pfam_scan_cpu"],
-    log:
-        f"{LOG_DIR}/04_pfam_scan.log",
-    threads: config["step4"].get("pfam_scan_cpu", 30)
-    shell:
-        """
-        pfam_scan.pl -fasta {input.fasta} \
-            -dir {params.pfam_dir} \
-            -cpu {params.cpu} \
-            -e_seq {params.evalue} \
-            -out {output.out} 2>&1 | tee {log}
-        """
+if USE_PFAM_SCAN:
+
+    rule step04_pfam_scan:
+        """Run pfam_scan.pl on combined candidates."""
+        input:
+            fasta = f"{WORK_DIR}/04_identification/all_domains.ID.fa",
+        output:
+            out = f"{WORK_DIR}/04_identification/Pfam_scan.out",
+        params:
+            pfam_dir = config["step4"]["pfam_database_dir"],
+            evalue   = config["step4"]["pfam_scan_evalue"],
+            cpu      = config["step4"]["pfam_scan_cpu"],
+        log:
+            f"{LOG_DIR}/04_pfam_scan.log",
+        threads: config["step4"].get("pfam_scan_cpu", 30)
+        shell:
+            """
+            pfam_scan.pl -fasta {input.fasta} \
+                -dir {params.pfam_dir} \
+                -cpu {params.cpu} \
+                -e_seq {params.evalue} \
+                -out {output.out} 2>&1 | tee {log}
+            """
 
 
-rule step04_pfam_filter:
-    """Verify candidates by pfam_scan and combine target domains.
+    rule step04_pfam_filter:
+        """Verify candidates by pfam_scan and combine target domains.
 
-    The `domain_combine` mode decides how multi-domain results are merged:
-      - "any" → gene kept if it has at least one listed domain (union)
-      - "all" → gene kept only if it has every listed domain (intersection)
-    """
-    input:
-        pfam_out = f"{WORK_DIR}/04_identification/Pfam_scan.out",
-        fasta    = f"{WORK_DIR}/04_identification/all_domains.ID.fa",
-    output:
-        ids   = f"{WORK_DIR}/04_identification/pfam_scan.id",
-        fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
-    params:
-        pfam_ids = ",".join(DOMAIN_IDS),
-        mode     = config["step4"].get("domain_combine", "any"),
-    shell:
+        The `domain_combine` mode decides how multi-domain results are merged:
+          - "any" → gene kept if it has at least one listed domain (union)
+          - "all" → gene kept only if it has every listed domain (intersection)
         """
-        python3 scripts/parse_pfam_scan.py {input.pfam_out} \
-            --pfam-id {params.pfam_ids} \
-            --mode {params.mode} \
-            -o {output.ids}
-        seqkit grep -f {output.ids} {input.fasta} -o {output.fasta}
+        input:
+            pfam_out = f"{WORK_DIR}/04_identification/Pfam_scan.out",
+            fasta    = f"{WORK_DIR}/04_identification/all_domains.ID.fa",
+        output:
+            ids   = f"{WORK_DIR}/04_identification/pfam_scan.id",
+            fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
+        params:
+            pfam_ids = ",".join(DOMAIN_IDS),
+            mode     = config["step4"].get("domain_combine", "any"),
+        shell:
+            """
+            python3 scripts/parse_pfam_scan.py {input.pfam_out} \
+                --pfam-id {params.pfam_ids} \
+                --mode {params.mode} \
+                -o {output.ids}
+            seqkit grep -f {output.ids} {input.fasta} -o {output.fasta}
+            """
+
+else:
+
+    rule step04_hmm_filter:
+        """Skip pfam_scan.pl — trust per-domain hmmsearch hits directly.
+
+        Applies the `domain_combine` mode across per-domain ID files from step 2:
+          - "any" → union of per-domain hits
+          - "all" → intersection of per-domain hits (all domains must be present)
         """
+        input:
+            per_domain_ids = expand(
+                f"{WORK_DIR}/04_identification/{{dom}}.merged.ID", dom=DOMAIN_IDS
+            ),
+            fasta = f"{WORK_DIR}/04_identification/all_domains.ID.fa",
+        output:
+            ids   = f"{WORK_DIR}/04_identification/pfam_scan.id",
+            fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
+        params:
+            mode = config["step4"].get("domain_combine", "any"),
+        log:
+            f"{LOG_DIR}/04_hmm_filter.log",
+        run:
+            from pathlib import Path
+
+            per_domain_sets = [
+                set(Path(f).read_text().split()) for f in input.per_domain_ids
+            ]
+            if not per_domain_sets:
+                keep = set()
+            elif params.mode == "all":
+                keep = set.intersection(*per_domain_sets)
+            else:
+                keep = set.union(*per_domain_sets)
+
+            Path(output.ids).write_text("\n".join(sorted(keep)) + "\n")
+            with open(log[0], "w") as fh:
+                fh.write(
+                    f"domain_combine mode: {params.mode}\n"
+                    f"per-domain counts: "
+                    f"{[len(s) for s in per_domain_sets]}\n"
+                    f"kept ({params.mode}): {len(keep)}\n"
+                )
+            shell(
+                f"seqkit grep -f {output.ids} {input.fasta} -o {output.fasta} "
+                f"2>> {log[0]}"
+            )
 
 
 # ===========================================================================
 # STEP 5: Gene family information statistics
 # ===========================================================================
 
-rule step05:
+rule step05_genefamily_info:
     """Compute physicochemical properties and gene info."""
     input:
-        fasta = config["step5"]["gene_fasta_file"],
+        fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
         bed   = config["step5"]["gene_bed_file"],
     output:
         xlsx = f"{OUT_DIR}/05_genefamily_info/Gene_Information.xlsx",
@@ -434,9 +488,9 @@ rule step05:
 # ===========================================================================
 
 rule step06_alignment:
-    """Multiple sequence alignment with MUSCLE."""
+    """Multiple sequence alignment with MUSCLE (v5 CLI)."""
     input:
-        fasta = config["step5"]["gene_fasta_file"],
+        fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
     output:
         aln = f"{WORK_DIR}/06_tree/alignment.muscle",
     log:
@@ -444,7 +498,8 @@ rule step06_alignment:
     threads: config["step6"].get("alignment_threads", 8)
     shell:
         """
-        muscle -in {input.fasta} -out {output.aln} \
+        muscle -align {input.fasta} -output {output.aln} \
+            -threads {threads} \
             2>&1 | tee {log}
         """
 
@@ -529,7 +584,7 @@ rule step06_tree_plot:
 rule step07_meme:
     """Discover motifs with MEME."""
     input:
-        fasta = config["step5"]["gene_fasta_file"],
+        fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
     output:
         meme_txt = f"{WORK_DIR}/07_motif/meme_out/meme.txt",
     params:

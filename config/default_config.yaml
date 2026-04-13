@@ -112,8 +112,12 @@ step4:
   domain_combine: "any"
 
   # Pfam domain verification
+  # When use_pfam_scan is false, step 4 skips pfam_scan.pl and relies on the
+  # per-domain hmmsearch hits from step 2 (merged per `domain_combine` mode).
+  # Useful when pfam_scan.pl is unavailable or when hmmsearch validation is
+  # sufficient.
   use_hmmscan: true              # hmmscan (general scan)
-  use_pfam_scan: true            # pfam_scan.pl (specific scan)
+  use_pfam_scan: false           # pfam_scan.pl (specific scan)
 
   # Pfam parameters
   pfam_scan_evalue: 1e-5
@@ -127,8 +131,12 @@ step4:
 # ============================================================================
 
 step5:
-  # Input
-  gene_fasta_file: "example/4.identification/identify.ID.clean.fa"
+  # Protein FASTA input is consumed automatically from Step 4's output:
+  #   {output_dir}/04_identification/identify.ID.clean.fa
+  #
+  # Gene coordinate BED file (external, user-provided).
+  # Columns: Chr Start End ID Info Strand
+  # Also consumed by Step 9 (circos) and Step 10 (promoter extraction).
   gene_bed_file: "example/10.promoter/species_10.bed"
 
   # Output format
