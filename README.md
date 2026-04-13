@@ -14,9 +14,10 @@ GeneFamilyFlow integrates HMM search, BLAST, Pfam domain verification, phylogene
 - **Multi-domain support** — search multiple Pfam domains independently, merge results into one gene family set
 - **Multi-species** — analyze any number of species in parallel via `{species}` wildcard
 - **Flexible tree building** — choose IQ-TREE (accurate) or FastTree (fast) via config
+- **Auto-subfamily clustering** — top-down monophyletic clade splitting, with branch coloring, clade highlights, and radial subfamily labels rendered in both circular and rectangular layouts
 - **Precomputed mode** — skip expensive computation steps (JCVI, MCScanX) when you already have results
 - **Fully configurable** — all parameters in a single YAML config file
-- **Tested** — 65 unit tests for all Python scripts
+- **Tested** — unit tests for all Python scripts
 
 ## Pipeline Overview
 
@@ -27,7 +28,7 @@ GeneFamilyFlow integrates HMM search, BLAST, Pfam domain verification, phylogene
 | 3 | BLAST search (per domain) | BLAST+ |
 | 4 | Gene family identification (merge + Pfam verify) | pfam_scan.pl |
 | 5 | Gene family statistics | R (Biostrings, Peptides) |
-| 6 | Phylogenetic tree | MUSCLE + IQ-TREE/FastTree |
+| 6 | Phylogenetic tree + auto-subfamily clustering | MUSCLE + IQ-TREE/FastTree + ggtree |
 | 7 | Motif & gene structure | MEME + R (ggtree, gggenes) |
 | 8 | JCVI synteny & Ka/Ks | JCVI + R |
 | 9 | MCScanX synteny & Circos | MCScanX + R (circlize) |
@@ -130,6 +131,11 @@ step3:
 # Tree tool: "iqtree" (accurate, slow) or "fasttree" (fast, approximate)
 step6:
   tree_tool: "iqtree"
+  # Auto-split tips into N monophyletic subfamilies (0 disables).
+  auto_n_subfamilies: 8
+  auto_subfamily_prefix: "Sub"
+  # Render "circular", "rectangular", or "both" PDFs
+  tree_layout: "both"
 
 # Use precomputed results for synteny (set to false to compute from scratch)
 step8:
@@ -181,7 +187,8 @@ output/
 │   ├── Gene_Information.xlsx          # Gene properties table
 │   └── Gene_Information.csv
 ├── 06_tree/
-│   └── phylogenetic_tree.pdf          # Phylogenetic tree figure
+│   ├── phylogenetic_tree_circular.pdf    # Circular layout with subfamily hilights
+│   └── phylogenetic_tree_rectangular.pdf # Rectangular layout with subfamily hilights
 ├── 07_motif/
 │   ├── meme_location.txt              # Motif coordinates
 │   └── Tree_Domain_Motif_GeneStructure.pdf  # Composite figure

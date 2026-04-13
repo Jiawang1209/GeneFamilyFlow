@@ -59,6 +59,19 @@ def get_seed_references(pfam_id):
         )
     return refs
 
+# Species ID prefix map (used when assigning gene IDs to species in steps 5/6/8).
+# Falls back to the first two characters of the species name when not set.
+_SPECIES_PREFIX_OVERRIDES = config.get("species_id_prefix", {}) or {}
+
+
+def _species_prefix(sp):
+    return _SPECIES_PREFIX_OVERRIDES.get(sp, sp[:2])
+
+
+def build_species_map():
+    return ",".join(f"{_species_prefix(sp)}={sp}" for sp in SPECIES)
+
+
 # Tree tool
 TREE_TOOL = config["step6"].get("tree_tool", "iqtree")
 
@@ -77,7 +90,8 @@ rule all:
         # Step 5
         f"{OUT_DIR}/05_genefamily_info/Gene_Information.xlsx",
         # Step 6
-        f"{OUT_DIR}/06_tree/phylogenetic_tree.pdf",
+        f"{OUT_DIR}/06_tree/phylogenetic_tree_circular.pdf",
+        f"{OUT_DIR}/06_tree/phylogenetic_tree_rectangular.pdf",
         # Step 7
         f"{OUT_DIR}/07_motif/meme_location.txt",
         f"{OUT_DIR}/07_motif/Tree_Domain_Motif_GeneStructure.pdf",
@@ -466,10 +480,7 @@ rule step05_genefamily_info:
         xlsx = f"{OUT_DIR}/05_genefamily_info/Gene_Information.xlsx",
         csv  = f"{OUT_DIR}/05_genefamily_info/Gene_Information.csv",
     params:
-        species_map = ",".join(
-            f"{sp[:2] if sp != 'Osativa' else 'LOC_Os'}={sp}"
-            for sp in SPECIES
-        ),
+        species_map = build_species_map(),
     log:
         f"{LOG_DIR}/05_genefamily_info.log",
     shell:
@@ -550,18 +561,19 @@ else:
 
 
 rule step06_tree_plot:
-    """Visualize phylogenetic tree with ggtree."""
+    """Visualize phylogenetic tree with ggtree — circular + rectangular."""
     input:
         tree = f"{WORK_DIR}/06_tree/tree.nwk",
     output:
-        pdf = f"{OUT_DIR}/06_tree/phylogenetic_tree.pdf",
+        circular    = f"{OUT_DIR}/06_tree/phylogenetic_tree_circular.pdf",
+        rectangular = f"{OUT_DIR}/06_tree/phylogenetic_tree_rectangular.pdf",
     params:
-        species_map = ",".join(
-            f"{sp[:2] if sp != 'Osativa' else 'LOC_Os'}={sp}"
-            for sp in SPECIES
-        ),
+        species_map = build_species_map(),
         group_file = config["step6"].get("group_file", ""),
-        layout     = config["step6"].get("tree_layout", "circular"),
+        layout     = config["step6"].get("tree_layout", "both"),
+        n_subfamilies   = config["step6"].get("auto_n_subfamilies", 8),
+        subfamily_prefix = config["step6"].get("auto_subfamily_prefix", "Sub"),
+        outdir = f"{OUT_DIR}/06_tree",
     log:
         f"{LOG_DIR}/06_tree_plot.log",
     run:
@@ -570,7 +582,9 @@ rule step06_tree_plot:
             f"--treefile {input.tree} "
             f"--species_map '{params.species_map}' "
             f"--layout {params.layout} "
-            f"--outdir $(dirname {output.pdf})"
+            f"--n_subfamilies {params.n_subfamilies} "
+            f"--subfamily_prefix '{params.subfamily_prefix}' "
+            f"--outdir {params.outdir}"
         )
         if params.group_file:
             cmd += f" --group_file {params.group_file}"
@@ -610,6 +624,7 @@ rule step07_parse_meme:
     """Parse MEME output to extract motif info and locations."""
     input:
         meme_txt = f"{WORK_DIR}/07_motif/meme_out/meme.txt",
+        fasta    = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
     output:
         info     = f"{OUT_DIR}/07_motif/meme_info.txt",
         location = f"{OUT_DIR}/07_motif/meme_location.txt",
@@ -620,6 +635,7 @@ rule step07_parse_meme:
     run:
         cmd = (
             f"python3 scripts/parse_meme_output.py {input.meme_txt} "
+            f"--fasta {input.fasta} "
             f"-o $(dirname {output.info})"
         )
         if params.pattern:
@@ -627,12 +643,20 @@ rule step07_parse_meme:
         shell(cmd + f" 2>&1 | tee {log}")
 
 
+def _step07_plot_inputs():
+    inputs = {
+        "location": f"{OUT_DIR}/07_motif/meme_location.txt",
+        "tree": f"{WORK_DIR}/06_tree/tree.nwk",
+    }
+    if USE_PFAM_SCAN:
+        inputs["pfam_scan"] = f"{WORK_DIR}/04_identification/Pfam_scan.out"
+    return inputs
+
+
 rule step07_plot:
     """Composite: Tree + Domain + Motif + Gene Structure."""
     input:
-        location  = f"{OUT_DIR}/07_motif/meme_location.txt",
-        tree      = f"{WORK_DIR}/06_tree/tree.nwk",
-        pfam_scan = f"{WORK_DIR}/04_identification/Pfam_scan.out",
+        unpack(lambda wc: _step07_plot_inputs()),
     output:
         pdf = f"{OUT_DIR}/07_motif/Tree_Domain_Motif_GeneStructure.pdf",
     params:
@@ -645,9 +669,10 @@ rule step07_plot:
             f"Rscript R/07_domain_motif_structure.R "
             f"--treefile {input.tree} "
             f"--motif_file {input.location} "
-            f"--pfam_scan {input.pfam_scan} "
             f"--outdir $(dirname {output.pdf})"
         )
+        if USE_PFAM_SCAN:
+            cmd += f" --pfam_scan {input.pfam_scan}"
         if params.group_file:
             cmd += f" --group_file {params.group_file}"
         if params.gff3:
@@ -754,10 +779,7 @@ rule step08_kaks_plot:
     output:
         pdf = f"{OUT_DIR}/08_jcvi_kaks/08_jcvi_kaks.pdf",
     params:
-        species_map = ",".join(
-            f"{sp[:2] if sp != 'Osativa' else 'LOC_Os'}={sp}"
-            for sp in SPECIES
-        ),
+        species_map = build_species_map(),
     log:
         f"{LOG_DIR}/08_jcvi_kaks.log",
     shell:

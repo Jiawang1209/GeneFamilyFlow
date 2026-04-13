@@ -14,6 +14,14 @@ species:
 # Target species for single-species detailed analyses (Steps 6-10)
 target_species: "Sbicolor"
 
+# Map each species to the ID prefix used in sequence/gene identifiers.
+# Used by steps 5/6/8 to assign species to gene IDs. If a species is not listed,
+# falls back to the first two characters of the species name.
+species_id_prefix:
+  Sbicolor: "Sobic."
+  Athaliana: "AT"
+  Osativa: "LOC_Os"
+
 # Data and output directories
 database_dir: "example/1.database"        # Input: raw genome data
 output_dir: "output"                      # Output: all analysis results
@@ -172,11 +180,18 @@ step6:
   tree_figure_width: 15      # inches
   tree_figure_height: 15     # inches
 
+  # Auto-split tips into N monophyletic subfamilies when no manual group_file
+  # is provided. Uses top-down recursive clade splitting (guarantees monophyly).
+  # Set 0 to disable. A manual `group_file` (xlsx with label/Group/rename
+  # columns) overrides auto-splitting for fine-grained curation.
+  auto_n_subfamilies: 8
+  auto_subfamily_prefix: "Sub"
+
+  # Tree layout(s) to render: "circular", "rectangular", or "both" (default).
+  tree_layout: "both"
+
   # R script
   r_script: "R/06_tree.R"
-
-  # Note: Manual curation required for tree_group_2.xlsx after this step
-  # This file defines subfamilies and is used by downstream analyses
 
 # ============================================================================
 # STEP 7: MOTIF AND GENE STRUCTURE ANALYSIS
