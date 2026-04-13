@@ -80,29 +80,39 @@ TREE_TOOL = config["step6"].get("tree_tool", "iqtree")
 # merges them according to `step4.domain_combine` directly, skipping pfam_scan.pl.
 USE_PFAM_SCAN = config["step4"].get("use_pfam_scan", True)
 
+# Optional steps
+STEP14_ENABLED = config.get("step14_qrtpcr", {}).get("enabled", False)
+
 # ---------------------------------------------------------------------------
 # rule all — define final targets
 # ---------------------------------------------------------------------------
+ALL_TARGETS = [
+    # Step 4 (final gene family set)
+    f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
+    # Step 5
+    f"{OUT_DIR}/05_genefamily_info/Gene_Information.xlsx",
+    # Step 6
+    f"{OUT_DIR}/06_tree/phylogenetic_tree_circular.pdf",
+    f"{OUT_DIR}/06_tree/phylogenetic_tree_rectangular.pdf",
+    # Step 7
+    f"{OUT_DIR}/07_motif/meme_location.txt",
+    f"{OUT_DIR}/07_motif/Tree_Domain_Motif_GeneStructure.pdf",
+    # Step 8
+    f"{OUT_DIR}/08_jcvi_kaks/08_jcvi_kaks.pdf",
+    # Step 9
+    *expand(f"{OUT_DIR}/09_circos/circos_{{sp}}.pdf", sp=SPECIES),
+    # Step 10
+    f"{OUT_DIR}/10_promoter/promoter_elements.pdf",
+    # Step 11
+    f"{OUT_DIR}/11_ppi/PPI_network.pdf",
+]
+
+if STEP14_ENABLED:
+    ALL_TARGETS.append(f"{OUT_DIR}/14_qrt_pcr/qRT_PCR.pdf")
+
 rule all:
     input:
-        # Step 4 (final gene family set)
-        f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
-        # Step 5
-        f"{OUT_DIR}/05_genefamily_info/Gene_Information.xlsx",
-        # Step 6
-        f"{OUT_DIR}/06_tree/phylogenetic_tree_circular.pdf",
-        f"{OUT_DIR}/06_tree/phylogenetic_tree_rectangular.pdf",
-        # Step 7
-        f"{OUT_DIR}/07_motif/meme_location.txt",
-        f"{OUT_DIR}/07_motif/Tree_Domain_Motif_GeneStructure.pdf",
-        # Step 8
-        f"{OUT_DIR}/08_jcvi_kaks/08_jcvi_kaks.pdf",
-        # Step 9
-        expand(f"{OUT_DIR}/09_circos/circos_{{sp}}.pdf", sp=SPECIES),
-        # Step 10
-        f"{OUT_DIR}/10_promoter/promoter_elements.pdf",
-        # Step 11
-        f"{OUT_DIR}/11_ppi/PPI_network.pdf",
+        ALL_TARGETS,
 
 
 # ===========================================================================
@@ -1026,15 +1036,35 @@ if config.get("step13_go_kegg", {}).get("enabled", False):
                 --outdir $(dirname {output})
             """
 
-if config.get("step14_qrtpcr", {}).get("enabled", False):
-    rule step14_qrtpcr:
+if STEP14_ENABLED:
+    rule step14_qrt_pcr:
+        """qRT-PCR relative expression bar plot with optional significance stars."""
         input:
-            config["step14_qrtpcr"]["expression_data"],
+            expression = config["step14_qrtpcr"]["expression_data"],
         output:
-            f"{OUT_DIR}/14_qrtpcr/qrtpcr_plot.pdf",
+            pdf = f"{OUT_DIR}/14_qrt_pcr/qRT_PCR.pdf",
+            summary = f"{OUT_DIR}/14_qrt_pcr/qRT_PCR_summary.csv",
+        params:
+            sheet       = config["step14_qrtpcr"].get("sheet", "Sheet5"),
+            id_col      = config["step14_qrtpcr"].get("id_col", "ID"),
+            group_cols  = ",".join(config["step14_qrtpcr"].get("group_cols", []) or []),
+            comparisons = ",".join(config["step14_qrtpcr"].get("comparisons", []) or []),
+            ncol        = config["step14_qrtpcr"].get("facet_ncol", 4),
+            width       = config["step14_qrtpcr"].get("figure_width", 12),
+            height      = config["step14_qrtpcr"].get("figure_height", 8),
+        log:
+            f"{LOG_DIR}/14_qrt_pcr.log",
         shell:
             """
             Rscript R/14_qrt_pcr.R \
-                --input {input} \
-                --outdir $(dirname {output})
+                --expression {input.expression} \
+                --sheet "{params.sheet}" \
+                --id_col "{params.id_col}" \
+                --group_cols "{params.group_cols}" \
+                --comparisons "{params.comparisons}" \
+                --outdir $(dirname {output.pdf}) \
+                --ncol {params.ncol} \
+                --width {params.width} \
+                --height {params.height} \
+                2>&1 | tee {log}
             """

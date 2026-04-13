@@ -336,8 +336,33 @@ step13_go_kegg:
   r_script: "R/13_go_kegg.R"
 
 step14_qrtpcr:
+  # Toggle Step 14 on/off. When false, the rule is skipped entirely.
   enabled: false
-  expression_data: "example/14.qRT_PCR/qrt_pcr_data.xlsx"
+
+  # Wide-format xlsx: one ID column + one column per experimental group,
+  # rows = biological replicates (multiple rows allowed per gene).
+  expression_data: "example/14.qRT_PCR/表达量_3.xlsx"
+  sheet: "Sheet5"
+  id_col: "ID"
+
+  # Group columns in display order. Comment out to use every non-ID column.
+  group_cols:
+    - "ck地上"
+    - "ln地上"
+    - "ck地下"
+    - "ln地下"
+
+  # Optional pairwise t-test comparisons rendered as significance stars.
+  # Leave empty to skip.
+  comparisons:
+    - "ck地上:ln地上"
+    - "ck地下:ln地下"
+
+  # Layout
+  facet_ncol: 4
+  figure_width: 12
+  figure_height: 8
+
   r_script: "R/14_qrt_pcr.R"
 
 # ============================================================================
