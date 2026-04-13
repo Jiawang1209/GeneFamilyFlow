@@ -17,3 +17,17 @@ output/
 work/
 logs/
 reports/
+
+# Snakemake cache and state
+.snakemake/
+
+# Test coverage artifacts
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Tool state (oh-my-claudecode, agentbridge, ccb)
+.omc/
+.agentbridge/
+.ccb/
