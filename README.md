@@ -83,11 +83,14 @@ example/1.database/
 └── Sbicolor.genome.fasta     # Genome sequences (for promoter extraction)
 ```
 
-Provide HMM and seed files for each Pfam domain:
+Provide the HMM model for each Pfam domain. BLAST seed sequences are extracted automatically from reference species at runtime (see `step3.reference_species`):
 
 ```
-example/2.hmmsearch/PF00854.hmm       # Pfam HMM model
-example/3.blast/PF00854.TAIR.ID.fa    # Seed sequences for BLAST
+example/2.hmmsearch/PF00854.hmm                          # Pfam HMM model
+example/3.blast/references/Athaliana.domains.tsv         # 2-col clean table (committed)
+example/3.blast/references/Athaliana.pep.fasta           # gene-level proteome (user-provided)
+example/3.blast/references/Osativa.domains.tsv           # 2-col clean table (committed)
+example/3.blast/references/Osativa.pep.fasta             # gene-level proteome (user-provided)
 ```
 
 ### Configure the pipeline
@@ -108,10 +111,21 @@ step2:
   domains:
     - pfam_id: "PF00854"
       pfam_hmm_file: "example/2.hmmsearch/PF00854.hmm"
-      seed_sequence_file: "example/3.blast/PF00854.TAIR.ID.fa"
+      seed_references:
+        - Athaliana
     # - pfam_id: "PF00005"
     #   pfam_hmm_file: "path/to/PF00005.hmm"
-    #   seed_sequence_file: "path/to/PF00005.seed.fa"
+    #   seed_references: [Athaliana, Osativa]
+
+# Reference species used by rule step03_extract_seed to build the BLAST seed
+step3:
+  reference_species:
+    Athaliana:
+      domains_table: "example/3.blast/references/Athaliana.domains.tsv"
+      proteome:      "example/3.blast/references/Athaliana.pep.fasta"
+    Osativa:
+      domains_table: "example/3.blast/references/Osativa.domains.tsv"
+      proteome:      "example/3.blast/references/Osativa.pep.fasta"
 
 # Tree tool: "iqtree" (accurate, slow) or "fasttree" (fast, approximate)
 step6:
@@ -152,6 +166,15 @@ Results are organized in the `output/` directory:
 
 ```
 output/
+├── 02_hmmsearch/
+│   └── {domain}/
+│       ├── {species}.pfam.domtblout  # First-round HMM search results
+│       ├── custom.hmm                # Custom-built HMM (second round)
+│       └── hmm_2nd_ids.txt           # Final HMM candidate IDs
+├── 03_blast/
+│   └── {domain}/
+│       ├── {species}.blast           # Raw BLASTP hits per species
+│       └── blast_ids.txt             # Final BLAST candidate IDs
 ├── 04_identification/
 │   └── identify.ID.clean.fa          # Final gene family sequences
 ├── 05_genefamily_info/

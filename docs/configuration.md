@@ -46,7 +46,8 @@ step2:
   domains:
     - pfam_id: "PF00854"
       pfam_hmm_file: "example/2.hmmsearch/PF00854.hmm"
-      seed_sequence_file: "example/3.blast/PF00854.TAIR.ID.fa"
+      seed_references:
+        - Athaliana
   hmmsearch_evalue: 1e-10
   clustering_tool: "clustalw"
   hmmbuild_calibrate: true
@@ -58,7 +59,7 @@ step2:
 |-----|-------------|
 | `domains[].pfam_id` | Pfam accession (e.g. `PF00854`). |
 | `domains[].pfam_hmm_file` | Path to the Pfam `.hmm` model file. |
-| `domains[].seed_sequence_file` | Seed sequences from a reference species (used for BLAST in Step 3). |
+| `domains[].seed_references` | List of reference species keys (see `step3.reference_species`). The pipeline filters each reference by this `pfam_id` at runtime to build the BLAST seed FASTA. Omit to use every declared reference. |
 | `hmmsearch_evalue` | E-value cutoff for `hmmsearch`. |
 | `clustering_tool` | `clustalw` or `muscle` — used to build the custom HMM from round-1 hits. |
 | `hmmbuild_calibrate` | Run `hmmbuild` with calibration. |
@@ -69,13 +70,26 @@ step2:
 
 ```yaml
 step3:
+  reference_species:
+    Athaliana:
+      domains_table: "example/3.blast/references/Athaliana.domains.tsv"
+      proteome:      "example/3.blast/references/Athaliana.pep.fasta"
+    Osativa:
+      domains_table: "example/3.blast/references/Osativa.domains.tsv"
+      proteome:      "example/3.blast/references/Osativa.pep.fasta"
   blast_evalue: 1e-10
   blast_num_threads: 10
   blast_num_alignments: 10
   blast_outfmt: "6 std qlen slen"
 ```
 
-Standard BLAST+ parameters. `blast_outfmt: "6 std qlen slen"` adds query/subject length columns to tabular output for downstream filtering.
+**Seed extraction**. For each domain, `rule step03_extract_seed` invokes `scripts/extract_seed_by_pfam.py` once per reference species, filters the clean 2-column domains TSV by the target `pfam_id`, pulls matching proteins from the gene-level proteome FASTA, and concatenates the per-reference outputs into `output/03_blast/{domain}/seed.fa`. Swapping the target domain requires no manual FASTA preparation — just update `step2.domains`.
+
+| Key | Description |
+|-----|-------------|
+| `reference_species.<name>.domains_table` | 2-column TSV `gene_id<TAB>pfam_id`, one row per hit. Clean files for Arabidopsis/rice are committed under `example/3.blast/references/`. |
+| `reference_species.<name>.proteome` | Gene-level protein FASTA. The first whitespace-delimited token after `>` must be the gene ID (isoform suffix already stripped). Large files are gitignored; drop your own under the same directory. |
+| `blast_evalue` / `blast_num_threads` / `blast_num_alignments` / `blast_outfmt` | Standard BLAST+ parameters. `blast_outfmt: "6 std qlen slen"` adds query/subject length columns for downstream filtering. |
 
 ---
 
@@ -84,6 +98,7 @@ Standard BLAST+ parameters. `blast_outfmt: "6 std qlen slen"` adds query/subject
 ```yaml
 step4:
   merge_method: "intersection"
+  domain_combine: "any"
   use_hmmscan: true
   use_pfam_scan: true
   pfam_scan_evalue: 1e-5
@@ -92,13 +107,24 @@ step4:
 
 | Key | Description |
 |-----|-------------|
-| `merge_method` | `intersection` (strict: HMM ∩ BLAST) or `union` (lenient: HMM ∪ BLAST). |
+| `merge_method` | Per-domain HMM/BLAST merge: `intersection` (strict: HMM ∩ BLAST) or `union` (lenient: HMM ∪ BLAST). |
+| `domain_combine` | Cross-domain combination strategy: `any` (union — keep genes with at least one listed domain) or `all` (intersection — require every listed domain). See below. |
 | `use_hmmscan` | Run `hmmscan` against full Pfam database. |
 | `use_pfam_scan` | Run `pfam_scan.pl` for domain architecture verification. |
 | `pfam_scan_evalue` | E-value cutoff for domain verification. |
 | `pfam_database_dir` | **Required** — local Pfam database directory (contains `Pfam-A.hmm`). |
 
 **Important**: `pfam_database_dir` must point to a pre-downloaded Pfam database. See [troubleshooting.md](troubleshooting.md#pfam-database).
+
+### Choosing `domain_combine`
+
+A gene family may contain multiple Pfam domains. Use this parameter to express the biological relationship between them:
+
+- **`any` (default)** — A gene is a family member if it has **at least one** of the listed domains. Use this for families with variable architecture, where members may contain different subsets of the domains. Example: NLR immune receptors (some have only NB-ARC, others combine NB-ARC + LRR + TIR).
+
+- **`all`** — A gene is a family member only if it has **every** listed domain. Use this for strict multi-domain families where the architecture is conserved across all members. Example: enzymes that require both a binding domain and a catalytic domain.
+
+When `step2.domains` lists only one domain, `any` and `all` produce the same result.
 
 ---
 

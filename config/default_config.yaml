@@ -38,14 +38,20 @@ step2:
   # ---- Multi-domain support ----
   # Each entry defines one Pfam domain to search.
   # All domains are searched independently; hits are merged in Step 4.
+  #
+  # seed_references: list of reference species keys (see step3.reference_species)
+  #   to pull BLAST seed sequences from. Omit to use all reference species.
   domains:
     - pfam_id: "PF00854"
       pfam_hmm_file: "example/2.hmmsearch/PF00854.hmm"
-      seed_sequence_file: "example/3.blast/PF00854.TAIR.ID.fa"
+      seed_references:
+        - Athaliana
     # Add more domains as needed:
     # - pfam_id: "PF00005"
     #   pfam_hmm_file: "path/to/PF00005.hmm"
-    #   seed_sequence_file: "path/to/PF00005.seed.fa"
+    #   seed_references:
+    #     - Athaliana
+    #     - Osativa
 
   # E-value threshold for hmmsearch (shared across domains)
   hmmsearch_evalue: 1e-10
@@ -65,7 +71,24 @@ step2:
 # ============================================================================
 
 step3:
-  # BLAST parameters (shared across domains; seed files are per-domain in step2.domains)
+  # Reference species used to build BLAST seed FASTA per Pfam domain.
+  # For each reference, provide:
+  #   domains_table: 2-column TSV (gene_id<TAB>pfam_id), one row per hit.
+  #   proteome:      gene-level protein FASTA (first token after '>' = gene ID).
+  # At runtime, scripts/extract_seed_by_pfam.py filters the table by the
+  # target Pfam ID and extracts matching sequences into seed.fa.
+  #
+  # Large *.pep.fasta files are gitignored (user-provided). Small
+  # *.sample.* fixtures are committed for tests.
+  reference_species:
+    Athaliana:
+      domains_table: "example/3.blast/references/Athaliana.domains.tsv"
+      proteome:      "example/3.blast/references/Athaliana.pep.fasta"
+    Osativa:
+      domains_table: "example/3.blast/references/Osativa.domains.tsv"
+      proteome:      "example/3.blast/references/Osativa.pep.fasta"
+
+  # BLAST parameters (shared across domains)
   blast_evalue: 1e-10
   blast_num_threads: 10
   blast_num_alignments: 10
@@ -76,8 +99,17 @@ step3:
 # ============================================================================
 
 step4:
-  # Method to merge HMM and BLAST results
+  # Method to merge HMM and BLAST results (per-domain, inside each domain)
   merge_method: "intersection"  # or "union"
+
+  # Multi-domain combination strategy (across domains listed in step2.domains)
+  #   "any" → gene kept if it has at least one target domain (union; default)
+  #          Use for gene families with variable architecture (e.g. NLR: some
+  #          members have only NB-ARC, others have NB-ARC + LRR + TIR).
+  #   "all" → gene kept only if it has every target domain (intersection)
+  #          Use for strict multi-domain families where architecture is conserved.
+  # When only one domain is listed, both modes produce the same result.
+  domain_combine: "any"
 
   # Pfam domain verification
   use_hmmscan: true              # hmmscan (general scan)

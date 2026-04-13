@@ -31,3 +31,8 @@ coverage.xml
 .omc/
 .agentbridge/
 .ccb/
+
+# Reference proteomes (too large for git, user-provided).
+# Clean *.domains.tsv and small *.sample.* fixtures are committed.
+example/3.blast/references/*.pep.fasta
+!example/3.blast/references/*.sample.pep.fasta

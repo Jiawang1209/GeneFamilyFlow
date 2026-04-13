@@ -39,6 +39,26 @@ def get_domain_config(pfam_id):
             return d
     raise ValueError(f"Domain {pfam_id} not found in config step2.domains")
 
+
+def get_seed_references(pfam_id):
+    """Return the list of reference species keys for a domain's BLAST seed.
+
+    If the domain entry omits `seed_references`, fall back to every species
+    declared in step3.reference_species.
+    """
+    domain_cfg = get_domain_config(pfam_id)
+    all_refs = config["step3"]["reference_species"]
+    refs = domain_cfg.get("seed_references")
+    if refs is None:
+        return list(all_refs.keys())
+    missing = [r for r in refs if r not in all_refs]
+    if missing:
+        raise ValueError(
+            f"Domain {pfam_id} references unknown species {missing}; "
+            f"add them to step3.reference_species."
+        )
+    return refs
+
 # Tree tool
 TREE_TOOL = config["step6"].get("tree_tool", "iqtree")
 
@@ -106,7 +126,7 @@ rule step02_hmmsearch_pfam:
         fasta = f"{WORK_DIR}/01_database/{{species}}.longest.pep.fasta",
         hmm   = lambda wc: get_domain_config(wc.domain)["pfam_hmm_file"],
     output:
-        domtblout = f"{WORK_DIR}/02_hmmsearch/{{domain}}/{{species}}.pfam.domtblout",
+        domtblout = f"{OUT_DIR}/02_hmmsearch/{{domain}}/{{species}}.pfam.domtblout",
     log:
         f"{LOG_DIR}/02_hmmsearch_pfam_{{domain}}_{{species}}.log",
     threads: 4
@@ -123,9 +143,9 @@ rule step02_hmmsearch_pfam:
 rule step02_extract_hmm_ids:
     """Extract gene IDs passing E-value from hmmsearch results (per domain)."""
     input:
-        expand(f"{WORK_DIR}/02_hmmsearch/{{{{domain}}}}/{{sp}}.pfam.domtblout", sp=SPECIES),
+        expand(f"{OUT_DIR}/02_hmmsearch/{{{{domain}}}}/{{sp}}.pfam.domtblout", sp=SPECIES),
     output:
-        ids = f"{WORK_DIR}/02_hmmsearch/{{domain}}/hmm_candidate_ids.txt",
+        ids = f"{OUT_DIR}/02_hmmsearch/{{domain}}/hmm_candidate_ids.txt",
     params:
         evalue = config["step2"]["hmmsearch_evalue"],
     shell:
@@ -138,11 +158,11 @@ rule step02_extract_hmm_ids:
 rule step02_clustalw_hmmbuild:
     """Build custom HMM from first-round HMM hits (per domain)."""
     input:
-        ids   = f"{WORK_DIR}/02_hmmsearch/{{domain}}/hmm_candidate_ids.txt",
+        ids   = f"{OUT_DIR}/02_hmmsearch/{{domain}}/hmm_candidate_ids.txt",
         fasta = f"{WORK_DIR}/01_database/all_species.pep.fasta",
     output:
-        hmm = f"{WORK_DIR}/02_hmmsearch/{{domain}}/custom.hmm",
-        aln = f"{WORK_DIR}/02_hmmsearch/{{domain}}/1st_round.aln",
+        hmm = f"{OUT_DIR}/02_hmmsearch/{{domain}}/custom.hmm",
+        aln = f"{OUT_DIR}/02_hmmsearch/{{domain}}/1st_round.aln",
     log:
         f"{LOG_DIR}/02_clustalw_hmmbuild_{{domain}}.log",
     threads: MAX_THREADS
@@ -159,9 +179,9 @@ rule step02_hmmsearch_custom:
     """Search with custom HMM model — 2nd round (per domain)."""
     input:
         fasta = f"{WORK_DIR}/01_database/{{species}}.longest.pep.fasta",
-        hmm   = f"{WORK_DIR}/02_hmmsearch/{{domain}}/custom.hmm",
+        hmm   = f"{OUT_DIR}/02_hmmsearch/{{domain}}/custom.hmm",
     output:
-        domtblout = f"{WORK_DIR}/02_hmmsearch/{{domain}}/{{species}}.custom.domtblout",
+        domtblout = f"{OUT_DIR}/02_hmmsearch/{{domain}}/{{species}}.custom.domtblout",
     log:
         f"{LOG_DIR}/02_hmmsearch_custom_{{domain}}_{{species}}.log",
     shell:
@@ -176,9 +196,9 @@ rule step02_hmmsearch_custom:
 rule step02_final_hmm_ids:
     """Collect 2nd-round HMM IDs (per domain)."""
     input:
-        expand(f"{WORK_DIR}/02_hmmsearch/{{{{domain}}}}/{{sp}}.custom.domtblout", sp=SPECIES),
+        expand(f"{OUT_DIR}/02_hmmsearch/{{{{domain}}}}/{{sp}}.custom.domtblout", sp=SPECIES),
     output:
-        f"{WORK_DIR}/02_hmmsearch/{{domain}}/hmm_2nd_ids.txt",
+        f"{OUT_DIR}/02_hmmsearch/{{domain}}/hmm_2nd_ids.txt",
     params:
         evalue = config["step2"]["hmmsearch_evalue"],
     shell:
@@ -192,14 +212,65 @@ rule step02_final_hmm_ids:
 # STEP 3: BLAST search (per domain)
 # ===========================================================================
 
-rule step03_makeblastdb:
-    """Build BLAST database from seed sequences (per domain)."""
+rule step03_extract_seed:
+    """Extract BLAST seed sequences for a Pfam domain from reference species.
+
+    Uses scripts/extract_seed_by_pfam.py to filter each reference species'
+    clean 2-col domains TSV by the target Pfam ID, pulls matching proteins
+    from the gene-level FASTA, and concatenates the per-reference outputs.
+    """
     input:
-        seed = lambda wc: get_domain_config(wc.domain)["seed_sequence_file"],
+        domains_tables = lambda wc: [
+            config["step3"]["reference_species"][sp]["domains_table"]
+            for sp in get_seed_references(wc.domain)
+        ],
+        proteomes = lambda wc: [
+            config["step3"]["reference_species"][sp]["proteome"]
+            for sp in get_seed_references(wc.domain)
+        ],
     output:
-        pin = f"{WORK_DIR}/03_blast/{{domain}}/seed_db.pin",
+        seed = f"{OUT_DIR}/03_blast/{{domain}}/seed.fa",
+    log:
+        f"{LOG_DIR}/03_extract_seed_{{domain}}.log",
+    run:
+        import subprocess
+        from pathlib import Path
+        out_path = Path(output.seed)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        refs = get_seed_references(wildcards.domain)
+        ref_cfg = config["step3"]["reference_species"]
+        parts = []
+        with open(log[0], "w") as log_fh:
+            for sp in refs:
+                cfg = ref_cfg[sp]
+                part = out_path.parent / f"seed.{sp}.fa"
+                log_fh.write(f"[extract] {sp} -> {part}\n")
+                log_fh.flush()
+                subprocess.run(
+                    [
+                        "python3", "scripts/extract_seed_by_pfam.py",
+                        "--domains-table", cfg["domains_table"],
+                        "--proteome",      cfg["proteome"],
+                        "--pfam-id",       wildcards.domain,
+                        "--output",        str(part),
+                    ],
+                    check=True,
+                    stdout=log_fh, stderr=subprocess.STDOUT,
+                )
+                parts.append(part)
+        with open(out_path, "w") as fh_out:
+            for part in parts:
+                fh_out.write(part.read_text())
+
+
+rule step03_makeblastdb:
+    """Build BLAST database from extracted seed sequences (per domain)."""
+    input:
+        seed = f"{OUT_DIR}/03_blast/{{domain}}/seed.fa",
+    output:
+        pin = f"{OUT_DIR}/03_blast/{{domain}}/seed_db.pin",
     params:
-        db = f"{WORK_DIR}/03_blast/{{domain}}/seed_db",
+        db = f"{OUT_DIR}/03_blast/{{domain}}/seed_db",
     shell:
         """
         makeblastdb -in {input.seed} -dbtype prot \
@@ -211,11 +282,11 @@ rule step03_blastp:
     """BLAST each species against seed database (per domain)."""
     input:
         fasta = f"{WORK_DIR}/01_database/{{species}}.longest.pep.fasta",
-        pin   = f"{WORK_DIR}/03_blast/{{domain}}/seed_db.pin",
+        pin   = f"{OUT_DIR}/03_blast/{{domain}}/seed_db.pin",
     output:
-        blast = f"{WORK_DIR}/03_blast/{{domain}}/{{species}}.blast",
+        blast = f"{OUT_DIR}/03_blast/{{domain}}/{{species}}.blast",
     params:
-        db     = f"{WORK_DIR}/03_blast/{{domain}}/seed_db",
+        db     = f"{OUT_DIR}/03_blast/{{domain}}/seed_db",
         evalue = config["step3"]["blast_evalue"],
         fmt    = config["step3"]["blast_outfmt"],
     threads: config["step3"].get("blast_num_threads", 10)
@@ -236,9 +307,9 @@ rule step03_blastp:
 rule step03_collect_blast_ids:
     """Collect BLAST hit IDs (per domain)."""
     input:
-        expand(f"{WORK_DIR}/03_blast/{{{{domain}}}}/{{sp}}.blast", sp=SPECIES),
+        expand(f"{OUT_DIR}/03_blast/{{{{domain}}}}/{{sp}}.blast", sp=SPECIES),
     output:
-        f"{WORK_DIR}/03_blast/{{domain}}/blast_ids.txt",
+        f"{OUT_DIR}/03_blast/{{domain}}/blast_ids.txt",
     shell:
         "cut -f1 {input} | sort -u > {output}"
 
@@ -250,8 +321,8 @@ rule step03_collect_blast_ids:
 rule step04_merge_per_domain:
     """Merge HMM and BLAST candidates per domain (intersection or union)."""
     input:
-        hmm   = f"{WORK_DIR}/02_hmmsearch/{{domain}}/hmm_2nd_ids.txt",
-        blast = f"{WORK_DIR}/03_blast/{{domain}}/blast_ids.txt",
+        hmm   = f"{OUT_DIR}/02_hmmsearch/{{domain}}/hmm_2nd_ids.txt",
+        blast = f"{OUT_DIR}/03_blast/{{domain}}/blast_ids.txt",
     output:
         ids = f"{WORK_DIR}/04_identification/{{domain}}.merged.ID",
     params:
@@ -303,7 +374,12 @@ rule step04_pfam_scan:
 
 
 rule step04_pfam_filter:
-    """Filter pfam_scan by ALL target domains and extract final gene set."""
+    """Verify candidates by pfam_scan and combine target domains.
+
+    The `domain_combine` mode decides how multi-domain results are merged:
+      - "any" → gene kept if it has at least one listed domain (union)
+      - "all" → gene kept only if it has every listed domain (intersection)
+    """
     input:
         pfam_out = f"{WORK_DIR}/04_identification/Pfam_scan.out",
         fasta    = f"{WORK_DIR}/04_identification/all_domains.ID.fa",
@@ -312,10 +388,13 @@ rule step04_pfam_filter:
         fasta = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
     params:
         pfam_ids = ",".join(DOMAIN_IDS),
+        mode     = config["step4"].get("domain_combine", "any"),
     shell:
         """
         python3 scripts/parse_pfam_scan.py {input.pfam_out} \
-            --pfam-id {params.pfam_ids} -o {output.ids}
+            --pfam-id {params.pfam_ids} \
+            --mode {params.mode} \
+            -o {output.ids}
         seqkit grep -f {output.ids} {input.fasta} -o {output.fasta}
         """
 
