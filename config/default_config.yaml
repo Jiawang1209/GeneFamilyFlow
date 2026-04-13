@@ -272,13 +272,8 @@ step11:
   igraph_layout: "gephi"       # or "fr", "circle", "kk"
 
 # ============================================================================
-# OPTIONAL STEPS: RNA-seq, GO/KEGG, qRT-PCR
+# OPTIONAL STEPS: GO/KEGG, qRT-PCR
 # ============================================================================
-
-step12_rnaseq:
-  enabled: false
-  expression_matrix: "example/12.rnaseq/expression_matrix.csv"
-  r_script: "R/12_rnaseq.R"
 
 step13_go_kegg:
   enabled: false

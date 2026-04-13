@@ -40,7 +40,7 @@ GeneFamilyFlow/
 - **Step 7**：Motif + 基因结构复合图
 - **Steps 8-9**：共线性（JCVI/MCScanX，`precomputed` 可选）
 - **Steps 10-11**：启动子分析 + PPI 网络
-- **Steps 12-14**：可选（RNA-seq、GO/KEGG、qRT-PCR）
+- **Steps 13-14**：可选（GO/KEGG、qRT-PCR）
 
 ## 代码规范
 

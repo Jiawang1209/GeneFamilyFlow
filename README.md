@@ -1,5 +1,10 @@
 # GeneFamilyFlow
 
+[![tests](https://github.com/Jiawang1209/GeneFamilyFlow/actions/workflows/test.yml/badge.svg)](https://github.com/Jiawang1209/GeneFamilyFlow/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Snakemake](https://img.shields.io/badge/snakemake-≥8.0-brightgreen.svg)](https://snakemake.github.io)
+[![Python](https://img.shields.io/badge/python-≥3.11-blue.svg)](https://www.python.org/)
+
 Automated multi-species gene family analysis pipeline built with Snakemake.
 
 GeneFamilyFlow integrates HMM search, BLAST, Pfam domain verification, phylogenetic tree construction, motif discovery, synteny analysis, promoter analysis, and PPI network visualization into a single reproducible workflow.
@@ -167,6 +172,36 @@ output/
     └── PPI_network.pdf                # PPI network
 ```
 
+## Documentation
+
+Full documentation lives in [`docs/`](docs/):
+
+| Document | Description |
+|----------|-------------|
+| [docs/configuration.md](docs/configuration.md) | Complete parameter reference for `config/default_config.yaml` |
+| [docs/tutorial.md](docs/tutorial.md) | Step-by-step walkthrough using the bundled example data |
+| [docs/output.md](docs/output.md) | Description of every output file and how to interpret it |
+| [docs/troubleshooting.md](docs/troubleshooting.md) | Common errors and fixes (install, runtime, external tools) |
+| [docs/development.md](docs/development.md) | Contributor guide: coding style, testing, adding new steps |
+
+## Contributing
+
+Contributions are welcome. Please read [docs/development.md](docs/development.md) before submitting a PR. All pull requests must:
+
+- Pass `pytest tests/ -v` (currently 65 tests, 81% coverage)
+- Pass `snakemake --configfile config/default_config.yaml -n` dry-run
+- Include tests for new Python code
+- Update relevant docs when changing config or output
+
+## Citation
+
+If you use GeneFamilyFlow in your research, please cite this repository:
+
+```
+Jiawang1209. GeneFamilyFlow: Automated multi-species gene family analysis pipeline.
+GitHub repository, https://github.com/Jiawang1209/GeneFamilyFlow
+```
+
 ## License
 
-MIT
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

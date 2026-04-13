@@ -854,21 +854,8 @@ rule step11_ppi:
 
 
 # ===========================================================================
-# OPTIONAL: Step 12-14 (RNA-seq, GO/KEGG, qRT-PCR)
+# OPTIONAL: Step 13-14 (GO/KEGG, qRT-PCR)
 # ===========================================================================
-
-if config.get("step12_rnaseq", {}).get("enabled", False):
-    rule step12_rnaseq:
-        input:
-            config["step12_rnaseq"]["expression_matrix"],
-        output:
-            f"{OUT_DIR}/12_rnaseq/expression_heatmap.pdf",
-        shell:
-            """
-            Rscript R/12_rnaseq.R \
-                --input {input} \
-                --outdir $(dirname {output})
-            """
 
 if config.get("step13_go_kegg", {}).get("enabled", False):
     rule step13_go_kegg:
