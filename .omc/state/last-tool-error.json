@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"conda run -n GeneFamilyFlow python -m pytest tests/test_parse_hmmsearch.py tests/test_merge_gene_ids.py tests/test_parse_pfam_scan.py -v 2>&1\",\"description\":\"Run tests for 3 new scripts\"}",
-  "error": "Exit code 1\nERROR conda.cli.main_run:execute(142): `conda run python -m pytest tests/test_parse_hmmsearch.py tests/test_merge_gene_ids.py tests/test_parse_pfam_scan.py -v` failed. (See above for error)\n============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/liuyue/miniforge3/envs/GeneFamilyFlow/bin/python\ncachedir: .pytest_cache\nrootdir: /Users/liuyue/Desktop/Github_repos/GeneFamilyFlow\nplugins: cov-...",
-  "timestamp": "2026-04-12T05:17:46.017Z",
-  "retry_count": 1
-}
