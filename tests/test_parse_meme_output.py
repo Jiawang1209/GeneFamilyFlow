@@ -10,6 +10,7 @@ from tempfile import TemporaryDirectory
 from scripts.parse_meme_output import (
     MotifInfo,
     MotifLocation,
+    load_fasta_ids,
     main,
     parse_meme,
     write_outputs,
@@ -109,6 +110,50 @@ class TestParseMeme(unittest.TestCase):
     def test_cli_missing_file(self) -> None:
         rc = main(["/nonexistent/meme.txt", "-o", str(self.tmp)])
         self.assertEqual(rc, 1)
+
+    def test_parse_with_fasta_whitelist(self) -> None:
+        motifs, locations = parse_meme(
+            self.meme_file,
+            allowed_ids={"GeneA.001G000100.1.p", "GeneC.003G000300.1.p"},
+        )
+        self.assertEqual(len(motifs), 2)
+        self.assertEqual(len(locations), 4)
+        self.assertTrue(all(
+            loc.gene in {"GeneA.001G000100.1.p", "GeneC.003G000300.1.p"}
+            for loc in locations
+        ))
+
+    def test_load_fasta_ids(self) -> None:
+        fasta = self.tmp / "in.fa"
+        fasta.write_text(
+            ">GeneA.001G000100.1.p some description\nACDEFG\n"
+            ">GeneB.002G000200.2.p\nHIJKLM\n"
+            ">GeneZ\nNNNN\n"
+        )
+        ids = load_fasta_ids(fasta)
+        self.assertEqual(
+            ids,
+            {"GeneA.001G000100.1.p", "GeneB.002G000200.2.p", "GeneZ"},
+        )
+
+    def test_cli_with_fasta(self) -> None:
+        fasta = self.tmp / "in.fa"
+        fasta.write_text(
+            ">GeneB.002G000200.2.p\nACDE\n"
+            ">GeneC.003G000300.1.p\nFGHI\n"
+        )
+        outdir = self.tmp / "with_fasta"
+        rc = main([
+            str(self.meme_file), "-o", str(outdir),
+            "--fasta", str(fasta),
+        ])
+        self.assertEqual(rc, 0)
+        loc_lines = (outdir / "meme_location.txt").read_text().strip().split("\n")
+        genes = {line.split("\t")[0] for line in loc_lines}
+        self.assertEqual(
+            genes,
+            {"GeneB.002G000200.2.p", "GeneC.003G000300.1.p"},
+        )
 
     def test_cli_with_gene_filter(self) -> None:
         outdir = self.tmp / "filtered"

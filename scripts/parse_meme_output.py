@@ -41,16 +41,34 @@ _RE_SITE_LINE = re.compile(
 )
 
 
+def load_fasta_ids(fasta_path: str | Path) -> set[str]:
+    """Return the set of sequence IDs (first whitespace-delimited token) in a FASTA file."""
+    ids: set[str] = set()
+    with open(fasta_path) as fh:
+        for line in fh:
+            if line.startswith(">"):
+                header = line[1:].strip()
+                if header:
+                    ids.add(header.split()[0])
+    return ids
+
+
 def parse_meme(
     meme_path: str | Path,
     gene_id_pattern: str | None = None,
+    allowed_ids: set[str] | None = None,
 ) -> tuple[list[MotifInfo], list[MotifLocation]]:
     """Parse MEME text output file.
 
     Args:
         meme_path: Path to meme.txt.
         gene_id_pattern: Optional regex to filter gene IDs (e.g. ``Sobic\\.``).
-            If None, all gene lines are included.
+            If None, no regex filter is applied.
+        allowed_ids: Optional whitelist of gene IDs (e.g. from the input FASTA).
+            When provided, only sites whose gene ID is in this set are kept.
+            This is the preferred filter — it guarantees output matches the
+            genes that were actually given to MEME, instead of relying on
+            prefix heuristics.
 
     Returns:
         Tuple of (motif_info_list, motif_location_list).
@@ -82,6 +100,8 @@ def parse_meme(
             site_match = _RE_SITE_LINE.match(stripped)
             if site_match:
                 gene_id = site_match.group(1)
+                if allowed_ids is not None and gene_id not in allowed_ids:
+                    continue
                 if gene_filter and not gene_filter.search(gene_id):
                     continue
                 start = int(site_match.group(2))
@@ -134,6 +154,16 @@ def build_argument_parser() -> argparse.ArgumentParser:
         help="Output directory (default: current directory).",
     )
     parser.add_argument(
+        "--fasta",
+        default=None,
+        help=(
+            "Optional FASTA file used as the MEME input. When provided, only "
+            "sites whose gene ID matches a header in this file are kept — "
+            "avoids prefix heuristics and guarantees output matches the "
+            "actual input genes."
+        ),
+    )
+    parser.add_argument(
         "--gene-id-pattern",
         default=None,
         help="Regex to filter gene IDs (e.g. 'Sobic\\.'). Default: keep all.",
@@ -150,8 +180,23 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Error: file not found: {meme_path}", file=sys.stderr)
         return 1
 
+    allowed_ids: set[str] | None = None
+    if args.fasta:
+        fasta_path = Path(args.fasta)
+        if not fasta_path.exists():
+            print(f"Error: fasta file not found: {fasta_path}", file=sys.stderr)
+            return 1
+        allowed_ids = load_fasta_ids(fasta_path)
+        if not allowed_ids:
+            print(f"Error: no sequence IDs found in {fasta_path}", file=sys.stderr)
+            return 1
+
     try:
-        motifs, locations = parse_meme(meme_path, args.gene_id_pattern)
+        motifs, locations = parse_meme(
+            meme_path,
+            gene_id_pattern=args.gene_id_pattern,
+            allowed_ids=allowed_ids,
+        )
     except Exception as exc:
         print(f"Error parsing MEME file: {exc}", file=sys.stderr)
         return 1
