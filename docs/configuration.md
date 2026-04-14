@@ -229,7 +229,21 @@ step9:
 step10:
   compute_promoter: false
   upstream_distance: 2000
-  plantcare_dir: "example/10.promoter/PlantCARE_410_SB_plantCARE"
+
+  # "jaspar" (default, recommended) | "local" | "plantcare"
+  scan_method: "jaspar"
+
+  # scan_method == "jaspar": offline FIMO + JASPAR 2024 CORE plants (~805 PFMs)
+  jaspar_meme:    "example/10.promoter/JASPAR2024_plants.meme"
+  jaspar_url:     "https://jaspar.elixir.no/download/data/2024/CORE/JASPAR2024_CORE_plants_non-redundant_pfms_meme.txt"
+  fimo_threshold: 1e-4
+
+  # scan_method == "local": offline literal-substring fixture (~142 motifs)
+  motif_library:  "example/10.promoter/plantcare_motifs.tsv"
+
+  # scan_method == "plantcare": manual web upload, kept for back-compat
+  plantcare_dir:  "example/10.promoter/PlantCARE_410_SB_plantCARE"
+
   element_annotation_file: "example/10.promoter/cir_element.desc.20240509.xlsx"
 ```
 
@@ -237,10 +251,14 @@ step10:
 |-----|-------------|
 | `compute_promoter` | Set `true` to extract promoters from `{target_species}.genome.fasta` using `bedtools`. |
 | `upstream_distance` | bp upstream of TSS. |
-| `plantcare_dir` | Directory of PlantCARE output files (manual submission required). |
-| `element_annotation_file` | Cis-element description/category file. |
+| `scan_method` | Cis-element scan strategy. `jaspar` runs FIMO offline against the shipped JASPAR Plants bundle (recommended). `local` runs an offline literal-substring scan against the small fixture motif library. `plantcare` reads a folder of manually-downloaded PlantCARE results. |
+| `jaspar_meme` / `jaspar_url` | Cached MEME bundle path and refresh URL. Run `python scripts/fetch_jaspar_plants.py` to materialize or refresh; use `--from-file` for air-gapped clusters. |
+| `fimo_threshold` | FIMO p-value threshold (default `1e-4`). |
+| `motif_library` | TSV motif library used by `scan_method=local`. |
+| `plantcare_dir` | Folder of manually-downloaded PlantCARE outputs (only used by `scan_method=plantcare`). |
+| `element_annotation_file` | Cis-element description/category file consumed by `R/10_promoter.R`. |
 
-**PlantCARE is an online tool** — submit sequences at [bioinformatics.psb.ugent.be/webtools/plantcare](https://bioinformatics.psb.ugent.be/webtools/plantcare/html/) and download results into `plantcare_dir`.
+**Default is fully offline.** FIMO ships with `envs/genefamily.yaml` (`meme>=5.5`) and the JASPAR bundle is committed to the repo, so the pipeline runs end-to-end without any web round-trip. `scan_method=plantcare` remains available for users who specifically need PlantCARE annotations from [bioinformatics.psb.ugent.be/webtools/plantcare](https://bioinformatics.psb.ugent.be/webtools/plantcare/html/).
 
 ---
 

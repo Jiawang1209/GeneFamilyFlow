@@ -32,7 +32,7 @@ GeneFamilyFlow integrates HMM search, BLAST, Pfam domain verification, phylogene
 | 7 | Motif & gene structure | MEME + R (ggtree, gggenes) |
 | 8 | JCVI synteny & Ka/Ks | JCVI + R |
 | 9 | MCScanX synteny & Circos | MCScanX + R (circlize) |
-| 10 | Promoter cis-element analysis | bedtools + PlantCARE + R |
+| 10 | Promoter cis-element analysis | bedtools + FIMO/JASPAR Plants (offline default) + R |
 | 11 | PPI network | R (ggNetView) |
 
 ## Installation
@@ -66,7 +66,7 @@ These tools require manual installation:
 | KaKs_Calculator | Ka/Ks calculation (Step 8) | [SourceForge](https://sourceforge.net/projects/kakscalculator2/) |
 | ggNetView | PPI network visualization (Step 11) | `Rscript -e 'install.packages("ggNetView")'` |
 
-PlantCARE (Step 10) is an [online tool](https://bioinformatics.psb.ugent.be/webtools/plantcare/html/) — submit promoter sequences manually and download results.
+Step 10 runs **fully offline by default** using FIMO (already in `envs/genefamily.yaml`) against the JASPAR 2024 CORE plants non-redundant motif bundle (~805 plant TF PFMs), shipped at `example/10.promoter/JASPAR2024_plants.meme`. Refresh from `jaspar.elixir.no` with `python scripts/fetch_jaspar_plants.py`. The legacy `plantcare` (manual web upload) and `local` (literal-substring fallback) modes are still selectable via `step10.scan_method`.
 
 ## Usage
 

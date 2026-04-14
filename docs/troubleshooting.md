@@ -151,14 +151,40 @@ export PATH=$PATH:/path/to/KaKs_Calculator2/bin
 
 Or set `step8.precomputed: true` and provide `kaks_file` to skip the computation.
 
-### PlantCARE (online tool)
+### Step 10 cis-element scan
 
-PlantCARE is a web service and cannot be automated. Workflow:
+The default `step10.scan_method: "jaspar"` runs FIMO offline against the
+shipped JASPAR 2024 CORE plants bundle — no manual web upload required.
 
-1. Run pipeline until Step 10 produces `promoter_sequences.fa`.
-2. Submit sequences manually at [PlantCARE](https://bioinformatics.psb.ugent.be/webtools/plantcare/html/).
-3. Download results into `step10.plantcare_dir`.
-4. Rerun: `snakemake --until step10_promoter`.
+If FIMO is missing:
+
+```text
+FileNotFoundError: FIMO binary 'fimo' not found on PATH
+```
+
+**Fix**: re-create the conda env (`meme>=5.5` is in `envs/genefamily.yaml`):
+
+```bash
+conda env update -f envs/genefamily.yaml
+```
+
+If the JASPAR bundle is missing or stale, refresh it (idempotent, atomic):
+
+```bash
+python scripts/fetch_jaspar_plants.py                # download
+python scripts/fetch_jaspar_plants.py --force        # force refresh
+python scripts/fetch_jaspar_plants.py --from-file my_local_copy.meme  # offline / air-gapped
+```
+
+Other scan methods:
+
+- `scan_method: "local"` — offline literal-substring scan against the
+  small `motif_library` TSV. Lighter, lower recall, no FIMO required.
+- `scan_method: "plantcare"` — back-compat manual workflow:
+  1. Run pipeline until Step 10 produces the promoter FASTA.
+  2. Submit sequences at [PlantCARE](https://bioinformatics.psb.ugent.be/webtools/plantcare/html/).
+  3. Download results into `step10.plantcare_dir`.
+  4. Rerun: `snakemake --until step10_promoter`.
 
 ### `ggNetView` R package
 

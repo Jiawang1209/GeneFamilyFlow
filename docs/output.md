@@ -139,14 +139,16 @@ output/
 
 | File | Format | Description |
 |------|--------|-------------|
-| `promoter_elements.pdf` | PDF | Cis-element distribution heatmap across promoters. |
-| `promoter_sequences.fa` | FASTA | Extracted upstream regions (when `compute_promoter: true`). |
-| `plantcare_parsed.tsv` | TSV | Parsed PlantCARE output with element annotations. |
+| `output/10_promoter/promoter_elements.pdf` | PDF | Cis-element distribution heatmap across promoters. |
+| `work/10_promoter/{target}_upstream.fasta` | FASTA | Extracted upstream regions (when `compute_promoter: true`). |
+| `work/10_promoter/jaspar_fimo/plantCARE_output_jaspar.tab` | TSV | FIMO + JASPAR Plants hits in PlantCARE 8-column format (when `scan_method=jaspar`). |
+| `work/10_promoter/local_plantcare/plantCARE_output_local.tab` | TSV | Literal-substring scan hits in PlantCARE 8-column format (when `scan_method=local`). |
 
 **Interpretation**:
 - Rows = family members, columns = cis-element categories
 - Heatmap intensity = element count
 - Common categories: light-responsive, hormone-responsive (ABA, ABRE, ERE), stress-responsive
+- The intermediate `.tab` files are PlantCARE-compatible regardless of `scan_method`, so `R/10_promoter.R` consumes any of them unchanged.
 
 ---
 
