@@ -166,6 +166,41 @@ class TestParseMeme(unittest.TestCase):
         self.assertEqual(len(loc_lines), 1)
         self.assertIn("GeneB", loc_lines[0])
 
+    def test_cli_missing_fasta(self) -> None:
+        """--fasta pointing at a nonexistent file should exit 1."""
+        outdir = self.tmp / "no_fasta"
+        rc = main([
+            str(self.meme_file), "-o", str(outdir),
+            "--fasta", str(self.tmp / "does_not_exist.fa"),
+        ])
+        self.assertEqual(rc, 1)
+
+    def test_cli_empty_fasta(self) -> None:
+        """--fasta pointing at a file with no sequence IDs should exit 1."""
+        empty_fa = self.tmp / "empty.fa"
+        empty_fa.write_text("# no records\n")
+        outdir = self.tmp / "empty_fasta"
+        rc = main([
+            str(self.meme_file), "-o", str(outdir),
+            "--fasta", str(empty_fa),
+        ])
+        self.assertEqual(rc, 1)
+
+    def test_cli_parse_error(self) -> None:
+        """Exceptions raised inside parse_meme should surface as exit 1."""
+        import scripts.parse_meme_output as mod
+
+        def boom(*args, **kwargs):
+            raise RuntimeError("synthetic parse failure")
+
+        original = mod.parse_meme
+        mod.parse_meme = boom
+        try:
+            rc = main([str(self.meme_file), "-o", str(self.tmp / "err_out")])
+        finally:
+            mod.parse_meme = original
+        self.assertEqual(rc, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

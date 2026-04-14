@@ -100,6 +100,43 @@ class TestParseHmmsearch(unittest.TestCase):
         rc = main(["/nonexistent.domtblout", "-e", "1e-5"])
         self.assertEqual(rc, 1)
 
+    def test_parse_domtblout_skips_short_lines(self) -> None:
+        """Lines with fewer than 22 fields should be silently dropped."""
+        short = self.tmp / "short.domtblout"
+        short.write_text(
+            "# short row below\n"
+            "only_three fields here\n"
+            "GeneX.001G000000.1.p PF00854.25 457 custom_hmm - 392 "
+            "1.5e-30 104.0 8.8 1 1 2.0e-30 3.0e-30 103.5 4.3 "
+            "62 410 62 457 0.99 PTR2 family\n"
+        )
+        hits = list(parse_domtblout(short))
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].target_name, "GeneX.001G000000.1.p")
+
+    def test_parse_domtblout_skips_non_numeric_rows(self) -> None:
+        """Rows where E-value/score aren't numeric should be skipped."""
+        bad = self.tmp / "bad.domtblout"
+        bad.write_text(
+            "GeneY.002G000000.1.p PF00854.25 457 custom_hmm - 392 "
+            "NOT_A_FLOAT 104.0 8.8 1 1 2.0e-30 3.0e-30 103.5 4.3 "
+            "62 410 62 457 0.99 PTR2 family\n"
+        )
+        self.assertEqual(list(parse_domtblout(bad)), [])
+
+    def test_cli_main_stdout(self) -> None:
+        """Without -o, main() prints IDs to stdout."""
+        import io
+        from contextlib import redirect_stdout
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = main([str(self.domtblout), "-e", "1e-5"])
+        self.assertEqual(rc, 0)
+        lines = [ln for ln in buf.getvalue().splitlines() if ln]
+        self.assertEqual(len(lines), 3)
+        self.assertIn("GeneA.001G000100.1.p", lines)
+
 
 if __name__ == "__main__":
     unittest.main()
