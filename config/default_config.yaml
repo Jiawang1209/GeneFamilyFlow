@@ -331,8 +331,39 @@ step11:
 # ============================================================================
 
 step13_go_kegg:
+  # Toggle Step 13 on/off. When false, the rule is skipped entirely.
   enabled: false
-  annotation_file: "example/13.GO_KEGG/annotations.tsv"
+
+  # Species subset to enrich. Must be a subset of top-level `species`.
+  # Each entry produces {outdir}/13_go_kegg/{species}_enrichment.pdf
+  species:
+    - Athaliana
+    - Osativa
+
+  # ---- eggNOG-mapper source ------------------------------------------------
+  # run_eggnog: true  -> pipeline runs emapper.py per listed species
+  # run_eggnog: false -> read pre-computed {species}.emapper.annotations
+  #                     from precomputed_dir (one file per species listed above)
+  run_eggnog: false
+
+  # Used when run_eggnog: true
+  # Path to the eggNOG data directory (built via download_eggnog_data.py)
+  eggnog_data_dir: "/path/to/eggnog_data"
+  eggnog_cpu: 20
+
+  # Used when run_eggnog: false
+  precomputed_dir: "example/13.GO_KEGG"
+
+  # Optional offline KEGG pathway name table (columns: term, name).
+  # Leave empty to fall back to raw ko ids.
+  kegg_names: ""
+
+  # R enricher thresholds (passed to clusterProfiler::enricher)
+  pvalue: 0.05
+  qvalue: 0.2
+  min_size: 5
+  top_n: 20
+
   r_script: "R/13_go_kegg.R"
 
 step14_qrtpcr:
