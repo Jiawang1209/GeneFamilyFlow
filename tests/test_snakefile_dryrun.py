@@ -136,6 +136,43 @@ def test_dryrun_step13_run_eggnog(tmp_path: Path) -> None:
 
 
 @pytest.mark.integration
+def test_dryrun_step13_derived_family_ids(tmp_path: Path) -> None:
+    """Clearing npf_id_file routes step13 through step04_split_by_species.
+
+    Ensures the new canonical per-species family ID artifact is wired in as
+    a dependency when no explicit override is supplied.
+    """
+    stub_dir = tmp_path / "eggnog_stub"
+    stub_dir.mkdir()
+    for sp in ("Athaliana", "Osativa"):
+        (stub_dir / f"{sp}.emapper.annotations").write_text(
+            EMAPPER_STUB_HEADER + EMAPPER_STUB_ROW
+        )
+    cfg_path = _write_config(
+        tmp_path,
+        {
+            "step13_go_kegg": {
+                "enabled": True,
+                "run_eggnog": False,
+                "species": ["Athaliana", "Osativa"],
+                "precomputed_dir": str(stub_dir),
+            },
+            "step9": {
+                "species_config": {
+                    "Athaliana": {"npf_id_file": ""},
+                    "Osativa":   {"npf_id_file": ""},
+                }
+            },
+        },
+    )
+    result = _run_dryrun(cfg_path)
+    _assert_dag_ok(result)
+    assert "step04_split_by_species" in result.stdout, (
+        f"step04_split_by_species missing from DAG:\n{result.stdout}"
+    )
+
+
+@pytest.mark.integration
 def test_dryrun_step14(tmp_path: Path) -> None:
     """Step 14 (qRT-PCR) toggles cleanly into the DAG."""
     cfg_path = _write_config(tmp_path, {"step14_qrtpcr": {"enabled": True}})

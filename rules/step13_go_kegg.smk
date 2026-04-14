@@ -4,28 +4,6 @@
 
 if STEP13_ENABLED:
 
-    rule step13_extract_family_ids:
-        """Per-species family member IDs = intersection of step4 final set with
-        that species' longest-transcript proteome."""
-        input:
-            family_fa  = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
-            species_fa = f"{WORK_DIR}/01_database/{{species}}.longest.pep.fasta",
-        output:
-            ids = f"{WORK_DIR}/13_go_kegg/{{species}}.family.ID",
-        log:
-            f"{LOG_DIR}/13_extract_family_ids_{{species}}.log",
-        shell:
-            """
-            set -eo pipefail
-            seqkit seq -n -i {input.species_fa} > {output.ids}.species.tmp 2>> {log}
-            seqkit seq -n -i {input.family_fa}  > {output.ids}.family.tmp  2>> {log}
-            grep -Fx -f {output.ids}.species.tmp {output.ids}.family.tmp \
-                > {output.ids} 2>> {log} || true
-            rm -f {output.ids}.species.tmp {output.ids}.family.tmp
-            echo "[step13] {wildcards.species} family members: $(wc -l < {output.ids})" \
-                | tee -a {log}
-            """
-
     if STEP13_RUN_EGGNOG:
         rule step13_eggnog_run:
             """Run eggNOG-mapper on the full longest-transcript proteome so the
@@ -82,7 +60,7 @@ if STEP13_ENABLED:
             go        = f"{WORK_DIR}/13_go_kegg/{{species}}.go.tsv",
             kegg      = f"{WORK_DIR}/13_go_kegg/{{species}}.kegg.tsv",
             universe  = f"{WORK_DIR}/13_go_kegg/{{species}}.universe.txt",
-            gene_list = f"{WORK_DIR}/13_go_kegg/{{species}}.family.ID",
+            gene_list = lambda wc: family_ids_for(wc.species),
         output:
             pdf = f"{OUT_DIR}/13_go_kegg/{{species}}_enrichment.pdf",
         params:

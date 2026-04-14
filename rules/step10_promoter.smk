@@ -9,19 +9,19 @@ if STEP10_COMPUTE_PROMOTER:
     rule step10_extract_promoter:
         """Extract upstream promoter sequences from genome."""
         input:
-            genome = f"{DB_DIR}/{TARGET}.genome.fasta",
-            bed    = config["step5"]["gene_bed_file"],
+            genome   = f"{DB_DIR}/{TARGET}.genome.fasta",
+            bed      = config["step5"]["gene_bed_file"],
+            gene_ids = family_ids_for(TARGET),
         output:
             fasta = f"{WORK_DIR}/10_promoter/{TARGET}_upstream.fasta",
         params:
             upstream = config["step10"].get("upstream_distance", 2000),
-            gene_ids = config["step9"]["species_config"][TARGET]["npf_id_file"],
         log:
             f"{LOG_DIR}/10_extract_promoter.log",
         shell:
             """
             # Filter BED to target gene family members
-            grep -F -f {params.gene_ids} {input.bed} > {output.fasta}.members.bed
+            grep -F -f {input.gene_ids} {input.bed} > {output.fasta}.members.bed
 
             # Generate upstream region BED
             awk -v up={params.upstream} 'BEGIN{{OFS="\\t"}} {{
@@ -45,7 +45,7 @@ rule step10_promoter:
     """Analyze promoter cis-elements from PlantCARE output."""
     input:
         element_desc = config["step10"]["element_annotation_file"],
-        gene_ids     = config["step9"]["species_config"][TARGET]["npf_id_file"],
+        gene_ids     = family_ids_for(TARGET),
     output:
         pdf = f"{OUT_DIR}/10_promoter/promoter_elements.pdf",
     params:

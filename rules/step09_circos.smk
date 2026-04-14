@@ -87,7 +87,7 @@ rule step09_circos:
     input:
         chr_fai      = lambda wc: config["step9"]["species_config"][wc.species]["genome_length_file"],
         bed          = config["step5"]["gene_bed_file"],
-        gene_ids     = lambda wc: config["step9"]["species_config"][wc.species]["npf_id_file"],
+        gene_ids     = lambda wc: family_ids_for(wc.species),
         gene_type    = lambda wc: _step09_file(wc, "gene_type"),
         tandem       = lambda wc: _step09_file(wc, "tandem"),
         collinearity = lambda wc: _step09_file(wc, "collinearity"),

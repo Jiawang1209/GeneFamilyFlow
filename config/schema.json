@@ -154,7 +154,7 @@
             "properties": {
               "n_chromosomes":      { "type": "integer", "minimum": 1 },
               "genome_length_file": { "type": "string", "minLength": 1 },
-              "npf_id_file":        { "type": "string", "minLength": 1 }
+              "npf_id_file":        { "type": "string" }
             }
           }
         }

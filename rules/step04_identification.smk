@@ -2,6 +2,33 @@
 # STEP 4: Gene family identification (merge across domains + Pfam verify)
 # ===========================================================================
 
+rule step04_split_by_species:
+    """Per-species family member ID list = step4 final family ∩ species proteome.
+
+    Canonical downstream artifact: one ID file per species under
+    ``{WORK_DIR}/04_identification/{species}.family.ID``. Consumed by step09
+    circos, step10 promoter, and step13 GO/KEGG via ``family_ids_for()``.
+    """
+    input:
+        family_fa  = f"{OUT_DIR}/04_identification/identify.ID.clean.fa",
+        species_fa = f"{WORK_DIR}/01_database/{{species}}.longest.pep.fasta",
+    output:
+        ids = f"{WORK_DIR}/04_identification/{{species}}.family.ID",
+    log:
+        f"{LOG_DIR}/04_split_by_species_{{species}}.log",
+    shell:
+        """
+        set -eo pipefail
+        seqkit seq -n -i {input.species_fa} > {output.ids}.species.tmp 2>> {log}
+        seqkit seq -n -i {input.family_fa}  > {output.ids}.family.tmp  2>> {log}
+        grep -Fx -f {output.ids}.species.tmp {output.ids}.family.tmp \
+            > {output.ids} 2>> {log} || true
+        rm -f {output.ids}.species.tmp {output.ids}.family.tmp
+        echo "[step04] {wildcards.species} family members: $(wc -l < {output.ids})" \
+            | tee -a {log}
+        """
+
+
 rule step04_merge_per_domain:
     """Merge HMM and BLAST candidates per domain (intersection or union)."""
     input:

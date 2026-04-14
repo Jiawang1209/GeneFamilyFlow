@@ -113,6 +113,28 @@ def _step09_file(wc, ext):
 
 STEP10_COMPUTE_PROMOTER = config["step10"].get("compute_promoter", False)
 
+
+def family_ids_for(sp):
+    """Return the per-species gene family member ID file for ``sp``.
+
+    Priority:
+      1. ``step9.species_config[sp].npf_id_file`` — explicit user override
+         (historical NPF fixture files live here).
+      2. ``{WORK_DIR}/04_identification/{sp}.family.ID`` — derived at runtime
+         by ``rule step04_split_by_species`` from the step4 final family set
+         intersected with the species' longest-transcript proteome.
+
+    Consumed by step09 circos, step10 promoter, and step13 GO/KEGG so all
+    downstream rules share one canonical per-species membership list.
+    """
+    sp_cfg = (
+        (config.get("step9", {}) or {}).get("species_config", {}) or {}
+    ).get(sp, {}) or {}
+    override = sp_cfg.get("npf_id_file")
+    if override:
+        return override
+    return f"{WORK_DIR}/04_identification/{sp}.family.ID"
+
 # Optional steps
 STEP13_ENABLED = config.get("step13_go_kegg", {}).get("enabled", False)
 STEP14_ENABLED = config.get("step14_qrtpcr", {}).get("enabled", False)
