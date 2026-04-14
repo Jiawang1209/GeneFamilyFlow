@@ -292,16 +292,21 @@ step10:
   upstream_distance: 2000      # bp upstream of TSS
 
   # Cis-element scan method:
-  #   "plantcare" (default) — user manually uploads the promoter FASTA to
+  #   "jaspar" (recommended) — fully offline PWM scan via FIMO against
+  #       the JASPAR 2024 CORE plants non-redundant bundle (~805 plant TF
+  #       motifs). Run-on-first-use: scripts/fetch_jaspar_plants.py
+  #       materializes `jaspar_meme`; FIMO is already in envs/genefamily.yaml.
+  #       Eliminates the manual PlantCARE upload step and is more
+  #       comprehensive than the literal-substring "local" mode.
+  #   "local" — offline literal-motif scan against `motif_library`
+  #       (~142 motif fixture). Lighter than jaspar but recall is
+  #       lower; useful for quick sanity checks or when FIMO is missing.
+  #   "plantcare" — user manually uploads the promoter FASTA to
   #       https://bioinformatics.psb.ugent.be/webtools/plantcare/html/,
   #       downloads results, and points `plantcare_dir` at the folder.
-  #   "local" — fully offline literal motif scan against `motif_library`.
-  #       Runs scripts/scan_promoter_motifs.py on the promoter FASTA and
-  #       emits a synthetic PlantCARE-format .tab that R/10_promoter.R
-  #       consumes unchanged. Eliminates the only online dependency in
-  #       the pipeline; trades some recall (~72% on the shipped fixture)
-  #       for full automation.
-  scan_method: "plantcare"
+  #       Most authoritative source but blocks the pipeline on a manual
+  #       web round-trip; kept for backward compatibility.
+  scan_method: "jaspar"
 
   # Used when scan_method == "plantcare"
   plantcare_dir: "example/10.promoter/PlantCARE_410_SB_plantCARE"
@@ -316,8 +321,16 @@ step10:
   #         -o example/10.promoter/plantcare_motifs.tsv
   motif_library: "example/10.promoter/plantcare_motifs.tsv"
 
-  # Optional: explicit promoter FASTA path for scan_method=local when
-  # compute_promoter is false. Leave commented to use the shipped fixture.
+  # Used when scan_method == "jaspar"
+  # JASPAR plants MEME bundle path. Shipped with the repo so the pipeline
+  # works offline out of the box; use scripts/fetch_jaspar_plants.py to
+  # refresh it from jaspar.elixir.no.
+  jaspar_meme: "example/10.promoter/JASPAR2024_plants.meme"
+  jaspar_url: "https://jaspar.elixir.no/download/data/2024/CORE/JASPAR2024_CORE_plants_non-redundant_pfms_meme.txt"
+  fimo_threshold: 1e-4
+
+  # Optional: explicit promoter FASTA path for scan_method=local/jaspar
+  # when compute_promoter is false. Leave commented to use the shipped fixture.
   # promoter_fasta: "example/10.promoter/Sb.promoter.fasta"
 
   # Cis-element annotation database

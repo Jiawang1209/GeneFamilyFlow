@@ -1,15 +1,30 @@
 # ===========================================================================
 # STEP 10: Promoter cis-element analysis
 # ===========================================================================
-# Two scan methods:
-#   "plantcare" (default, backward compat): user manually submits the promoter
+# Three scan methods (config: step10.scan_method):
+#   "jaspar" (recommended): fully offline PWM scan with FIMO against the
+#     JASPAR 2024 CORE plants non-redundant bundle (~805 plant TF motifs).
+#     fetch_jaspar_plants.py materializes the MEME bundle, FIMO does the
+#     scan, scan_promoter_fimo.py converts the result into a PlantCARE
+#     8-column .tab so R/10_promoter.R consumes it unchanged. Eliminates
+#     the network round-trip and is more comprehensive than the literal
+#     fixture-based "local" mode.
+#   "local": offline literal-substring scan against a shipped motif library
+#     (example/10.promoter/plantcare_motifs.tsv, ~142 motifs). Lighter and
+#     dependency-free but recall is much lower than jaspar/plantcare.
+#   "plantcare" (backward compat): user manually submits the promoter
 #     FASTA to https://bioinformatics.psb.ugent.be/webtools/plantcare/html/,
 #     downloads the results, and points `step10.plantcare_dir` at the folder.
-#   "local": fully offline literal motif scan against a shipped motif library
-#     (example/10.promoter/plantcare_motifs.tsv). Produces a synthetic
-#     PlantCARE-format .tab that the existing R parser consumes unchanged.
+#     Most authoritative but blocks the pipeline on a manual web step.
 #
 # Promoter extraction is automated when `step10.compute_promoter` is true.
+
+_VALID_STEP10_SCAN_METHODS = {"jaspar", "local", "plantcare"}
+if STEP10_SCAN_METHOD not in _VALID_STEP10_SCAN_METHODS:
+    raise ValueError(
+        f"step10.scan_method must be one of {sorted(_VALID_STEP10_SCAN_METHODS)}, "
+        f"got {STEP10_SCAN_METHOD!r}"
+    )
 
 if STEP10_COMPUTE_PROMOTER:
 
@@ -71,9 +86,59 @@ if STEP10_SCAN_METHOD == "local":
             """
 
 
+if STEP10_SCAN_METHOD == "jaspar":
+
+    rule step10_fetch_jaspar:
+        """Materialize the JASPAR 2024 CORE plants MEME bundle (cached)."""
+        output:
+            meme = config["step10"].get(
+                "jaspar_meme", "example/10.promoter/JASPAR2024_plants.meme"
+            ),
+        params:
+            url = config["step10"].get(
+                "jaspar_url",
+                "https://jaspar.elixir.no/download/data/2024/CORE/"
+                "JASPAR2024_CORE_plants_non-redundant_pfms_meme.txt",
+            ),
+        log:
+            f"{LOG_DIR}/10_fetch_jaspar.log",
+        shell:
+            """
+            python3 scripts/fetch_jaspar_plants.py \
+                --output {output.meme} \
+                --url '{params.url}' \
+                2>&1 | tee {log}
+            """
+
+    rule step10_fimo_scan:
+        """Scan promoter FASTA with FIMO against the JASPAR plants bundle."""
+        input:
+            fasta = promoter_fasta_for_local(),
+            meme  = config["step10"].get(
+                "jaspar_meme", "example/10.promoter/JASPAR2024_plants.meme"
+            ),
+        output:
+            tab = f"{WORK_DIR}/10_promoter/jaspar_fimo/plantCARE_output_jaspar.tab",
+        params:
+            threshold = config["step10"].get("fimo_threshold", 1e-4),
+        log:
+            f"{LOG_DIR}/10_fimo_scan.log",
+        shell:
+            """
+            python3 scripts/scan_promoter_fimo.py \
+                --fasta {input.fasta} \
+                --meme {input.meme} \
+                --threshold {params.threshold} \
+                -o {output.tab} \
+                2>&1 | tee {log}
+            """
+
+
 def _step10_plantcare_dir():
     if STEP10_SCAN_METHOD == "local":
         return f"{WORK_DIR}/10_promoter/local_plantcare"
+    if STEP10_SCAN_METHOD == "jaspar":
+        return f"{WORK_DIR}/10_promoter/jaspar_fimo"
     return config["step10"].get(
         "plantcare_dir", "example/10.promoter/PlantCARE_410_SB_plantCARE"
     )
@@ -84,6 +149,10 @@ def _step10_plantcare_inputs():
     if STEP10_SCAN_METHOD == "local":
         return [
             f"{WORK_DIR}/10_promoter/local_plantcare/plantCARE_output_local.tab",
+        ]
+    if STEP10_SCAN_METHOD == "jaspar":
+        return [
+            f"{WORK_DIR}/10_promoter/jaspar_fimo/plantCARE_output_jaspar.tab",
         ]
     return []
 

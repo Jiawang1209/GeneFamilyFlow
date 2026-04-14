@@ -166,10 +166,13 @@
       "properties": {
         "compute_promoter":  { "type": "boolean" },
         "upstream_distance": { "type": "integer", "minimum": 1 },
-        "scan_method":       { "type": "string", "enum": ["plantcare", "local"] },
+        "scan_method":       { "type": "string", "enum": ["plantcare", "local", "jaspar"] },
         "plantcare_dir":     { "type": "string" },
         "motif_library":     { "type": "string" },
-        "promoter_fasta":    { "type": "string" }
+        "promoter_fasta":    { "type": "string" },
+        "jaspar_meme":       { "type": "string" },
+        "jaspar_url":        { "type": "string" },
+        "fimo_threshold":    { "$ref": "#/definitions/positive_number" }
       }
     },
 
