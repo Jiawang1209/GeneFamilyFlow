@@ -202,6 +202,89 @@ def test_dryrun_step10_local_scan(tmp_path: Path) -> None:
 
 
 @pytest.mark.integration
+def test_dryrun_step10_jaspar_scan(tmp_path: Path) -> None:
+    """Step 10 with scan_method=jaspar wires the FIMO + fetch rules."""
+    cfg_path = _write_config(
+        tmp_path,
+        {"step10": {"scan_method": "jaspar"}},
+    )
+    result = subprocess.run(
+        ["snakemake", "-n", "-F", "--configfile", str(cfg_path)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    _assert_dag_ok(result)
+    assert "step10_fimo_scan" in result.stdout, (
+        f"step10_fimo_scan missing from DAG:\n{result.stdout}"
+    )
+
+
+@pytest.mark.integration
+def test_dryrun_step10_rejects_unknown_scan_method(tmp_path: Path) -> None:
+    """Unknown scan_method must fail config validation up front."""
+    cfg_path = _write_config(
+        tmp_path,
+        {"step10": {"scan_method": "bogus"}},
+    )
+    result = _run_dryrun(cfg_path)
+    assert result.returncode != 0, (
+        "Expected dry-run to fail for unknown step10.scan_method"
+    )
+
+
+@pytest.mark.integration
+def test_dryrun_step6_fasttree(tmp_path: Path) -> None:
+    """Step 6 with tree_tool=fasttree wires the FastTree shell command.
+
+    Both tree_tool branches share the rule name ``step06_tree_build``, so
+    we force re-run and print shell commands (``-F -p``) and look for the
+    distinctive ``FastTree`` invocation.
+    """
+    cfg_path = _write_config(
+        tmp_path,
+        {"step6": {"tree_tool": "fasttree"}},
+    )
+    result = subprocess.run(
+        ["snakemake", "-n", "-F", "-p", "--configfile", str(cfg_path)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    _assert_dag_ok(result)
+    assert "step06_tree_build" in result.stdout
+    assert "FastTree" in result.stdout, (
+        f"FastTree shell command missing from forced DAG:\n{result.stdout}"
+    )
+    assert "iqtree" not in result.stdout.lower(), (
+        f"IQ-TREE branch should not appear when tree_tool=fasttree:\n{result.stdout}"
+    )
+
+
+@pytest.mark.integration
+def test_dryrun_step9_from_scratch(tmp_path: Path) -> None:
+    """Step 9 with precomputed=false wires the MCScanX rules into the DAG."""
+    cfg_path = _write_config(
+        tmp_path,
+        {"step9": {"precomputed": False}},
+    )
+    result = subprocess.run(
+        ["snakemake", "-n", "-F", "--configfile", str(cfg_path)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    _assert_dag_ok(result)
+    for rule in ("step09_prep_gff", "step09_self_blast", "step09_mcscanx"):
+        assert rule in result.stdout, (
+            f"{rule} missing from forced DAG:\n{result.stdout}"
+        )
+
+
+@pytest.mark.integration
 def test_dryrun_step13_rejects_unknown_species(tmp_path: Path) -> None:
     """Config validation must fire when step13.species contains an unknown sp."""
     cfg_path = _write_config(
