@@ -1,7 +1,7 @@
 # GeneFamilyFlow — Follow-up Plan
 
-Snapshot date: 2026-04-14
-Test suite: 306 passing, 1 skipped, 94% script coverage.
+Snapshot date: 2026-04-15
+Test suite: 361 passing, 1 skipped, 94% script coverage.
 
 This document captures concrete next steps that emerged while finishing
 the Step 10 offline rewrite and the test-coverage backfill. Items are
@@ -10,26 +10,56 @@ independent and can be picked up in any order.
 
 ---
 
-## 1. Validate the Step 10 rewrite end-to-end
+## 1. Validate the Step 10 rewrite end-to-end  🟡 partial 2026-04-15
 
-The offline JASPAR + FIMO scanner is wired in and unit-tested, but it
-has not yet been exercised against real promoter sequences inside the
-full pipeline.
+The JASPAR/PlantCARE namespace collision called out in the original
+item ("heatmap categories collapse because JASPAR motif names don't
+map cleanly onto PlantCARE categories") was real: a pre-check showed
+zero overlap between the 803 JASPAR motif alt_ids and the 60
+PlantCARE element names, so `R/10_promoter.R`'s `inner_join` would
+return an empty frame.
 
-- Run `snakemake --configfile config/default_config.yaml -n -p` and
-  confirm the DAG includes `step10_fimo_scan` for the default
-  `scan_method=jaspar`.
-- Then run `snakemake --until step10_promoter -j 4 --use-conda` against
-  the `example/` data and inspect:
-  - `work/10_promoter/jaspar_fimo/plantCARE_output_jaspar.tab`
-  - `output/10_promoter/promoter_elements.pdf`
-- Confirm `R/10_promoter.R` consumes the new `.tab` file unchanged
-  (this was the explicit design constraint — the R script must not need
-  to know which `scan_method` produced the input).
-- Open an issue if the R rendering breaks or the heatmap categories
-  collapse because JASPAR motif names don't map cleanly onto PlantCARE
-  categories; in that case we may need a small motif-to-category lookup
-  table alongside `cir_element.desc.20240509.xlsx`.
+**Closed in f293b6e** (commit `feat(step10): wire JASPAR element desc
+into promoter scan pipeline`):
+
+- `scripts/build_jaspar_element_desc.py` parses the JASPAR MEME
+  bundle and classifies each motif's alt_id into one of 28 TF-family
+  buckets via an ordered regex ruleset. First match wins; 113
+  species-specific accessions and 136 residual names land in
+  fallback buckets. Output is a two-column xlsx
+  (`element` + `description`) that matches the PlantCARE file shape
+  byte-for-byte, so `R/10_promoter.R` stays completely unaware of
+  which scan method produced its inputs.
+- `tests/test_build_jaspar_element_desc.py` — 55 unit tests covering
+  MEME parsing, family classification (46 parametrized cases),
+  dedupe/sort behaviour, xlsx round-trip, and all three CLI exit paths.
+- `example/10.promoter/jaspar_element.desc.xlsx` is checked in as the
+  precomputed artifact (803 rows, 401 KB) so a cold clone works
+  without running the builder rule.
+- `rules/step10_promoter.smk`:
+  - New `step10_build_jaspar_element_desc` rule auto-regenerates the
+    xlsx from the MEME bundle when it's missing.
+  - `step10_promoter` now picks `element_desc` via
+    `_step10_element_desc()` — jaspar mode uses the new xlsx, the
+    other two methods keep the PlantCARE file.
+- `config/default_config.yaml` + `docs/configuration.md` expose a
+  `jaspar_element_annotation_file` knob (documented alongside the
+  existing `element_annotation_file`).
+- Dry-run verified in both shapes:
+  - xlsx present → DAG has 2 jobs (`step10_fimo_scan` +
+    `step10_promoter`).
+  - xlsx absent → DAG correctly pulls in
+    `step10_build_jaspar_element_desc` as a third job.
+
+**Still open — blocked on FIMO/R being on PATH locally:**
+
+- Real `snakemake --until step10_promoter -j 4 --use-conda` run
+  against `example/` to inspect
+  `work/10_promoter/jaspar_fimo/plantCARE_output_jaspar.tab` and
+  `output/10_promoter/promoter_elements.pdf`.
+- The `full-ci.yml` workflow added in item 4 already runs in the
+  conda env that ships FIMO, so the end-to-end path can be exercised
+  there. Local FIMO install is optional.
 
 ## 2. Step 13 (GO/KEGG) — finish the offline path  ✅ done 2026-04-14
 

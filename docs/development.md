@@ -13,7 +13,7 @@ GeneFamilyFlow/
 │   └── genefamily-minimal.yaml # Dev/test env
 ├── scripts/                   # Python utilities (stdlib only)
 ├── R/                         # R visualization scripts
-├── tests/                     # pytest test suite (65 tests)
+├── tests/                     # pytest test suite (361 tests, 94% cov)
 ├── docs/                      # Documentation
 ├── example/                   # Example data for the tutorial
 ├── output/                    # Pipeline outputs (gitignored)
