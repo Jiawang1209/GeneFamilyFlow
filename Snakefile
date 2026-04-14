@@ -12,6 +12,19 @@ Per-step rules live under rules/*.smk and are included below.
 configfile: "config/default_config.yaml"
 
 import itertools
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Config schema + semantic validation (fails fast before DAG resolution)
+# ---------------------------------------------------------------------------
+sys.path.insert(0, str(Path(workflow.basedir) / "scripts"))
+from validate_config import validate_config, ConfigValidationError  # noqa: E402
+
+try:
+    validate_config(dict(config), Path(workflow.basedir) / "config" / "schema.json")
+except ConfigValidationError as _err:
+    sys.exit(str(_err))
 
 # ---------------------------------------------------------------------------
 # Globals from config
@@ -108,12 +121,6 @@ STEP14_ENABLED = config.get("step14_qrtpcr", {}).get("enabled", False)
 if STEP13_ENABLED:
     _STEP13_CFG = config["step13_go_kegg"]
     STEP13_SPECIES = _STEP13_CFG.get("species", []) or []
-    _unknown = [sp for sp in STEP13_SPECIES if sp not in SPECIES]
-    if _unknown:
-        raise ValueError(
-            f"step13_go_kegg.species contains unknown species {_unknown}; "
-            f"must be a subset of top-level species {SPECIES}"
-        )
     STEP13_RUN_EGGNOG = _STEP13_CFG.get("run_eggnog", False)
     STEP13_PRECOMPUTED_DIR = _STEP13_CFG.get("precomputed_dir", "").rstrip("/")
 

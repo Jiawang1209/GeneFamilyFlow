@@ -8,6 +8,8 @@ dependencies:
   # ---- Python & Snakemake ----
   - python=3.11
   - snakemake>=8.0
+  - pyyaml
+  - jsonschema>=4.0
   - pip
 
   # ---- R core ----

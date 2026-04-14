@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GeneFamilyFlow config",
+  "definitions": {
+    "positive_number": {
+      "oneOf": [
+        { "type": "number", "exclusiveMinimum": 0 },
+        { "type": "string", "pattern": "^[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$" }
+      ]
+    }
+  },
+  "type": "object",
+  "required": [
+    "species",
+    "target_species",
+    "database_dir",
+    "output_dir",
+    "work_dir",
+    "step2",
+    "step3",
+    "step4",
+    "step5",
+    "step6",
+    "step7",
+    "step8",
+    "step9",
+    "step10",
+    "step11"
+  ],
+  "properties": {
+    "species": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "target_species": { "type": "string", "minLength": 1 },
+    "species_id_prefix": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" }
+    },
+    "database_dir": { "type": "string", "minLength": 1 },
+    "output_dir":   { "type": "string", "minLength": 1 },
+    "work_dir":     { "type": "string", "minLength": 1 },
+    "log_dir":      { "type": "string", "minLength": 1 },
+    "max_threads":  { "type": "integer", "minimum": 1 },
+    "snakemake_jobs": { "type": "integer", "minimum": 1 },
+
+    "step1": {
+      "type": "object",
+      "properties": {
+        "filter_gff3": { "type": "boolean" },
+        "gff3_gene_ids": { "type": "array", "items": { "type": "string" } },
+        "gff3_chromosomes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "step2": {
+      "type": "object",
+      "required": ["domains", "hmmsearch_evalue"],
+      "properties": {
+        "domains": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["pfam_id", "pfam_hmm_file"],
+            "properties": {
+              "pfam_id":       { "type": "string", "pattern": "^PF[0-9]{5}$" },
+              "pfam_hmm_file": { "type": "string", "minLength": 1 },
+              "seed_references": {
+                "type": ["array", "null"],
+                "items": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+        "hmmsearch_evalue": { "$ref": "#/definitions/positive_number" },
+        "clustering_tool":  { "type": "string", "enum": ["clustalw", "muscle"] }
+      }
+    },
+
+    "step3": {
+      "type": "object",
+      "required": ["reference_species"],
+      "properties": {
+        "reference_species": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "required": ["domains_table", "proteome"],
+            "properties": {
+              "domains_table": { "type": "string", "minLength": 1 },
+              "proteome":      { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "blast_evalue":        { "$ref": "#/definitions/positive_number" },
+        "blast_num_threads":   { "type": "integer", "minimum": 1 },
+        "blast_num_alignments": { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "step4": {
+      "type": "object",
+      "properties": {
+        "merge_method":    { "type": "string", "enum": ["intersection", "union"] },
+        "domain_combine":  { "type": "string", "enum": ["any", "all"] },
+        "use_hmmscan":     { "type": "boolean" },
+        "use_pfam_scan":   { "type": "boolean" },
+        "pfam_scan_evalue": { "$ref": "#/definitions/positive_number" },
+        "pfam_scan_cpu":   { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "step5": {
+      "type": "object",
+      "required": ["gene_bed_file"],
+      "properties": {
+        "gene_bed_file": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "step6": {
+      "type": "object",
+      "properties": {
+        "alignment_tool":  { "type": "string", "enum": ["muscle", "clustalw"] },
+        "tree_tool":       { "type": "string", "enum": ["iqtree", "fasttree"] },
+        "tree_layout":     { "type": "string", "enum": ["circular", "rectangular", "both"] },
+        "iqtree_bootstrap": { "type": "integer", "minimum": 0 },
+        "auto_n_subfamilies": { "type": "integer", "minimum": 0 }
+      }
+    },
+
+    "step7": { "type": "object" },
+
+    "step8": {
+      "type": "object",
+      "properties": {
+        "precomputed": { "type": "boolean" },
+        "kaks_file":   { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "step9": {
+      "type": "object",
+      "properties": {
+        "precomputed": { "type": "boolean" },
+        "species_config": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "n_chromosomes":      { "type": "integer", "minimum": 1 },
+              "genome_length_file": { "type": "string", "minLength": 1 },
+              "npf_id_file":        { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+
+    "step10": {
+      "type": "object",
+      "properties": {
+        "compute_promoter":  { "type": "boolean" },
+        "upstream_distance": { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "step11": { "type": "object" },
+
+    "step13_go_kegg": {
+      "type": "object",
+      "properties": {
+        "enabled":     { "type": "boolean" },
+        "species":     {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "run_eggnog":  { "type": "boolean" },
+        "eggnog_data_dir": { "type": "string" },
+        "eggnog_cpu":  { "type": "integer", "minimum": 1 },
+        "precomputed_dir": { "type": "string" },
+        "kegg_names":  { "type": "string" },
+        "pvalue":      { "type": "number", "minimum": 0, "maximum": 1 },
+        "qvalue":      { "type": "number", "minimum": 0, "maximum": 1 },
+        "min_size":    { "type": "integer", "minimum": 1 },
+        "top_n":       { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "step14_qrtpcr": {
+      "type": "object",
+      "properties": {
+        "enabled":         { "type": "boolean" },
+        "expression_data": { "type": "string" },
+        "sheet":           { "type": "string" },
+        "id_col":          { "type": "string" },
+        "group_cols":      {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "comparisons":     {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "facet_ncol":      { "type": "integer", "minimum": 1 },
+        "figure_width":    { "type": "number", "exclusiveMinimum": 0 },
+        "figure_height":   { "type": "number", "exclusiveMinimum": 0 }
+      }
+    }
+  }
+}
