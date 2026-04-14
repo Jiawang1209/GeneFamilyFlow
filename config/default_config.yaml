@@ -333,8 +333,13 @@ step10:
   # when compute_promoter is false. Leave commented to use the shipped fixture.
   # promoter_fasta: "example/10.promoter/Sb.promoter.fasta"
 
-  # Cis-element annotation database
+  # Cis-element annotation database (used by scan_method in {local, plantcare}).
+  # For scan_method == "jaspar" the pipeline auto-generates a TF-family keyed
+  # xlsx from the MEME bundle and points R/10_promoter.R at it so the R join
+  # on motif_alt_id resolves. Override jaspar_element_annotation_file to
+  # supply a pre-built file and skip the auto-build rule.
   element_annotation_file: "example/10.promoter/cir_element.desc.20240509.xlsx"
+  jaspar_element_annotation_file: "example/10.promoter/jaspar_element.desc.xlsx"
 
   # Visualization
   r_script: "R/10_promoter.R"

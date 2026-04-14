@@ -245,6 +245,7 @@ step10:
   plantcare_dir:  "example/10.promoter/PlantCARE_410_SB_plantCARE"
 
   element_annotation_file: "example/10.promoter/cir_element.desc.20240509.xlsx"
+  jaspar_element_annotation_file: "example/10.promoter/jaspar_element.desc.xlsx"
 ```
 
 | Key | Description |
@@ -256,7 +257,8 @@ step10:
 | `fimo_threshold` | FIMO p-value threshold (default `1e-4`). |
 | `motif_library` | TSV motif library used by `scan_method=local`. |
 | `plantcare_dir` | Folder of manually-downloaded PlantCARE outputs (only used by `scan_method=plantcare`). |
-| `element_annotation_file` | Cis-element description/category file consumed by `R/10_promoter.R`. |
+| `element_annotation_file` | Cis-element description/category file consumed by `R/10_promoter.R` for `scan_method` in `{local, plantcare}`. |
+| `jaspar_element_annotation_file` | TF-family keyed description xlsx used by `R/10_promoter.R` when `scan_method == "jaspar"`. Auto-generated from the MEME bundle via `scripts/build_jaspar_element_desc.py`; override to supply a curated file. |
 
 **Default is fully offline.** FIMO ships with `envs/genefamily.yaml` (`meme>=5.5`) and the JASPAR bundle is committed to the repo, so the pipeline runs end-to-end without any web round-trip. `scan_method=plantcare` remains available for users who specifically need PlantCARE annotations from [bioinformatics.psb.ugent.be/webtools/plantcare](https://bioinformatics.psb.ugent.be/webtools/plantcare/html/).
 

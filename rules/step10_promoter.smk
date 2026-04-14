@@ -110,6 +110,32 @@ if STEP10_SCAN_METHOD == "jaspar":
                 2>&1 | tee {log}
             """
 
+    rule step10_build_jaspar_element_desc:
+        """Generate a TF-family keyed element description xlsx from the MEME bundle.
+
+        R/10_promoter.R's inner_join fails against the PlantCARE element
+        table (different namespace), so we emit a parallel xlsx keyed on
+        motif alt_ids for the jaspar scan path.
+        """
+        input:
+            meme = config["step10"].get(
+                "jaspar_meme", "example/10.promoter/JASPAR2024_plants.meme"
+            ),
+        output:
+            xlsx = config["step10"].get(
+                "jaspar_element_annotation_file",
+                "example/10.promoter/jaspar_element.desc.xlsx",
+            ),
+        log:
+            f"{LOG_DIR}/10_build_jaspar_element_desc.log",
+        shell:
+            """
+            python3 scripts/build_jaspar_element_desc.py \
+                --meme {input.meme} \
+                --output {output.xlsx} \
+                2>&1 | tee {log}
+            """
+
     rule step10_fimo_scan:
         """Scan promoter FASTA with FIMO against the JASPAR plants bundle."""
         input:
@@ -144,6 +170,16 @@ def _step10_plantcare_dir():
     )
 
 
+def _step10_element_desc():
+    """Pick the element description xlsx matching the scan method."""
+    if STEP10_SCAN_METHOD == "jaspar":
+        return config["step10"].get(
+            "jaspar_element_annotation_file",
+            "example/10.promoter/jaspar_element.desc.xlsx",
+        )
+    return config["step10"]["element_annotation_file"]
+
+
 def _step10_plantcare_inputs():
     """Extra file-level inputs the DAG should depend on for each scan method."""
     if STEP10_SCAN_METHOD == "local":
@@ -160,7 +196,7 @@ def _step10_plantcare_inputs():
 rule step10_promoter:
     """Analyze promoter cis-elements from PlantCARE (or local scan) output."""
     input:
-        element_desc   = config["step10"]["element_annotation_file"],
+        element_desc   = _step10_element_desc(),
         gene_ids       = family_ids_for(TARGET),
         plantcare_tabs = _step10_plantcare_inputs(),
     output:

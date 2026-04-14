@@ -42,16 +42,24 @@ DEFAULT_BUCKET = "Other transcription factor"
 FAMILY_RULES: tuple[tuple[re.Pattern[str], str], ...] = tuple(
     (re.compile(pattern, re.IGNORECASE), description)
     for pattern, description in (
-        (r"^myb|^myb[-\.]", "MYB transcription factor family"),
+        (r"^(myb|atmyb)", "MYB transcription factor family"),
         (r"^wrky", "WRKY transcription factor family"),
-        (r"^(nac|nam|ataf|cuc)", "NAC transcription factor family"),
-        (r"^(erf|dreb|cbf|ereb|rap2|tiny|ap2\b)", "AP2/ERF transcription factor family"),
-        (r"^(bhlh|pif|ilr|spt|myc|bh[lg])", "bHLH transcription factor family"),
+        (r"^(nac|nam|ataf|cuc|brn\d|vnd|vni|snac|anac)", "NAC transcription factor family"),
         (
-            r"^(bzip|abf|abi5|areb|hy5|gbf|tga|embp|obf|opaque|bzo|gbc)",
+            r"^(erf|dreb|cbf|ereb|rap2|tiny|ap2\b|abr1|ail\d|ant\b|crf\d|dear\d|rav\d|esr\d|shn\d|wri\d)",
+            "AP2/ERF transcription factor family",
+        ),
+        (
+            r"^(bhlh|pif|ilr|spt|myc|bh[lg]|bee\d|bim\d|beh\d|bam\d|bee|ice\d|glabra3|ufo)",
+            "bHLH transcription factor family",
+        ),
+        (
+            r"^(bzip|abf|abi5|areb|hy5|gbf|tga|embp|obf|opaque|bzo|gbc|dpbf\d)",
             "bZIP transcription factor family",
         ),
-        (r"^dof", "DOF zinc finger family"),
+        (r"^(dof|cdf\d)", "DOF zinc finger family"),
+        (r"^(bzr\d|bes\d|beh\d)", "BZR/BES brassinosteroid family"),
+        (r"^abi3|^fus3|^lec2|^val\d|^rav\d", "B3 domain family"),
         (r"^(gata|bbx)", "GATA/B-box zinc finger family"),
         (r"^tcp", "TCP transcription factor family"),
         (r"^spl", "SBP/SPL transcription factor family"),
