@@ -1,0 +1,63 @@
+term	name
+ko00010	Glycolysis / Gluconeogenesis
+ko00020	Citrate cycle (TCA cycle)
+ko00030	Pentose phosphate pathway
+ko00040	Pentose and glucuronate interconversions
+ko00051	Fructose and mannose metabolism
+ko00052	Galactose metabolism
+ko00053	Ascorbate and aldarate metabolism
+ko00061	Fatty acid biosynthesis
+ko00071	Fatty acid degradation
+ko00190	Oxidative phosphorylation
+ko00195	Photosynthesis
+ko00196	Photosynthesis - antenna proteins
+ko00230	Purine metabolism
+ko00240	Pyrimidine metabolism
+ko00250	Alanine, aspartate and glutamate metabolism
+ko00260	Glycine, serine and threonine metabolism
+ko00270	Cysteine and methionine metabolism
+ko00330	Arginine and proline metabolism
+ko00350	Tyrosine metabolism
+ko00360	Phenylalanine metabolism
+ko00380	Tryptophan metabolism
+ko00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+ko00480	Glutathione metabolism
+ko00500	Starch and sucrose metabolism
+ko00520	Amino sugar and nucleotide sugar metabolism
+ko00561	Glycerolipid metabolism
+ko00564	Glycerophospholipid metabolism
+ko00592	alpha-Linolenic acid metabolism
+ko00620	Pyruvate metabolism
+ko00630	Glyoxylate and dicarboxylate metabolism
+ko00710	Carbon fixation in photosynthetic organisms
+ko00860	Porphyrin metabolism
+ko00900	Terpenoid backbone biosynthesis
+ko00906	Carotenoid biosynthesis
+ko00940	Phenylpropanoid biosynthesis
+ko00941	Flavonoid biosynthesis
+ko01100	Metabolic pathways
+ko01110	Biosynthesis of secondary metabolites
+ko01200	Carbon metabolism
+ko01230	Biosynthesis of amino acids
+ko02010	ABC transporters
+ko03010	Ribosome
+ko03013	RNA transport
+ko03018	RNA degradation
+ko03020	RNA polymerase
+ko03030	DNA replication
+ko03040	Spliceosome
+ko03050	Proteasome
+ko03410	Base excision repair
+ko03420	Nucleotide excision repair
+ko03430	Mismatch repair
+ko03440	Homologous recombination
+ko04016	MAPK signaling pathway - plant
+ko04070	Phosphatidylinositol signaling system
+ko04075	Plant hormone signal transduction
+ko04120	Ubiquitin mediated proteolysis
+ko04122	Sulfur relay system
+ko04141	Protein processing in endoplasmic reticulum
+ko04144	Endocytosis
+ko04146	Peroxisome
+ko04626	Plant-pathogen interaction
+ko04712	Circadian rhythm - plant

@@ -354,9 +354,14 @@ step13_go_kegg:
   # Used when run_eggnog: false
   precomputed_dir: "example/13.GO_KEGG"
 
-  # Optional offline KEGG pathway name table (columns: term, name).
-  # Leave empty to fall back to raw ko ids.
-  kegg_names: ""
+  # Offline KEGG pathway name table (columns: term, name) keyed on ko-prefixed
+  # pathway IDs. Leave empty to fall back to raw ko IDs in enrichment plots.
+  # The default fixture ships ~60 common plant pathways; extend it with
+  #     python scripts/build_kegg_names.py \
+  #         --from-kegg-list downloaded.pathway.list \
+  #         --merge example/13.GO_KEGG/kegg_pathway_names.tsv \
+  #         -o example/13.GO_KEGG/kegg_pathway_names.tsv
+  kegg_names: "example/13.GO_KEGG/kegg_pathway_names.tsv"
 
   # R enricher thresholds (passed to clusterProfiler::enricher)
   pvalue: 0.05
