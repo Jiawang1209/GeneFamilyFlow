@@ -205,5 +205,60 @@ class TestMultiDomainMode(unittest.TestCase):
         )
 
 
+import pytest
+
+
+class TestParsePfamScanDefensiveBranches:
+    def test_skips_short_lines(self, tmp_path: Path) -> None:
+        bad = tmp_path / "short.txt"
+        # 8 fields only — below the 15-field minimum
+        bad.write_text("seq1 1 50 1 50 PF00854.1 Name Domain\n")
+        assert list(parse_pfam_scan(bad)) == []
+
+    def test_skips_unparseable_numeric_fields(self, tmp_path: Path) -> None:
+        bad = tmp_path / "bad_nums.txt"
+        # 15 fields, but ali_start is non-integer => ValueError swallowed
+        bad.write_text(
+            "seq1 NOT_AN_INT 50 1 50 PF00854.1 Name Domain x y z 100.0 1e-30 . CL0001\n"
+        )
+        assert list(parse_pfam_scan(bad)) == []
+
+
+class TestMainCliExtraBranches:
+    @pytest.fixture
+    def fixture_path(self, tmp_path: Path) -> Path:
+        path = tmp_path / "input.txt"
+        path.write_text(
+            "# header\n"
+            "G1 1 50 1 50 PF00854.1 Name Domain x y z 100.0 1e-30 . CL0001\n"
+        )
+        return path
+
+    def test_stdout_output_when_no_dash_o(
+        self, fixture_path: Path, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        rc = main([str(fixture_path), "--pfam-id", "PF00854"])
+        assert rc == 0
+        captured = capsys.readouterr()
+        assert "G1" in captured.out
+        assert "Extracted 1" in captured.err
+
+    def test_extract_error_returns_one(
+        self,
+        fixture_path: Path,
+        capsys: pytest.CaptureFixture[str],
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        from scripts import parse_pfam_scan as mod
+
+        def boom(*_a, **_kw):
+            raise RuntimeError("boom")
+
+        monkeypatch.setattr(mod, "extract_ids_by_pfam", boom)
+        rc = main([str(fixture_path), "--pfam-id", "PF00854"])
+        assert rc == 1
+        assert "Error: boom" in capsys.readouterr().err
+
+
 if __name__ == "__main__":
     unittest.main()
