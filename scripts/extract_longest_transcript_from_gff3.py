@@ -8,6 +8,11 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+try:
+    from scripts._parsers import iter_gff3_rows, parse_gff3_attributes
+except ImportError:  # Running as ``python3 scripts/extract_longest_transcript_from_gff3.py``
+    from _parsers import iter_gff3_rows, parse_gff3_attributes  # type: ignore[no-redef]
+
 
 class Gff3TranscriptSelectionError(ValueError):
     """Raised when a GFF3 file cannot be parsed into gene/transcript selections safely."""
@@ -63,50 +68,28 @@ def build_argument_parser() -> argparse.ArgumentParser:
 
 
 def parse_gff3(path: str | Path) -> list[Gff3Feature]:
-    file_path = Path(path)
-    if not file_path.exists():
-        raise FileNotFoundError(f"GFF3 file not found: {file_path}")
-    if not file_path.is_file():
-        raise FileNotFoundError(f"Path is not a file: {file_path}")
-
     features: list[Gff3Feature] = []
-    with file_path.open("r", encoding="utf-8") as handle:
-        for line_number, raw_line in enumerate(handle, start=1):
-            line = raw_line.rstrip("\n")
-            if not line or line.startswith("#"):
-                continue
 
-            fields = line.split("\t")
-            if len(fields) != 9:
-                raise Gff3TranscriptSelectionError(
-                    f"Line {line_number}: expected 9 columns, found {len(fields)}."
-                )
+    for kind, item in iter_gff3_rows(
+        path, error_cls=Gff3TranscriptSelectionError, strict_attributes=True
+    ):
+        if kind == "comment":
+            continue
 
-            try:
-                feature_start = int(fields[3])
-                feature_end = int(fields[4])
-            except ValueError as exc:
-                raise Gff3TranscriptSelectionError(
-                    f"Line {line_number}: start and end must be integers."
-                ) from exc
-
-            if feature_start > feature_end:
-                raise Gff3TranscriptSelectionError(
-                    f"Line {line_number}: start ({feature_start}) cannot be greater than end ({feature_end})."
-                )
-
-            features.append(
-                Gff3Feature(
-                    seqid=fields[0],
-                    feature_type=fields[2],
-                    start=feature_start,
-                    end=feature_end,
-                    strand=fields[6],
-                    attributes=_parse_attributes(fields[8]),
-                )
+        row = item  # type: ignore[assignment]
+        features.append(
+            Gff3Feature(
+                seqid=row.seqid,
+                feature_type=row.feature_type,
+                start=row.start,
+                end=row.end,
+                strand=row.strand,
+                attributes=row.attributes,
             )
+        )
 
     if not features:
+        file_path = Path(path)
         raise Gff3TranscriptSelectionError(f"No GFF3 features found in: {file_path}")
     return features
 
@@ -240,22 +223,16 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _parse_attributes(raw_attributes: str) -> dict[str, str]:
-    if raw_attributes == ".":
-        return {}
+    """Strict attribute parser kept for backwards compatibility.
 
-    attributes: dict[str, str] = {}
-    for item in raw_attributes.split(";"):
-        if not item:
-            continue
-        if "=" not in item:
-            raise Gff3TranscriptSelectionError(f"Malformed GFF3 attribute: {item}")
-        key, value = item.split("=", 1)
-        key = key.strip()
-        value = value.strip()
-        if not key:
-            raise Gff3TranscriptSelectionError(f"Malformed GFF3 attribute: {item}")
-        attributes[key] = value
-    return attributes
+    Delegates to :func:`scripts._parsers.parse_gff3_attributes` in strict
+    mode so the existing test contract (raises on ``"ID=G1;orphan"`` and
+    ``"=value"``) is preserved.
+    """
+
+    return parse_gff3_attributes(
+        raw_attributes, strict=True, error_cls=Gff3TranscriptSelectionError
+    )
 
 
 def _resolve_gene_parent(feature: Gff3Feature, genes: dict[str, Gff3Feature]) -> str | None:

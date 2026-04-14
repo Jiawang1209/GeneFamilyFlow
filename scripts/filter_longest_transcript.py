@@ -8,9 +8,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterator
 
-
-class FastaFormatError(ValueError):
-    """Raised when a FASTA file cannot be parsed safely."""
+try:
+    from scripts._parsers import FastaFormatError, stream_fasta
+except ImportError:  # Running as ``python3 scripts/filter_longest_transcript.py``
+    from _parsers import FastaFormatError, stream_fasta  # type: ignore[no-redef]
 
 
 @dataclass(frozen=True)
@@ -65,47 +66,18 @@ def build_argument_parser() -> argparse.ArgumentParser:
 def parse_fasta(path: str | Path) -> Iterator[FastaRecord]:
     """Stream FASTA records from disk one at a time.
 
-    This generator avoids loading the full file into memory, which is important
-    for large genome or transcript FASTA files.
+    Thin wrapper over :func:`scripts._parsers.stream_fasta` that adapts the
+    shared :class:`RawFastaRecord` dataclass to the module-local
+    :class:`FastaRecord` type used by the rest of this script (and by its
+    tests).
     """
 
-    file_path = Path(path)
-    if not file_path.exists():
-        raise FileNotFoundError(f"FASTA file not found: {file_path}")
-    if not file_path.is_file():
-        raise FileNotFoundError(f"Path is not a file: {file_path}")
-
-    current_header: str | None = None
-    current_sequence: list[str] = []
-    last_line_number = 0
-
-    with file_path.open("r", encoding="utf-8") as handle:
-        for line_number, raw_line in enumerate(handle, start=1):
-            last_line_number = line_number
-            line = raw_line.strip()
-            if not line:
-                continue
-
-            if line.startswith(">"):
-                if current_header is not None:
-                    yield _build_record(current_header, current_sequence, line_number - 1)
-                current_header = line[1:].strip()
-                if not current_header:
-                    raise FastaFormatError(f"Line {line_number}: FASTA header is empty.")
-                current_sequence = []
-                continue
-
-            if current_header is None:
-                raise FastaFormatError(
-                    f"Line {line_number}: encountered sequence data before the first FASTA header."
-                )
-
-            current_sequence.append(line)
-
-    if current_header is None:
-        raise FastaFormatError(f"No FASTA records found in: {file_path}")
-
-    yield _build_record(current_header, current_sequence, last_line_number)
+    for raw in stream_fasta(path, error_cls=FastaFormatError):
+        yield FastaRecord(
+            record_id=raw.record_id,
+            description=raw.description,
+            sequence=raw.sequence,
+        )
 
 
 def extract_gene_id(record_id: str, separators: list[str]) -> tuple[str, bool]:
@@ -222,20 +194,6 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
     return 0
-
-
-def _build_record(header: str, sequence_lines: list[str], line_number: int) -> FastaRecord:
-    """Validate and normalize one FASTA record."""
-
-    if not sequence_lines:
-        raise FastaFormatError(f"Line {line_number}: record '{header}' has no sequence.")
-
-    record_id = header.split(maxsplit=1)[0]
-    sequence = "".join(sequence_lines).replace(" ", "")
-    if not sequence:
-        raise FastaFormatError(f"Line {line_number}: record '{header}' has an empty sequence.")
-
-    return FastaRecord(record_id=record_id, description=header, sequence=sequence)
 
 
 def _write_wrapped_sequence(handle, sequence: str, line_width: int) -> None:

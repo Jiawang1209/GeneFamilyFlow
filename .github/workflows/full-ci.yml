@@ -1,0 +1,88 @@
+name: full-ci
+
+# Runs the expensive test matrix against the full conda env so the
+# JASPAR/FIMO end-to-end path, the R stack, and the real Snakemake DAG
+# actually get exercised. This is intentionally *not* wired to every
+# push — the env build is ~10 min and we don't want to burn CI minutes
+# on docs-only changes.
+#
+# Triggers:
+#   - workflow_dispatch:       manual run from the Actions tab
+#   - schedule (nightly 05:17 UTC)
+#   - pull_request labeled `full-ci`:
+#       add the label to a PR to run this job against the PR head
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "17 5 * * *"
+  pull_request:
+    types: [labeled]
+
+concurrency:
+  group: full-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  full:
+    # On pull_request events, only run when the label that was just
+    # attached is literally `full-ci`. Scheduled and manual dispatches
+    # always run.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.label.name == 'full-ci'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up full conda env (envs/genefamily.yaml)
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: envs/genefamily.yaml
+          environment-name: GeneFamilyFlow
+          cache-environment: true
+          cache-downloads: true
+          init-shell: bash
+
+      - name: Report tool versions
+        run: |
+          micromamba info
+          python --version
+          snakemake --version
+          hmmsearch -h 2>&1 | head -2 || true
+          blastp -version 2>&1 | head -1 || true
+          fimo --version 2>&1 | head -1 || true
+          meme -version 2>&1 | head -1 || true
+          R --version | head -1 || true
+
+      # Runs every test file. The `TestScanEndToEnd` class in
+      # tests/test_scan_promoter_fimo.py skips itself when FIMO is absent;
+      # inside this env FIMO is present, so that path actually executes.
+      - name: pytest (full env — includes FIMO end-to-end)
+        run: pytest tests/ -v --cov=scripts --cov-report=term-missing
+
+      - name: Snakemake dry-run against default config
+        run: snakemake --configfile config/default_config.yaml -n -p
+
+      - name: Snakemake dry-run with Step 13 enabled
+        run: |
+          cat > /tmp/step13_on.yaml <<'YAML'
+          step13_go_kegg:
+            enabled: true
+            species: [Athaliana, Osativa]
+            run_eggnog: false
+            precomputed_dir: "example/13.GO_KEGG"
+            kegg_names: "example/13.GO_KEGG/kegg_pathway_names.tsv"
+            pvalue: 0.05
+            qvalue: 0.2
+            min_size: 5
+            top_n: 20
+            r_script: "R/13_go_kegg.R"
+          YAML
+          snakemake \
+            --configfile config/default_config.yaml /tmp/step13_on.yaml \
+            -n -p

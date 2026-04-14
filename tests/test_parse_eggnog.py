@@ -78,6 +78,46 @@ def test_parse_raises_on_empty_file(tmp_path):
         parse_eggnog_annotations(empty)
 
 
+class TestShippedFixtures:
+    """The bundled example/13.GO_KEGG/*.emapper.annotations files must stay
+    parseable and must cover every family ID in the matching NPF fixture so
+    Step 13 renders without an empty gene set when users flip
+    ``step13_go_kegg.enabled`` to ``true`` out of the box."""
+
+    REPO_ROOT = Path(__file__).resolve().parent.parent
+
+    @pytest.mark.parametrize(
+        "species,npf_id_file",
+        [
+            ("Athaliana", "example/9.mcscanx/AT.NPF.id"),
+            ("Osativa", "example/9.mcscanx/Os.NPF.id"),
+        ],
+    )
+    def test_fixture_parses_and_covers_family(self, species, npf_id_file):
+        ann_path = self.REPO_ROOT / f"example/13.GO_KEGG/{species}.emapper.annotations"
+        assert ann_path.exists(), f"missing shipped fixture: {ann_path}"
+
+        rows = parse_eggnog_annotations(ann_path)
+        assert len(rows) >= 50, "fixture should have enough rows to render enrichment"
+
+        genes_with_annotations = {r.gene for r in rows if r.go_terms or r.kegg_pathways}
+        family_ids = {
+            line.strip()
+            for line in (self.REPO_ROOT / npf_id_file).read_text().splitlines()
+            if line.strip()
+        }
+        missing = family_ids - genes_with_annotations
+        assert not missing, (
+            f"{len(missing)} family IDs are absent from {ann_path.name}; "
+            f"Step 13 would silently drop them. First few: {sorted(missing)[:3]}"
+        )
+
+        all_go = {t for r in rows for t in r.go_terms}
+        all_kegg = {t for r in rows for t in r.kegg_pathways}
+        assert len(all_go) >= 5, "GO term diversity too low for faceted dotplot"
+        assert len(all_kegg) >= 2, "KEGG term diversity too low for enrichment"
+
+
 def test_main_writes_all_outputs(tmp_path):
     ann = _write_sample(tmp_path)
     go_out = tmp_path / "go.tsv"

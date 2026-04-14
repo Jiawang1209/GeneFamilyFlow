@@ -7,9 +7,14 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-
-class Gff3FormatError(ValueError):
-    """Raised when a GFF3 file cannot be parsed safely."""
+try:
+    from scripts._parsers import Gff3FormatError, iter_gff3_rows, parse_gff3_attributes
+except ImportError:  # Running as ``python3 scripts/filter_gff3.py``
+    from _parsers import (  # type: ignore[no-redef]
+        Gff3FormatError,
+        iter_gff3_rows,
+        parse_gff3_attributes,
+    )
 
 
 @dataclass(frozen=True)
@@ -99,51 +104,25 @@ def filter_gff3_lines(
 
 
 def parse_gff3(path: str | Path) -> tuple[list[str], list[Gff3Feature]]:
-    file_path = Path(path)
-    if not file_path.exists():
-        raise FileNotFoundError(f"GFF3 file not found: {file_path}")
-    if not file_path.is_file():
-        raise FileNotFoundError(f"Path is not a file: {file_path}")
-
     comments: list[str] = []
     features: list[Gff3Feature] = []
 
-    with file_path.open("r", encoding="utf-8") as handle:
-        for line_number, raw_line in enumerate(handle, start=1):
-            line = raw_line.rstrip("\n")
-            if not line:
-                continue
-            if line.startswith("#"):
-                comments.append(line)
-                continue
+    for kind, item in iter_gff3_rows(path, error_cls=Gff3FormatError, strict_attributes=False):
+        if kind == "comment":
+            comments.append(item)  # type: ignore[arg-type]
+            continue
 
-            fields = line.split("\t")
-            if len(fields) != 9:
-                raise Gff3FormatError(f"Line {line_number}: expected 9 columns, found {len(fields)}.")
-
-            try:
-                feature_start = int(fields[3])
-                feature_end = int(fields[4])
-            except ValueError as exc:
-                raise Gff3FormatError(
-                    f"Line {line_number}: start and end must be integers."
-                ) from exc
-
-            if feature_start > feature_end:
-                raise Gff3FormatError(
-                    f"Line {line_number}: start ({feature_start}) cannot be greater than end ({feature_end})."
-                )
-
-            features.append(
-                Gff3Feature(
-                    raw_line=line,
-                    seqid=fields[0],
-                    feature_type=fields[2],
-                    start=feature_start,
-                    end=feature_end,
-                    attributes=_parse_attributes(fields[8]),
-                )
+        row = item  # type: ignore[assignment]
+        features.append(
+            Gff3Feature(
+                raw_line=row.raw_line,
+                seqid=row.seqid,
+                feature_type=row.feature_type,
+                start=row.start,
+                end=row.end,
+                attributes=row.attributes,
             )
+        )
 
     return comments, features
 
@@ -211,17 +190,14 @@ def _normalize_multi_value_argument(values: list[str] | None) -> set[str] | None
 
 
 def _parse_attributes(raw_attributes: str) -> dict[str, str]:
-    if raw_attributes == ".":
-        return {}
+    """Lenient attribute parser kept for backwards compatibility.
 
-    attributes: dict[str, str] = {}
-    for item in raw_attributes.split(";"):
-        if not item:
-            continue
-        if "=" in item:
-            key, value = item.split("=", 1)
-            attributes[key.strip()] = value.strip()
-    return attributes
+    Delegates to :func:`scripts._parsers.parse_gff3_attributes` in lenient
+    mode so the existing test contract (``_parse_attributes("ID=G1;orphan")
+    == {"ID": "G1"}``) is preserved.
+    """
+
+    return parse_gff3_attributes(raw_attributes, strict=False)
 
 
 def _resolve_root_gene_id(feature: Gff3Feature, by_id: dict[str, Gff3Feature]) -> str | None:

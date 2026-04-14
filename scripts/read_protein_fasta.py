@@ -9,9 +9,10 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
-
-class FastaFormatError(ValueError):
-    """Raised when a FASTA file cannot be parsed safely."""
+try:
+    from scripts._parsers import FastaFormatError, stream_fasta
+except ImportError:  # Running as ``python3 scripts/read_protein_fasta.py``
+    from _parsers import FastaFormatError, stream_fasta  # type: ignore[no-redef]
 
 
 @dataclass(frozen=True)
@@ -22,43 +23,14 @@ class ProteinRecord:
 
 
 def parse_fasta(path: str | Path) -> list[ProteinRecord]:
-    file_path = Path(path)
-    if not file_path.exists():
-        raise FileNotFoundError(f"FASTA file not found: {file_path}")
-    if not file_path.is_file():
-        raise FileNotFoundError(f"Path is not a file: {file_path}")
-
-    records: list[ProteinRecord] = []
-    current_header: str | None = None
-    current_sequence: list[str] = []
-
-    with file_path.open("r", encoding="utf-8") as handle:
-        for line_number, raw_line in enumerate(handle, start=1):
-            line = raw_line.strip()
-            if not line:
-                continue
-
-            if line.startswith(">"):
-                if current_header is not None:
-                    records.append(_build_record(current_header, current_sequence, line_number - 1))
-                current_header = line[1:].strip()
-                if not current_header:
-                    raise FastaFormatError(f"Line {line_number}: FASTA header is empty.")
-                current_sequence = []
-                continue
-
-            if current_header is None:
-                raise FastaFormatError(
-                    f"Line {line_number}: encountered sequence data before the first FASTA header."
-                )
-
-            current_sequence.append(line)
-
-    if current_header is None:
-        raise FastaFormatError(f"No FASTA records found in: {file_path}")
-
-    records.append(_build_record(current_header, current_sequence, line_number))
-    return records
+    return [
+        ProteinRecord(
+            record_id=raw.record_id,
+            description=raw.description,
+            sequence=raw.sequence,
+        )
+        for raw in stream_fasta(path, error_cls=FastaFormatError)
+    ]
 
 
 def summarize_records(records: list[ProteinRecord]) -> dict[str, object]:
@@ -108,18 +80,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"- {record.record_id}\t{record.sequence}")
 
     return 0
-
-
-def _build_record(header: str, sequence_lines: list[str], line_number: int) -> ProteinRecord:
-    if not sequence_lines:
-        raise FastaFormatError(f"Line {line_number}: record '{header}' has no sequence.")
-
-    record_id = header.split(maxsplit=1)[0]
-    sequence = "".join(sequence_lines).replace(" ", "")
-    if not sequence:
-        raise FastaFormatError(f"Line {line_number}: record '{header}' has an empty sequence.")
-
-    return ProteinRecord(record_id=record_id, description=header, sequence=sequence)
 
 
 if __name__ == "__main__":

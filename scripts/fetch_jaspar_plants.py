@@ -60,7 +60,7 @@ def cache_is_valid(path: Path, expected_sha256: str | None) -> bool:
     return True
 
 
-def _atomic_write(src_bytes: bytes, dst: Path) -> None:
+def _atomic_write(src_bytes: bytes, dst: Path) -> None:  # pragma: no cover - only reached via fetch_url
     dst.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(prefix=".jaspar.", dir=str(dst.parent))
     tmp = Path(tmp_name)
@@ -73,7 +73,7 @@ def _atomic_write(src_bytes: bytes, dst: Path) -> None:
         raise
 
 
-def fetch_url(url: str, dst: Path, timeout: float = 60.0) -> None:
+def fetch_url(url: str, dst: Path, timeout: float = 60.0) -> None:  # pragma: no cover - network-dependent
     req = urllib.request.Request(url, headers={"User-Agent": "GeneFamilyFlow/1.0"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
         data = resp.read()
@@ -105,7 +105,7 @@ def fetch(
     if from_file is not None:
         copy_from_file(from_file, output)
     else:
-        fetch_url(url, output)
+        fetch_url(url, output)  # pragma: no cover - network-dependent
 
     if not looks_like_meme(output):
         raise RuntimeError(

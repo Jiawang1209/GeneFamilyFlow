@@ -277,17 +277,45 @@ step11:
 
 ## Optional Steps (13-14)
 
+### Step 13 — GO/KEGG enrichment
+
 ```yaml
 step13_go_kegg:
   enabled: false
-  annotation_file: "example/13.GO_KEGG/annotations.tsv"
-
-step14_qrtpcr:
-  enabled: false
-  expression_data: "example/14.qRT_PCR/qrt_pcr_data.xlsx"
+  species: [Athaliana, Osativa]
+  run_eggnog: false
+  eggnog_data_dir: "/path/to/eggnog_data"   # required when run_eggnog: true
+  eggnog_cpu: 20
+  precomputed_dir: "example/13.GO_KEGG"     # {species}.emapper.annotations lives here
+  kegg_names: "example/13.GO_KEGG/kegg_pathway_names.tsv"
+  pvalue: 0.05
+  qvalue: 0.2
+  min_size: 5
+  top_n: 20
 ```
 
-Disabled by default. Set `enabled: true` and provide input files to activate.
+| Key | Description |
+|-----|-------------|
+| `enabled` | Toggle. When `false`, the rule is skipped entirely. |
+| `species` | Subset of top-level `species` to enrich. One PDF per species. |
+| `run_eggnog` | `true` — run `emapper.py` per species (requires `eggnog_data_dir`). `false` — read pre-computed annotations from `precomputed_dir`. |
+| `precomputed_dir` | Directory with one `{species}.emapper.annotations` TSV per listed species. The repo ships a curated offline fixture here for `Athaliana` and `Osativa` so `enabled: true` + `run_eggnog: false` works out of the box. |
+| `kegg_names` | Optional offline KEGG pathway name table (columns: `term`, `name`). Unknown `ko` IDs fall back to the raw code. |
+| `pvalue` / `qvalue` | `clusterProfiler::enricher` thresholds. |
+| `min_size` | Minimum gene-set size (`minGSSize`). |
+| `top_n` | Top N terms per facet in the dotplot. |
+
+> **Note on the bundled fixture**: the two shipped `.emapper.annotations` files are hand-curated for reproducible CI, not biological interpretation. Replace them with real eggNOG-mapper output before drawing conclusions.
+
+### Step 14 — qRT-PCR
+
+```yaml
+step14_qrtpcr:
+  enabled: false
+  expression_data: "example/14.qRT_PCR/表达量_3.xlsx"
+```
+
+Both steps are disabled by default. Set `enabled: true` and provide input files to activate.
 
 ---
 

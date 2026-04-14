@@ -135,7 +135,25 @@ pytest tests/ -v
 pytest tests/ --cov=scripts --cov-report=term-missing
 ```
 
-Target: **80%+ coverage** (currently 81%).
+Target: **80%+ coverage** (currently 304 tests, ~93% coverage).
+
+### `# pragma: no cover` convention
+
+Network calls and subprocess invocations that exist purely to shell out to
+an external binary or HTTP endpoint are exempt from coverage. Mark the
+function body (or the single call) with `# pragma: no cover - <reason>`
+so the coverage report doesn't flag it as untested code. Current
+exemptions:
+
+- `scripts/fetch_jaspar_plants.py::fetch_url` — HTTP call to JASPAR
+- `scripts/fetch_kegg_pathway_names.py::fetch` — HTTP call to KEGG REST
+- `scripts/scan_promoter_fimo.py::run_fimo` — subprocess to the FIMO binary
+
+The end-to-end path for these still gets exercised in the conda-based CI
+job where the real tool is available (see `TestScanEndToEnd` in
+`tests/test_scan_promoter_fimo.py`). Do not replace them with
+subprocess/urllib mocks in the unit suite — that produces brittle tests
+without real signal.
 
 ### Test structure
 
@@ -167,7 +185,29 @@ def test_parses_valid_domtblout(tmp_path: Path) -> None:
 
 ### Continuous Integration
 
-GitHub Actions runs tests on every push/PR to `main` — see `.github/workflows/test.yml`. Matrix: Python 3.11 and 3.12.
+Two workflows live under `.github/workflows/`:
+
+- **`test.yml`** — fast lane. Runs on every push/PR to `main` across a
+  Python 3.11/3.12 matrix. Installs only `pytest` + `pytest-cov` so it
+  finishes in well under a minute. FIMO, hmmer, blast, MEME, and the R
+  stack are all absent, so tests that need external tools (e.g.
+  `TestScanEndToEnd` in `tests/test_scan_promoter_fimo.py`) auto-skip.
+
+- **`full-ci.yml`** — heavy lane. Builds the full
+  `envs/genefamily.yaml` via `setup-micromamba` and then runs the
+  complete pytest suite, a `snakemake -n` dry-run against the default
+  config, and a second dry-run with Step 13 enrichment enabled. The
+  JASPAR/FIMO end-to-end test unbolts its skip guard because FIMO is
+  on PATH inside this env. Triggers:
+
+  | Trigger | When |
+  |---|---|
+  | `workflow_dispatch` | Manual run from the Actions tab |
+  | `schedule` (cron `17 5 * * *`) | Nightly 05:17 UTC |
+  | `pull_request` with label `full-ci` | Attach the label to a PR to run on the PR head |
+
+  The PR trigger gates on `github.event.label.name == 'full-ci'` so
+  ad-hoc label edits don't trigger spurious runs.
 
 ## Adding a New Analysis Step
 
