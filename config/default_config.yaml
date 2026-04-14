@@ -291,8 +291,34 @@ step10:
   # Promoter extraction
   upstream_distance: 2000      # bp upstream of TSS
 
-  # Cis-element prediction (PlantCARE — online submission, download results)
+  # Cis-element scan method:
+  #   "plantcare" (default) — user manually uploads the promoter FASTA to
+  #       https://bioinformatics.psb.ugent.be/webtools/plantcare/html/,
+  #       downloads results, and points `plantcare_dir` at the folder.
+  #   "local" — fully offline literal motif scan against `motif_library`.
+  #       Runs scripts/scan_promoter_motifs.py on the promoter FASTA and
+  #       emits a synthetic PlantCARE-format .tab that R/10_promoter.R
+  #       consumes unchanged. Eliminates the only online dependency in
+  #       the pipeline; trades some recall (~72% on the shipped fixture)
+  #       for full automation.
+  scan_method: "plantcare"
+
+  # Used when scan_method == "plantcare"
   plantcare_dir: "example/10.promoter/PlantCARE_410_SB_plantCARE"
+
+  # Used when scan_method == "local"
+  # Local motif library TSV (columns: element, sequence, description,
+  # species, function_desc). Build from a PlantCARE download via:
+  #     python scripts/build_plantcare_motifs.py \
+  #         --from-plantcare-tab downloaded.tab \
+  #         --elements-xlsx example/10.promoter/cir_element.desc.20240509.xlsx \
+  #         --merge example/10.promoter/plantcare_motifs.tsv \
+  #         -o example/10.promoter/plantcare_motifs.tsv
+  motif_library: "example/10.promoter/plantcare_motifs.tsv"
+
+  # Optional: explicit promoter FASTA path for scan_method=local when
+  # compute_promoter is false. Leave commented to use the shipped fixture.
+  # promoter_fasta: "example/10.promoter/Sb.promoter.fasta"
 
   # Cis-element annotation database
   element_annotation_file: "example/10.promoter/cir_element.desc.20240509.xlsx"

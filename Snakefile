@@ -112,6 +112,22 @@ def _step09_file(wc, ext):
 
 
 STEP10_COMPUTE_PROMOTER = config["step10"].get("compute_promoter", False)
+STEP10_SCAN_METHOD = config["step10"].get("scan_method", "plantcare")
+
+
+def promoter_fasta_for_local():
+    """Resolve the promoter FASTA path consumed by the local motif scanner.
+
+    When ``step10.compute_promoter`` is true, the pipeline auto-generates
+    the FASTA via ``step10_extract_promoter``. Otherwise the user must
+    provide one via ``step10.promoter_fasta`` — falls back to the shipped
+    example fixture if neither is set.
+    """
+    if STEP10_COMPUTE_PROMOTER:
+        return f"{WORK_DIR}/10_promoter/{TARGET}_upstream.fasta"
+    return config["step10"].get(
+        "promoter_fasta", "example/10.promoter/Sb.promoter.fasta"
+    )
 
 
 def family_ids_for(sp):

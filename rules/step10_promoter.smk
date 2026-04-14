@@ -1,8 +1,15 @@
 # ===========================================================================
 # STEP 10: Promoter cis-element analysis
 # ===========================================================================
-# Promoter extraction is automated; PlantCARE submission is manual (online).
-# Set step10.plantcare_dir to the downloaded PlantCARE results directory.
+# Two scan methods:
+#   "plantcare" (default, backward compat): user manually submits the promoter
+#     FASTA to https://bioinformatics.psb.ugent.be/webtools/plantcare/html/,
+#     downloads the results, and points `step10.plantcare_dir` at the folder.
+#   "local": fully offline literal motif scan against a shipped motif library
+#     (example/10.promoter/plantcare_motifs.tsv). Produces a synthetic
+#     PlantCARE-format .tab that the existing R parser consumes unchanged.
+#
+# Promoter extraction is automated when `step10.compute_promoter` is true.
 
 if STEP10_COMPUTE_PROMOTER:
 
@@ -41,16 +48,56 @@ if STEP10_COMPUTE_PROMOTER:
             """
 
 
+if STEP10_SCAN_METHOD == "local":
+
+    rule step10_local_motif_scan:
+        """Scan promoter FASTA with a local motif library (offline PlantCARE)."""
+        input:
+            fasta  = promoter_fasta_for_local(),
+            motifs = config["step10"].get(
+                "motif_library", "example/10.promoter/plantcare_motifs.tsv"
+            ),
+        output:
+            tab = f"{WORK_DIR}/10_promoter/local_plantcare/plantCARE_output_local.tab",
+        log:
+            f"{LOG_DIR}/10_local_motif_scan.log",
+        shell:
+            """
+            python3 scripts/scan_promoter_motifs.py \
+                --fasta {input.fasta} \
+                --motifs {input.motifs} \
+                -o {output.tab} \
+                2>&1 | tee {log}
+            """
+
+
+def _step10_plantcare_dir():
+    if STEP10_SCAN_METHOD == "local":
+        return f"{WORK_DIR}/10_promoter/local_plantcare"
+    return config["step10"].get(
+        "plantcare_dir", "example/10.promoter/PlantCARE_410_SB_plantCARE"
+    )
+
+
+def _step10_plantcare_inputs():
+    """Extra file-level inputs the DAG should depend on for each scan method."""
+    if STEP10_SCAN_METHOD == "local":
+        return [
+            f"{WORK_DIR}/10_promoter/local_plantcare/plantCARE_output_local.tab",
+        ]
+    return []
+
+
 rule step10_promoter:
-    """Analyze promoter cis-elements from PlantCARE output."""
+    """Analyze promoter cis-elements from PlantCARE (or local scan) output."""
     input:
-        element_desc = config["step10"]["element_annotation_file"],
-        gene_ids     = family_ids_for(TARGET),
+        element_desc   = config["step10"]["element_annotation_file"],
+        gene_ids       = family_ids_for(TARGET),
+        plantcare_tabs = _step10_plantcare_inputs(),
     output:
         pdf = f"{OUT_DIR}/10_promoter/promoter_elements.pdf",
     params:
-        plantcare_dir = config["step10"].get("plantcare_dir",
-                            "example/10.promoter/PlantCARE_410_SB_plantCARE"),
+        plantcare_dir = _step10_plantcare_dir(),
     log:
         f"{LOG_DIR}/10_promoter.log",
     shell:

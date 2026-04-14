@@ -165,7 +165,11 @@
       "type": "object",
       "properties": {
         "compute_promoter":  { "type": "boolean" },
-        "upstream_distance": { "type": "integer", "minimum": 1 }
+        "upstream_distance": { "type": "integer", "minimum": 1 },
+        "scan_method":       { "type": "string", "enum": ["plantcare", "local"] },
+        "plantcare_dir":     { "type": "string" },
+        "motif_library":     { "type": "string" },
+        "promoter_fasta":    { "type": "string" }
       }
     },
 

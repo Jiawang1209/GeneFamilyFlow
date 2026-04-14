@@ -1,0 +1,143 @@
+element	sequence	description	species	function_desc
+3-AF1 binding site	TAAGAGAGGAA	Light responsiveness	Solanum tuberosum	light responsive element
+3-AF3 binding site	CACTATCTAAC	Light responsiveness	Pisum sativum	part of a conserved DNA module array (CMA3)
+AAAC-motif	CAATCAAAACCT	Light responsiveness	Spinacia oleracea	light responsive element
+AC-I	GCTTACCTACCA	Light responsiveness	Arabidopsis thaliana	
+AC-II	CCACCAACCCCC	Light responsiveness	Phaseolus vulgaris	
+AC-II	TCACCAACCCCC	Light responsiveness	Populus tremuloides	
+ACE	CTAACGTATT	Light responsiveness	Petroselinum crispum	cis-acting element involved in light responsiveness
+ACE	GACACGTATG	Light responsiveness	Petroselinum crispum	cis-acting element involved in light responsiveness
+ACE	GCGACGTACC	Light responsiveness	Petroselinum crispum	cis-acting element involved in light responsiveness
+AE-box	AGAAACAA	Light responsiveness	Arabidopsis thaliana	part of a module for light response
+AE-box	AGAAACTT	Light responsiveness	Arabidopsis thaliana	part of a module for light response
+ATC-motif	AGCTATCCA	Light responsiveness	Arabidopsis thaliana	part of a conserved DNA module involved in light responsiveness
+ATC-motif	AGTAATCT	Light responsiveness	Spinacia oleracea	part of a conserved DNA module involved in light responsiveness
+ATC-motif	TGCTATCCA	Light responsiveness	Pisum sativum	part of a conserved DNA module involved in light responsiveness
+ATCT-motif	AATCTAATCC	Light responsiveness	Pisum sativum	part of a conserved DNA module involved in light responsiveness
+Box 4	ATTAAT	Light responsiveness	Petroselinum crispum	part of a conserved DNA module involved in light responsiveness
+CAAT-box	AGCTCAATTTCA	Light responsiveness	Daucus carota	common cis-acting element in promoter and enhancer regions
+CAAT-box	CAAAT	Light responsiveness	Pisum sativum	common cis-acting element in promoter and enhancer regions
+CAAT-box	CAACCAACTCC	Light responsiveness	Arabidopsis thaliana	common cis-acting element in promoter and enhancer regions
+CAAT-box	CAAT	Light responsiveness	Nicotiana glutinosa	
+CAAT-box	CCAAT	Light responsiveness	Arabidopsis thaliana	common cis-acting element in promoter and enhancer regions
+CAAT-box	CCCAATTT	Light responsiveness	Arabidopsis thaliana	common cis-acting element in promoter and enhancer regions
+CAAT-box	TGCAAATCT	Light responsiveness	Brassica juncea	common cis-acting element in promoter and enhancer regions
+CAAT-box	TGCCAAC	Light responsiveness	Petunia hybrida	common cis-acting element in promoter and enhancer regions
+G-Box	CACGTG	Light responsiveness	Pisum sativum	cis-acting regulatory element involved in light responsiveness
+G-Box	CACGTT	Light responsiveness	Pisum sativum	cis-acting regulatory element involved in light responsiveness
+G-Box	TCCACATGGCA	Light responsiveness	Triticum aestivum	cis-acting regulatory element involved in light responsiveness
+G-box	ACACGTGGC	Light responsiveness	Brassica napus	cis-acting regulatory element involved in light responsiveness
+G-box	ACACGTGT	Light responsiveness	Brassica napus	cis-acting regulatory element involved in light responsiveness
+G-box	CACGAC	Light responsiveness	Zea mays	cis-acting regulatory element involved in light responsiveness
+G-box	CACGTC	Light responsiveness	Zea mays	cis-acting regulatory element involved in light responsiveness
+G-box	CACGTG	Light responsiveness	Arabidopsis thaliana	cis-acting regulatory element involved in light responsiveness
+G-box	CAGACGTGGCA	Light responsiveness	Nicotiana plumbaginifolia	cis-acting regulatory element involved in light responsiveness
+G-box	CCACGTAA	Light responsiveness	Brassica napus	cis-acting regulatory element involved in light responsiveness
+G-box	GCCACGTGGA	Light responsiveness	Arabidopsis thaliana	cis-acting regulatory element involved in light responsiveness
+G-box	TAAACGTG	Light responsiveness	Brassica oleracea	cis-acting regulatory element involved in light responsiveness
+G-box	TAACACGTAG	Light responsiveness	Brassica oleracea	cis-acting regulatory element involved in light responsiveness
+G-box	TACGTG	Light responsiveness	Arabidopsis thaliana	cis-acting regulatory element involved in light responsiveness
+GA-motif	ATAGATAA	Light responsiveness	Arabidopsis thaliana	part of a light responsive element
+GATA-motif	AAGATAAGATT	Light responsiveness	Arabidopsis thaliana	part of a light responsive element
+GATA-motif	AAGGATAAGG	Light responsiveness	Solanum tuberosum	part of a light responsive element
+GATA-motif	GATAGGA	Light responsiveness	Arabidopsis thaliana	part of a light responsive element
+GATA-motif	GATAGGG	Light responsiveness	Pisum sativum	part of a light responsive element
+GC-motif	CCCCCG	Light responsiveness	Zea mays	enhancer-like element involved in anoxic specific inducibility
+GC-motif	CGCCGCGCA	Light responsiveness	Oryza sativa	?
+GC-motif	CGGCGCCCT	Light responsiveness	Oryza sativa	?
+GT1-motif	GCGGTAATT	Light responsiveness	Oryza sativa	light responsive element
+GT1-motif	GGTTAA	Light responsiveness	Arabidopsis thaliana	light responsive element
+GT1-motif	GGTTAAT	Light responsiveness	Avena sativa	light responsive element
+GT1-motif	GTGTGTGAA	Light responsiveness	Solanum tuberosum	light responsive element
+I-box	AGATAAGG	Light responsiveness	Triticum aestivum	part of a light responsive element
+I-box	ATGATAAGGTC	Light responsiveness	Helianthus annuus	part of a light responsive element
+I-box	CCATATCCAAT	Light responsiveness	Flaveria trinervia	part of a light responsive element
+I-box	CCTTATCCT	Light responsiveness	Arabidopsis thaliana	part of a light responsive element
+I-box	CGATAAGGCG	Light responsiveness	Zea mays	part of a light responsive element
+I-box	GATAAGGGT	Light responsiveness	Arabidopsis thaliana	part of a light responsive element
+I-box	GGATAAGGTG	Light responsiveness	Zea mays	part of a light responsive element
+I-box	GTATAAGGCC	Light responsiveness	Larix laricina	part of a light responsive element
+I-box	TAGATAACC	Light responsiveness	Pisum sativum	part of a light responsive element
+MRE	AACCTAA	Light responsiveness	Petroselinum crispum	MYB binding site involved in light responsiveness
+TCCC-motif	TCTCCCT	Light responsiveness	Spinacia oleracea	part of a light responsive element
+TCT-motif	TCTTAC	Light responsiveness	Arabidopsis thaliana	part of a light responsive element
+chs-CMA1a	TTACTTAA	Light responsiveness	Daucus carota	part of a light responsive element
+chs-CMA2a	TCACTTGA	Light responsiveness	Petroselinum crispum	part of a light responsive element
+chs-Unit 1 m1	ACCTAACCCGC	Light responsiveness	Hordeum vulgare	part of a light responsive element
+AAGAA-motif	GAAAGAA	Plant growth and development	Avena sativa	
+AAGAA-motif	GGTAAAGAAA	Plant growth and development	Avena sativa	
+CAT-box	GCCACT	Plant growth and development	Arabidopsis thaliana	cis-acting regulatory element related to meristem expression
+CCAAT-box	CAACGG	Plant growth and development	Hordeum vulgare	MYBHv1 binding site
+CCGTCC motif	CCGTCC	Plant growth and development	Nicotiana tabacum	
+CCGTCC-box	CCGTCC	Plant growth and development	Petroselinum hortense	
+ERE	ATTTCATA	Plant growth and development	Nicotiana glutinos	
+ERE	ATTTTAAA	Plant growth and development	Nicotiana glutinos	
+O2-site	GATGACATGG	Plant growth and development	Zea mays	cis-acting regulatory element involved in zein metabolism regulation
+O2-site	GATGATGTGG	Plant growth and development	Zea mays	cis-acting regulatory element involved in zein metabolism regulation
+O2-site	GTTGACGTGA	Plant growth and development	Zea mays	cis-acting regulatory element involved in zein metabolism regulation
+TATA-box	ATATAA	Plant growth and development	Brassica oleracea	core promoter element around -30 of transcription start
+TATA-box	ATATAT	Plant growth and development	Brassica napus	core promoter element around -30 of transcription start
+TATA-box	ATTATA	Plant growth and development	Brassica napus	core promoter element around -30 of transcription start
+TATA-box	CCTATAAAAA	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TAAAGATT	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TACAAAA	Plant growth and development	Oryza sativa	core promoter element around -30 of transcription start
+TATA-box	TACATAAA	Plant growth and development	Oryza sativa	core promoter element around -30 of transcription start
+TATA-box	TATA	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TATAA	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TATAAA	Plant growth and development	Helianthus annuus	core promoter element around -30 of transcription start
+TATA-box	TATAAAA	Plant growth and development	Pisum sativum	core promoter element around -30 of transcription start
+TATA-box	TATAAAT	Plant growth and development	Brassica juncea	core promoter element around -30 of transcription start
+TATA-box	TATAAATA	Plant growth and development	Daucus carota	core promoter element around -30 of transcription start
+TATA-box	TATAAGAA	Plant growth and development	Zea mays	core promoter element around -30 of transcription start
+TATA-box	TATACA	Plant growth and development	Helianthus annuus	core promoter element around -30 of transcription start
+TATA-box	TATATA	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TATATAA	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TATATAAAG	Plant growth and development	Lycopersicon esculentum	core promoter element around -30 of transcription start
+TATA-box	TATATAAATC	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TATATTTATATTT	Plant growth and development	Avena sativa	core promoter element around -30 of transcription start
+TATA-box	TATTTAAA	Plant growth and development	Arabidopsis thaliana	core promoter element around -30 of transcription start
+TATA-box	TCTATAAATAGG	Plant growth and development	Nicotiana tabacum	core promoter element around -30 of transcription start
+circadian	CAAAGATATC	Plant growth and development	Lycopersicon esculentum	cis-acting regulatory element involved in circadian control
+ABRE	AACCCGG	Plant hormone related	Arabidopsis thaliana	cis-acting element involved in the abscisic acid responsiveness
+ABRE	ACGTG	Plant hormone related	Arabidopsis thaliana	cis-acting element involved in the abscisic acid responsiveness
+ABRE	CACGTG	Plant hormone related	Arabidopsis thaliana	cis-acting element involved in the abscisic acid responsiveness
+ABRE	CGCACGTGTC	Plant hormone related	Hordeum vulgare	cis-acting element involved in the abscisic acid responsiveness
+ABRE	CGTACGTGCA	Plant hormone related	Hordeum vulgare	cis-acting element involved in the abscisic acid responsiveness
+ABRE	GACACGTACGT	Plant hormone related	Oryza sativa	cis-acting element involved in the abscisic acid responsiveness
+ABRE	GACACGTGGC	Plant hormone related	Triticum aestivum	cis-acting element involved in the abscisic acid responsiveness
+ABRE	GCAACGTGTC	Plant hormone related	Hordeum vulgare	cis-acting element involved in the abscisic acid responsiveness
+ABRE	GCCGCGTGGC	Plant hormone related	Oryza sativa	cis-acting element involved in the abscisic acid responsiveness
+ABRE	TACGGTC	Plant hormone related	Arabidopsis thaliana	cis-acting element involved in the abscisic acid responsiveness
+ABRE	TACGTGTC	Plant hormone related	Oryza sativa	cis-acting element involved in the abscisic acid responsiveness
+ABRE2	CCACGTGG	Plant hormone related	Zea mays	
+ABRE3a	TACGTG	Plant hormone related	Zea mays	
+ABRE4	CACGTA	Plant hormone related	Zea mays	
+AuxRR-core	GGTCCAT	Plant hormone related	Nicotiana tabacum	cis-acting regulatory element involved in auxin responsiveness
+CGTCA-motif	CGTCA	Plant hormone related	Hordeum vulgare	cis-acting regulatory element involved in the MeJA-responsiveness
+CTAG-motif	ACTAGCAGAA	Plant hormone related	Avena sativa	
+GARE-motif	TCTGTTG	Plant hormone related	Brassica oleracea	gibberellin-responsive element
+P-box	CCTTTTG	Plant hormone related	Oryza sativa	gibberellin-responsive element
+RY-element	CATGCATG	Plant hormone related	Helianthus annuus	cis-acting regulatory element involved in seed-specific regulation
+TATC-box	TATCCCA	Plant hormone related	Oryza sativa	cis-acting element involved in gibberellin-responsiveness
+TCA	TCATCTTCAT	Plant hormone related	Pisum sativum	
+TCA-element	CCATCTTTTT	Plant hormone related	Nicotiana tabacum	cis-acting element involved in salicylic acid responsiveness
+TCA-element	TCAGAAGAGG	Plant hormone related	Brassica oleracea	cis-acting element involved in salicylic acid responsiveness
+TGACG-motif	TGACG	Plant hormone related	Hordeum vulgare	cis-acting regulatory element involved in the MeJA-responsiveness
+A-box	CCGTCC	Stress related	Petroselinum crispum	cis-acting regulatory element
+ARE	AAACCA	Stress related	Zea mays	cis-acting regulatory element essential for the anaerobic induction
+DRE core	GCCGAC	Stress related	Arabidopsis thaliana	
+DRE1	ACCGAGA	Stress related	Zea mays	
+F-box	CTATTCTCATT	Stress related	Lycopersicon esculentum	
+LTR	CCGAAA	Stress related	Hordeum vulgare	cis-acting element involved in low-temperature responsiveness
+MBS	CAACTG	Stress related	Arabidopsis thaliana	MYB binding site involved in drought-inducibility
+TC-rich repeats	ATTCTCTAAC	Stress related	Nicotiana tabacum	cis-acting element involved in defense and stress responsiveness
+TC-rich repeats	GTTTTCTTAC	Stress related	Nicotiana tabacum	cis-acting element involved in defense and stress responsiveness
+WUN-motif	AAATTACT	Stress related	Nicotiana glutinosa	
+WUN-motif	AAATTACTA	Stress related	Nicotiana glutinosa	
+WUN-motif	AAATTTCCT	Stress related	Brassica oleracea	wound-responsive element
+WUN-motif	AAATTTCTT	Stress related	Nicotiana glutinosa	
+WUN-motif	CAATTACAT	Stress related	Nicotiana glutinosa	
+WUN-motif	CCATTTCAA	Stress related	Nicotiana glutinosa	
+WUN-motif	TAATTACTC	Stress related	Nicotiana glutinosa	
+WUN-motif	TTATTACAT	Stress related	Nicotiana glutinosa	
+as-1	TGACG	Stress related	Arabidopsis thaliana	

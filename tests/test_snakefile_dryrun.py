@@ -182,6 +182,26 @@ def test_dryrun_step14(tmp_path: Path) -> None:
 
 
 @pytest.mark.integration
+def test_dryrun_step10_local_scan(tmp_path: Path) -> None:
+    """Step 10 with scan_method=local wires the offline motif scanner rule."""
+    cfg_path = _write_config(
+        tmp_path,
+        {"step10": {"scan_method": "local"}},
+    )
+    result = subprocess.run(
+        ["snakemake", "-n", "-F", "--configfile", str(cfg_path)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    _assert_dag_ok(result)
+    assert "step10_local_motif_scan" in result.stdout, (
+        f"step10_local_motif_scan missing from DAG:\n{result.stdout}"
+    )
+
+
+@pytest.mark.integration
 def test_dryrun_step13_rejects_unknown_species(tmp_path: Path) -> None:
     """Config validation must fire when step13.species contains an unknown sp."""
     cfg_path = _write_config(
