@@ -148,3 +148,40 @@ def test_main_writes_all_outputs(tmp_path):
     universe = universe_out.read_text().strip().splitlines()
     # AT1G01040 has no annotations -> excluded
     assert set(universe) == {"AT1G01010", "AT1G01020", "AT1G01030"}
+
+
+def test_parse_eggnog_skips_blank_and_truncated_and_empty_gene(tmp_path: Path) -> None:
+    """Defensive branches: blank lines, too-few-fields, empty query."""
+    content = dedent(
+        """\
+        ## eggNOG-mapper v2.1.9
+
+        #query\tseed_ortholog\tevalue\tGOs\tKEGG_Pathway
+        AT1G99000\tortho\t1e-20\tGO:0000001\tko99999
+        short_line_only_three_cols\ta\tb
+
+        \t-\t-\t-\t-
+        AT1G99001\tortho\t1e-20\t-\t-
+        """
+    )
+    path = _write_sample(tmp_path, content)
+    rows = parse_eggnog_annotations(path)
+    genes = {r.gene for r in rows}
+    # Blank lines skipped (line 38), truncated row skipped (line 102),
+    # row with empty query skipped (line 105). Valid rows survive.
+    assert genes == {"AT1G99000", "AT1G99001"}
+
+
+def test_write_universe_deduplicates_gene(tmp_path: Path) -> None:
+    """When two rows share the same gene, universe keeps only one entry (line 135)."""
+    from scripts.parse_eggnog import write_universe
+
+    rows = [
+        EggnogRow(gene="G1", go_terms=("GO:1",), kegg_pathways=()),
+        EggnogRow(gene="G1", go_terms=(), kegg_pathways=("ko1",)),
+        EggnogRow(gene="G2", go_terms=("GO:2",), kegg_pathways=()),
+    ]
+    out = tmp_path / "universe.txt"
+    n = write_universe(rows, out)
+    assert n == 2
+    assert out.read_text().splitlines() == ["G1", "G2"]

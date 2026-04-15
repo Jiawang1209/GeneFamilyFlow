@@ -80,6 +80,18 @@ class TestMergeGeneIds(unittest.TestCase):
         rc = main(["/nonexistent.txt", str(self.file_b)])
         self.assertEqual(rc, 1)
 
+    def test_cli_main_stdout(self) -> None:
+        """Without -o, main() prints merged IDs to stdout (covers 91-92)."""
+        import io
+        from contextlib import redirect_stdout
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = main([str(self.file_a), str(self.file_b), "-m", "union"])
+        self.assertEqual(rc, 0)
+        lines = [ln for ln in buf.getvalue().splitlines() if ln]
+        self.assertTrue(len(lines) >= 1)
+
 
 if __name__ == "__main__":
     unittest.main()
