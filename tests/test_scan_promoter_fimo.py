@@ -181,6 +181,174 @@ class TestRunFimoMissingBinary:
             )
 
 
+class TestScanOrchestration:
+    """Cover ``scan()``'s temp-dir and explicit work-dir branches.
+
+    Per ``docs/development.md`` the subprocess body inside ``run_fimo`` is
+    policy-exempt (don't mock the MEME binary). These tests stay above it
+    by stubbing ``scan_promoter_fimo.run_fimo`` at the module level, which
+    lets us exercise the orchestration (tempdir, parse, write) without
+    touching ``subprocess``.
+    """
+
+    @staticmethod
+    def _install_stub(monkeypatch: pytest.MonkeyPatch, rows: list[str]) -> list[dict]:
+        import scripts.scan_promoter_fimo as mod
+
+        calls: list[dict] = []
+
+        def fake_run_fimo(
+            fasta: Path,
+            meme: Path,
+            out_dir: Path,
+            threshold: float = mod.DEFAULT_THRESHOLD,
+            binary: str = mod.DEFAULT_FIMO_BINARY,
+        ) -> Path:
+            calls.append(
+                {
+                    "fasta": fasta,
+                    "meme": meme,
+                    "out_dir": out_dir,
+                    "threshold": threshold,
+                    "binary": binary,
+                }
+            )
+            out_dir.mkdir(parents=True, exist_ok=True)
+            tsv = out_dir / "fimo.tsv"
+            header = "\t".join(FIMO_COLUMNS) + "\n"
+            tsv.write_text(header + "".join(rows))
+            return tsv
+
+        monkeypatch.setattr(mod, "run_fimo", fake_run_fimo)
+        return calls
+
+    def test_scan_uses_tempdir_when_work_dir_none(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        calls = self._install_stub(monkeypatch, [_row(), _row(strand="-")])
+        out = tmp_path / "jaspar.tab"
+        n = scan(
+            fasta=tmp_path / "dummy.fa",
+            meme=tmp_path / "dummy.meme",
+            output=out,
+        )
+        assert n == 2
+        lines = out.read_text().splitlines()
+        assert len(lines) == 2
+        assert all(len(line.split("\t")) == 8 for line in lines)
+        # stub saw exactly one run; the out_dir was the ephemeral tempdir
+        assert len(calls) == 1
+        ephemeral = calls[0]["out_dir"]
+        assert not ephemeral.exists(), "tempdir should be cleaned up after scan()"
+
+    def test_scan_preserves_explicit_work_dir(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        calls = self._install_stub(monkeypatch, [_row()])
+        work = tmp_path / "fimo_debug"
+        out = tmp_path / "jaspar.tab"
+        n = scan(
+            fasta=tmp_path / "dummy.fa",
+            meme=tmp_path / "dummy.meme",
+            output=out,
+            work_dir=work,
+        )
+        assert n == 1
+        # Debug directory is NOT cleaned up; raw fimo.tsv stays for inspection
+        assert (work / "fimo.tsv").exists()
+        assert calls[0]["out_dir"] == work
+
+    def test_scan_forwards_threshold_and_binary(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        calls = self._install_stub(monkeypatch, [_row()])
+        scan(
+            fasta=tmp_path / "x.fa",
+            meme=tmp_path / "y.meme",
+            output=tmp_path / "out.tab",
+            threshold=1e-6,
+            binary="fimo-custom",
+        )
+        assert calls[0]["threshold"] == 1e-6
+        assert calls[0]["binary"] == "fimo-custom"
+
+
+class TestMainCli:
+    """Cover ``main()``'s argparse wiring by stubbing ``scan`` itself."""
+
+    def test_main_invokes_scan_with_parsed_args(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+    ) -> None:
+        import scripts.scan_promoter_fimo as mod
+
+        captured: dict = {}
+
+        def fake_scan(**kwargs) -> int:
+            captured.update(kwargs)
+            return 42
+
+        monkeypatch.setattr(mod, "scan", fake_scan)
+
+        rc = mod.main(
+            [
+                "--fasta", str(tmp_path / "p.fa"),
+                "--meme", str(tmp_path / "m.meme"),
+                "-o", str(tmp_path / "out.tab"),
+                "--threshold", "1e-5",
+            ]
+        )
+        assert rc == 0
+        assert captured["fasta"] == tmp_path / "p.fa"
+        assert captured["meme"] == tmp_path / "m.meme"
+        assert captured["output"] == tmp_path / "out.tab"
+        assert captured["threshold"] == 1e-5
+        assert captured["binary"] == "fimo"
+        assert captured["work_dir"] is None
+        assert "wrote 42 hits" in capsys.readouterr().err
+
+    def test_main_forwards_keep_fimo_dir_as_work_dir(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        import scripts.scan_promoter_fimo as mod
+
+        captured: dict = {}
+        monkeypatch.setattr(
+            mod, "scan", lambda **kw: (captured.update(kw) or 0)
+        )
+        rc = mod.main(
+            [
+                "--fasta", str(tmp_path / "p.fa"),
+                "--meme", str(tmp_path / "m.meme"),
+                "-o", str(tmp_path / "out.tab"),
+                "--keep-fimo-dir", str(tmp_path / "debug"),
+                "--fimo-binary", "/opt/fimo",
+            ]
+        )
+        assert rc == 0
+        assert captured["work_dir"] == tmp_path / "debug"
+        assert captured["binary"] == "/opt/fimo"
+
+
+class TestModuleEntrypoint:
+    def test_help_runs_via_dash_m(self, tmp_path: Path) -> None:
+        """``python -m scripts.scan_promoter_fimo --help`` exercises the
+        ``raise SystemExit(main())`` tail without invoking the real FIMO
+        binary — argparse short-circuits with ``SystemExit(0)``."""
+        import runpy
+        import sys
+
+        original = sys.argv
+        sys.argv = ["scan_promoter_fimo.py", "--help"]
+        try:
+            with pytest.raises(SystemExit) as exc:
+                runpy.run_module(
+                    "scripts.scan_promoter_fimo", run_name="__main__"
+                )
+            assert exc.value.code == 0
+        finally:
+            sys.argv = original
+
+
 @pytest.mark.integration
 @pytest.mark.skipif(shutil.which("fimo") is None, reason="FIMO binary not on PATH")
 class TestScanEndToEnd:

@@ -24,7 +24,7 @@ GeneFamilyFlow/
 ├── envs/                      # Conda 环境定义
 ├── scripts/                   # Python 工具（含单元测试）
 ├── R/                         # R 可视化脚本（optparse CLI）
-├── tests/                     # pytest 测试（361 tests, 94% cov）
+├── tests/                     # pytest 测试（389 tests, 97% cov）
 ├── example/                   # 案例数据
 ├── output/                    # 流程输出（运行后生成）
 └── work/                      # 中间文件（运行后生成）

@@ -70,3 +70,61 @@ class TestWrite:
         write([], out)
         assert out.exists()
         assert out.read_text() == "term\tname\n"
+
+
+class TestMainCli:
+    """Cover ``main()`` by stubbing ``fetch`` at the module level. Per
+    ``docs/development.md`` the ``urllib`` body in ``fetch`` itself is
+    policy-exempt; this test sits above it."""
+
+    def test_main_writes_parsed_table(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+    ) -> None:
+        import scripts.fetch_kegg_pathway_names as mod
+
+        canned = (
+            "path:map04075\tPlant hormone signal transduction\n"
+            "path:map00010\tGlycolysis / Gluconeogenesis\n"
+        )
+        monkeypatch.setattr(mod, "fetch", lambda *a, **kw: canned)
+
+        out = tmp_path / "kegg_names.tsv"
+        rc = mod.main(["-o", str(out)])
+        assert rc == 0
+
+        lines = out.read_text().splitlines()
+        assert lines[0] == "term\tname"
+        assert lines[1] == "ko04075\tPlant hormone signal transduction"
+        assert lines[2] == "ko00010\tGlycolysis / Gluconeogenesis"
+        assert f"wrote 2 pathways to {out}" in capsys.readouterr().err
+
+    def test_main_creates_missing_output_dir(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        import scripts.fetch_kegg_pathway_names as mod
+
+        monkeypatch.setattr(mod, "fetch", lambda *a, **kw: "path:map00010\tGlycolysis\n")
+        out = tmp_path / "deep" / "nested" / "kegg.tsv"
+        rc = mod.main(["-o", str(out)])
+        assert rc == 0
+        assert out.exists()
+
+
+class TestModuleEntrypoint:
+    def test_help_runs_via_dash_m(self) -> None:
+        """``python -m scripts.fetch_kegg_pathway_names --help`` covers
+        the ``raise SystemExit(main())`` tail without hitting the network
+        — argparse short-circuits with ``SystemExit(0)``."""
+        import runpy
+        import sys
+
+        original = sys.argv
+        sys.argv = ["fetch_kegg_pathway_names.py", "--help"]
+        try:
+            with pytest.raises(SystemExit) as exc:
+                runpy.run_module(
+                    "scripts.fetch_kegg_pathway_names", run_name="__main__"
+                )
+            assert exc.value.code == 0
+        finally:
+            sys.argv = original

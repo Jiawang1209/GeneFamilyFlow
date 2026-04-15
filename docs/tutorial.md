@@ -108,5 +108,5 @@ See [configuration.md](configuration.md) for the full parameter reference.
 
 ```bash
 pytest tests/ -v
-# 65 passed in 0.2s
+# 389 passed, 1 skipped in ~11s
 ```

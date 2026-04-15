@@ -13,7 +13,7 @@ GeneFamilyFlow/
 │   └── genefamily-minimal.yaml # Dev/test env
 ├── scripts/                   # Python utilities (stdlib only)
 ├── R/                         # R visualization scripts
-├── tests/                     # pytest test suite (361 tests, 94% cov)
+├── tests/                     # pytest test suite (389 tests, 97% cov)
 ├── docs/                      # Documentation
 ├── example/                   # Example data for the tutorial
 ├── output/                    # Pipeline outputs (gitignored)
@@ -126,7 +126,7 @@ rule step_example:
 
 ```bash
 pytest tests/ -v
-# 65 passed in 0.2s
+# 389 passed, 1 skipped in ~11s
 ```
 
 ### Coverage
@@ -135,7 +135,7 @@ pytest tests/ -v
 pytest tests/ --cov=scripts --cov-report=term-missing
 ```
 
-Target: **80%+ coverage** (currently 304 tests, ~93% coverage).
+Target: **80%+ coverage** (currently 389 tests, ~97% coverage).
 
 ### `# pragma: no cover` convention
 
@@ -154,6 +154,20 @@ job where the real tool is available (see `TestScanEndToEnd` in
 `tests/test_scan_promoter_fimo.py`). Do not replace them with
 subprocess/urllib mocks in the unit suite — that produces brittle tests
 without real signal.
+
+**What is allowed:** stubbing our _own_ higher-level wrappers to cover
+orchestration logic above the exempt bodies. For example,
+`tests/test_scan_promoter_fimo.py::TestScanOrchestration` monkeypatches
+`scan_promoter_fimo.run_fimo` (our function, not `subprocess.run`) to
+test the tempdir/parse/write flow in `scan()`. Likewise
+`tests/test_fetch_kegg_pathway_names.py::TestMainCli` stubs
+`fetch_kegg_pathway_names.fetch` (ours, not `urllib.request.urlopen`)
+to test the argparse/parse/write flow in `main()`. This keeps the
+network/subprocess seam honest while still exercising the Python we own.
+Module entrypoints (`if __name__ == "__main__": raise SystemExit(main())`)
+are covered via `runpy.run_module(..., run_name="__main__")` with
+`sys.argv = [..., "--help"]` so argparse short-circuits before any
+external call.
 
 ### Test structure
 

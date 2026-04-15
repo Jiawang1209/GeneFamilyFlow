@@ -1,0 +1,26 @@
+FROM --platform=linux/amd64 mambaorg/micromamba:1.5-jammy
+
+LABEL org.opencontainers.image.title="GeneFamilyFlow Step 10 (MEME 5.1.0)"
+LABEL org.opencontainers.image.description="linux/amd64 image pinning meme=5.1.0 for Step 10 promoter cis-element scanning on ARM Mac hosts."
+
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        tini \
+    && rm -rf /var/lib/apt/lists/*
+USER $MAMBA_USER
+
+COPY --chown=$MAMBA_USER:$MAMBA_USER docker/step10-linux.yaml /tmp/step10-linux.yaml
+
+RUN micromamba install -y -n base -f /tmp/step10-linux.yaml \
+    && micromamba clean --all --yes
+
+ARG MAMBA_DOCKERFILE_ACTIVATE=1
+ENV PATH=/opt/conda/bin:$PATH
+
+RUN fimo --version && meme -version && snakemake --version && R --version | head -1
+
+WORKDIR /work
+
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/_entrypoint.sh"]
+CMD ["bash"]

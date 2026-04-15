@@ -1,0 +1,27 @@
+name: step10
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - snakemake>=8.0
+  - pyyaml
+  - jsonschema>=4.0
+
+  - meme=5.1.0
+
+  - bedtools>=2.30
+  - seqkit>=2.3
+
+  - r-base>=4.3
+  - r-tidyverse
+  - r-optparse
+  - r-ggplot2
+  - r-readxl
+  - r-data.table
+  - r-legendry
+  - r-rcolorbrewer
+  - r-scales
+  - r-stringr

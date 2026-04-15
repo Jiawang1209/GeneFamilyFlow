@@ -218,7 +218,7 @@ Full documentation lives in [`docs/`](docs/):
 
 Contributions are welcome. Please read [docs/development.md](docs/development.md) before submitting a PR. All pull requests must:
 
-- Pass `pytest tests/ -v` (currently 361 tests, 94% coverage)
+- Pass `pytest tests/ -v` (currently 389 tests, 97% coverage)
 - Pass `snakemake --configfile config/default_config.yaml -n` dry-run
 - Include tests for new Python code
 - Update relevant docs when changing config or output
