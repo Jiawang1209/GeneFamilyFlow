@@ -270,3 +270,83 @@ class TestShippedFixture:
             "Plant hormone related",
             "Stress related",
         }
+
+
+class TestDefensiveBranches:
+    """Exercise the remaining defensive skips so coverage reflects intent."""
+
+    def test_read_element_descriptions_skips_empty_row(self, tmp_path: Path) -> None:
+        """openpyxl may yield an empty tuple for fully-blank rows (line 73)."""
+        path = tmp_path / "blank.xlsx"
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.append(["element", "description"])
+        ws.append(["ABRE", "Hormone"])
+        ws.append([])  # fully blank row
+        ws.append(["CAAT-box", "Promoter"])
+        wb.save(path)
+        assert _read_element_descriptions(path) == {
+            "ABRE": "Hormone",
+            "CAAT-box": "Promoter",
+        }
+
+    def test_parse_plantcare_tab_skips_blank_and_truncated(
+        self, tmp_path: Path
+    ) -> None:
+        """Blank lines (line 99) and <8-column rows (line 102) are dropped."""
+        path = tmp_path / "mixed.tab"
+        path.write_text(
+            "\n"  # blank line
+            "g1\tABRE\tonly_three_cols\n"  # truncated row
+            "g1\tABRE\tACGTG\t1\t5\t+\tAth\tok\n"
+        )
+        motifs = parse_plantcare_tab([path], {"ABRE": "Hormone"})
+        assert len(motifs) == 1
+        assert motifs[0].sequence == "ACGTG"
+
+    def test_read_existing_skips_blank_and_malformed_rows(
+        self, tmp_path: Path
+    ) -> None:
+        """Blank lines (143), wrong column count (146), and empty element/seq
+        rows (149) are silently dropped when reading a prior motif library."""
+        path = tmp_path / "library.tsv"
+        path.write_text(
+            "element\tsequence\tdescription\tspecies\tfunction_desc\n"
+            "ABRE\tACGTG\tHormone\tAth\tabscisic\n"
+            "\n"  # blank line → 143
+            "only\tfour\tcolumns\there\n"  # 4 cols → 146
+            "\t\tHormone\tAth\tabscisic\n"  # empty element & sequence → 149
+            "CAAT-box\tCAAAT\tPromoter\tPsat\tcommon\n"
+        )
+        out = read_existing(path)
+        assert set(out) == {("ABRE", "ACGTG"), ("CAAT-box", "CAAAT")}
+
+    def test_module_entrypoint(self, tmp_path: Path) -> None:
+        """``python -m scripts.build_plantcare_motifs`` exercises the
+        ``raise SystemExit(main())`` tail (line 226)."""
+        import runpy
+
+        xlsx = _write_xlsx(tmp_path, [("ABRE", "Hormone")])
+        tab = _write_tab(
+            tmp_path, "a.tab",
+            [("g1", "ABRE", "ACGTG", "1", "5", "+", "Ath", "abscisic")],
+        )
+        out = tmp_path / "out.tsv"
+
+        import sys
+        original = sys.argv
+        sys.argv = [
+            "build_plantcare_motifs.py",
+            "--from-plantcare-tab", str(tab),
+            "--elements-xlsx", str(xlsx),
+            "-o", str(out),
+        ]
+        try:
+            with pytest.raises(SystemExit) as exc:
+                runpy.run_module(
+                    "scripts.build_plantcare_motifs", run_name="__main__"
+                )
+            assert exc.value.code == 0
+        finally:
+            sys.argv = original
+        assert out.exists()

@@ -193,6 +193,89 @@ class TestCLI:
         assert "CAAT-box" in elements
 
 
+class TestDefensiveBranches:
+    """Cover blank/malformed library rows, headerless FASTA prefix, and the
+    empty-library guard so coverage mirrors the code's actual safety net."""
+
+    def test_read_motif_library_skips_blank_and_malformed(
+        self, tmp_path: Path
+    ) -> None:
+        """Blank lines (69), wrong column count (72), and empty
+        element/sequence rows (75) are silently dropped."""
+        p = tmp_path / "lib.tsv"
+        p.write_text(
+            "element\tsequence\tdescription\tspecies\tfunction_desc\n"
+            "\n"  # blank → line 69
+            "ABRE\tonly\tthree\n"  # 3 cols → line 72
+            "\t\tHormone\tAth\tabscisic\n"  # empty element & seq → 75
+            "ABRE\tACGTG\tHormone\tAth\tabscisic\n"
+        )
+        motifs = read_motif_library(p)
+        assert [m.element for m in motifs] == ["ABRE"]
+
+    def test_read_fasta_skips_sequence_lines_before_header(
+        self, tmp_path: Path
+    ) -> None:
+        """Sequence lines appearing before the first ``>`` header are
+        silently dropped (line 114)."""
+        p = tmp_path / "stray.fa"
+        p.write_text("ACGTACGT\n>gene1\nAAAA\n")
+        records = list(read_fasta(p))
+        assert len(records) == 1
+        assert records[0].raw_id == "gene1"
+        assert records[0].sequence == "AAAA"
+
+    def test_scan_record_empty_motif_sequence(self, tmp_path: Path) -> None:
+        """An empty motif sequence hits ``_iter_find``'s early return (line 123)."""
+        motifs = [Motif("", "", "Ath", "noop")]
+        fa = _write_fasta(tmp_path, [("gene1", "ACGT")])
+        record = list(read_fasta(fa))[0]
+        # Forward hits none; reverse complement of "" is "" which equals
+        # ``fwd`` so the rev-strand loop short-circuits too — no hits yielded.
+        assert list(scan_record(record, motifs)) == []
+
+    def test_scan_raises_on_empty_motif_library(self, tmp_path: Path) -> None:
+        """An empty motif library (only header) must exit non-zero (line 193)."""
+        from scripts.scan_promoter_motifs import scan
+
+        lib = tmp_path / "empty.tsv"
+        lib.write_text(
+            "element\tsequence\tdescription\tspecies\tfunction_desc\n"
+        )
+        fa = _write_fasta(tmp_path, [("g1", "ACGT")])
+        with pytest.raises(ValueError, match="empty motif library"):
+            scan(fa, lib, tmp_path / "out.tab")
+
+    def test_module_entrypoint(self, tmp_path: Path) -> None:
+        """``python -m scripts.scan_promoter_motifs`` exercises the
+        ``raise SystemExit(main())`` tail (line 234)."""
+        import runpy
+        import sys
+
+        motifs_path = _write_motifs(
+            tmp_path,
+            [("ABRE", "ACGTG", "Hormone", "Ath", "abscisic")],
+        )
+        fa = _write_fasta(tmp_path, [("gene1", "ACGTG")])
+        out = tmp_path / "out.tab"
+        original = sys.argv
+        sys.argv = [
+            "scan_promoter_motifs.py",
+            "--fasta", str(fa),
+            "--motifs", str(motifs_path),
+            "-o", str(out),
+        ]
+        try:
+            with pytest.raises(SystemExit) as exc:
+                runpy.run_module(
+                    "scripts.scan_promoter_motifs", run_name="__main__"
+                )
+            assert exc.value.code == 0
+        finally:
+            sys.argv = original
+        assert out.exists()
+
+
 class TestShippedFixtureRoundtrip:
     def test_scanner_matches_real_promoter_fasta(self, tmp_path: Path) -> None:
         assert SHIPPED_FASTA.exists(), f"missing {SHIPPED_FASTA}"

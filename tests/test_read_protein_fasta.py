@@ -132,5 +132,26 @@ class TestMainCli:
         assert "Error:" in capsys.readouterr().err
 
 
+class TestModuleEntrypoint:
+    def test_runs_as_main(self, tmp_path: Path) -> None:
+        """``python -m scripts.read_protein_fasta`` exercises the
+        ``raise SystemExit(main())`` tail (line 86)."""
+        import runpy
+        import sys
+
+        fa = tmp_path / "ok.fa"
+        fa.write_text(">seq1\nMKT\n")
+        original = sys.argv
+        sys.argv = ["read_protein_fasta.py", str(fa)]
+        try:
+            with pytest.raises(SystemExit) as exc:
+                runpy.run_module(
+                    "scripts.read_protein_fasta", run_name="__main__"
+                )
+            assert exc.value.code == 0
+        finally:
+            sys.argv = original
+
+
 if __name__ == "__main__":
     unittest.main()
